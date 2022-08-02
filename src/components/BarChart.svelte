@@ -152,6 +152,12 @@
               <pattern id="{idChart}_grid_pattern"  width="{gridGap}" height="{gridGap}" patternUnits="userSpaceOnUse">
                   <path class="grid_path" d="M 0 {gridGap} H 0 {gridGap}" fill="none" stroke-width="0.5"/>
               </pattern>
+              <pattern id="diagonalHatch" patternUnits="userSpaceOnUse" width="4" height="4">
+                <path d="M-1,1 l2,-2
+                         M0,4 l4,-4
+                         M3,5 l2,-2" 
+                      style="stroke:black; stroke-width:1" />
+              </pattern>
             </defs>
             <g role="none" aria-hidden="true">
               <rect width="90%" class="background-chart"></rect> 
@@ -194,7 +200,8 @@
                 <g transform='translate({barGap*2*c},0)'>
                   {#each series.series as bar, b}
                     <rect class="{bar.name}_bar show_bar" fill="{colors ? colors[b]:'#ccc'}" tabindex="0" x="{(c*barGroupSize)+(calculateBarSize()*b)}" width="{calculateBarSize()}" height="{bar.data[c].value}"></rect>
-                  {/each}
+                    <!-- <rect class="{bar.name}_bar show_bar" fill="url(#diagonalHatch)" tabindex="0" x="{(c*barGroupSize)+(calculateBarSize()*b)}" width="{calculateBarSize()}" height="{bar.data[c].value}"></rect> -->
+                    {/each}
                 </g>
               {/each}
             </g>
