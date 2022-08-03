@@ -28,7 +28,7 @@ export default {
       preprocess: autoPreprocess(),
     }),
     resolve(),
-    typescript({ sourceMap: true }),
+    typescript({ sourceMap: true, rootDir: './src'}),
     peerDepsExternal(),
     postcss({
       extensions: [".css"],
