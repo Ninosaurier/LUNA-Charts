@@ -3,7 +3,6 @@
     import ThemeContext from '../theme/ThemeContext.svelte';
     import type {PieSeries} from './../models/PieChart';
     import {defaultTheme} from '../theme/defaultTheme';
-    import { bind, current_component, each, prevent_default, text } from 'svelte/internal';
   
     export let title: string = '';
     export let desc: string = "";
@@ -49,6 +48,7 @@
 
       colors = Object.values(theme[0].color);
       idChart = generateId(); 
+      console.log('cumulative: ',cumulativePercents)
       createHeaderTag(findParentHeader());
     });
 
@@ -123,14 +123,16 @@
     }
   
   
-    function moveToFront(event: Event){
+    function moveSliceForward(event: Event){
 
-      let element: SVGAElement = (event.target as SVGAElement).cloneNode(true);
-      console.log(element);
+      let slice: SVGElement = (event.target as SVGElement);
+      //console.log(slice.getAttribute('d'));
       
-      element.onblur = removeAllChildNodes;
-      displayFront.appendChild(element).focus();
+      let sliceBorder: SVGElement = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+      sliceBorder.setAttribute('d', slice.getAttribute('d')!.toString());
+      sliceBorder.classList.add('show_slice_border');
       
+      displayFront.appendChild(sliceBorder);
 
     }
 
@@ -160,16 +162,15 @@
               >
                 <title id="{idChart}_title_chart">{title}</title>
                 <desc id="{idChart}_desc_chart">{desc}</desc>
-                <g>
+                <g transform="">
                     {#each series as slice, index }
-
-
                       <path 
                         class="slice"
                         role="graphics-symbol"
                         aria-label="This slice of pie chart has {slice.percent}%. This is slice {index+1} of {series.length}" 
-                        tabindex="0" 
-                        on:focus="{event => moveToFront(event)}"
+                        tabindex="0"
+                        on:blur="{() => removeAllChildNodes()}" 
+                        on:focus="{event => moveSliceForward(event)}"
                         fill="{colors ? colors[index] : '#000'}"
                         d="{'M ' + getXCoordinateForPercent(cumulativePercents[index]) + " " 
                           + getYCoordinateForPercent(cumulativePercents[index])
@@ -204,10 +205,17 @@
     font-size: 0.12px;
   }
 
-  .slice:focus{
-  stroke: #646464;
-  outline: none;
-  stroke-width: 0.05px;
-  stroke-linecap: square;
+  .slice{
+    outline: none;
+  }
+
+  :global(.show_slice_border){
+    stroke: #646464;
+    outline: none;
+    stroke-width: 0.05px;
+    stroke-linecap: square;
+    fill: none !important;
+    border: none !important;
+    color: none;
   }
 </style>

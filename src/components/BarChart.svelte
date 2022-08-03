@@ -5,7 +5,6 @@
     import { onMount } from 'svelte';
     import ThemeContext from '../theme/ThemeContext.svelte';
     import {defaultTheme} from '../theme/defaultTheme';
-    import { text } from 'svelte/internal';
 
     export let title: string = '';
     export let desc: string = "";

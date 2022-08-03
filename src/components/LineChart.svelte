@@ -150,7 +150,7 @@
 
     interception.setAttribute('x1', (bbox.x + (bbox.width / 2)).toString());
     interception.setAttribute('x2', (bbox.x + (bbox.width / 2)).toString());
-    interception.setAttribute('y1', "0");
+    interception.setAttribute('y1', (svgHeight*0.1).toString());
     interception.setAttribute('y2', (svgHeight*0.8).toString());
     interception.setAttribute('stroke', 'black');
 
