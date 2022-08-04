@@ -39,7 +39,7 @@
     onMount(async () => {
 
         idChart = generateId();
-        createHeaderTag(findParentHeader());
+        createHeaderTagForElement(headerChartParentTag, title);
         colors = Object.values(theme[0].color);
         console.log('bar-colors: ', colors);
         var bar = series.series
