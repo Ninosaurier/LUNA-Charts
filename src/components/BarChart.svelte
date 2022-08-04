@@ -5,6 +5,8 @@
     import { onMount } from 'svelte';
     import ThemeContext from '../theme/ThemeContext.svelte';
     import {defaultTheme} from '../theme/defaultTheme';
+    import {findParentHeaderOfElement, createHeaderTagForElement} from '../utils/accessibles';
+    import {generateId} from '../utils/common';
 
     export let title: string = '';
     export let desc: string = "";
@@ -47,57 +49,6 @@
     function cleanIdName(name: string){
 
       return name.replace(/\s/g, "");
-    }
-
-    function generateId(){
-
-        return Date.now().toString(36) + Math.floor(Math.pow(10, 12) + Math.random() * 9*Math.pow(10, 12)).toString(36);
-    }
-
-    function createHeaderTag(headerNumber: number){
-
-        var newHeader: HTMLElement;
-
-        if(headerNumber > 5){
-          console.warn('Headline cannot be created. HTML allows only h1 - h6. The chart would get h'+ (++headerNumber));
-        }
-        else{
-
-          if(headerNumber === null){
-              console.warn('Creating a h1 header! Is this intended?');
-              newHeader = document.createElement('h'+ (headerNumber +1));
-          }
-          else{
-              newHeader = document.createElement('h'+ (headerNumber +1));
-          }
-
-          newHeader.setAttribute('tabindex', '0');
-          newHeader.setAttribute('aria-labelledby', idChart+'_title_chart');
-          newHeader.innerHTML = title;
-          headerChartParentTag.appendChild(newHeader);
-        }
-    }
-
-    function findParentHeader(): number{
-
-        var parent: HTMLElement = rootNode.parentElement;
-        var resultHeader: number  = null;
-
-        while(parent.tagName !== 'HTML' && resultHeader === null){
-
-        Array.from(parent.children).reverse().forEach(element => {
-
-            if(element.tagName.toLowerCase().match('h1|h2|h3|h4|h5|h6') && resultHeader === null){
-
-            resultHeader =  parseInt(element.tagName[1]);
-            }
-
-        });
-        
-        parent = parent.parentElement;
-        }
-
-        return resultHeader;
     }
 
     function calculateBarGroupSize(): number{
@@ -199,7 +150,6 @@
                 <g transform='translate({barGap*2*c},0)'>
                   {#each series.series as bar, b}
                     <rect class="{bar.name}_bar show_bar" fill="{colors ? colors[b]:'#ccc'}" tabindex="0" x="{(c*barGroupSize)+(calculateBarSize()*b)}" width="{calculateBarSize()}" height="{bar.data[c].value}"></rect>
-                    <!-- <rect class="{bar.name}_bar show_bar" fill="url(#diagonalHatch)" tabindex="0" x="{(c*barGroupSize)+(calculateBarSize()*b)}" width="{calculateBarSize()}" height="{bar.data[c].value}"></rect> -->
                     {/each}
                 </g>
               {/each}

@@ -1,8 +1,16 @@
 <script lang="ts">
     import { onMount } from 'svelte';
+    import {generateId} from '../utils/common';
     import ThemeContext from '../theme/ThemeContext.svelte';
     import type {PieSeries} from './../models/PieChart';
     import {defaultTheme} from '../theme/defaultTheme';
+    import {findParentHeaderOfElement, createHeaderTagForElement} from '../utils/accessibles';
+    import {
+      calculateLargeArcFlagByPercent, 
+      calculateXPositionOnCircleByPercent, 
+      calculateYPositionOnCircleByPercent,
+      sayHello
+    } from '../math/circleGeometry';
 
   
     export let title: string = '';
@@ -25,7 +33,7 @@
     let cumulativePercents:number[]  = partialSum(series);
     let displayFront:SVGElement;  
 
-    function partialSum(series:PieSeries[]){
+    function partialSum(series:PieSeries[], unshiftZero:boolean = true){
       
       let partialSliceSums:number[] = Array(series.length).fill(0);
 
@@ -40,7 +48,7 @@
         }
       }
 
-      partialSliceSums.unshift(0);
+      if(unshiftZero) {partialSliceSums.unshift(0);}
 
       return partialSliceSums;
     }
@@ -49,81 +57,8 @@
 
       colors = Object.values(theme[0].color);
       idChart = generateId(); 
-      console.log('cumulative: ',cumulativePercents)
-      createHeaderTag(findParentHeader());
-      
+      createHeaderTagForElement(headerChartParentTag, title);
     });
-
-    function createHeaderTag(headerNumber: number){
-
-      var newHeader: HTMLElement;
-
-        if(headerNumber > 5){
-          console.warn('Headline cannot be created. HTML allows only h1 - h6. The chart would get h'+ (++headerNumber));
-        }else{
-
-          console.log('Headernumber: ', headerNumber);
-
-          if(headerNumber === null){
-            console.warn('Creating a h1 header! Is this intended?');
-            newHeader = document.createElement('h'+ (headerNumber +1));
-          }
-          else{
-            newHeader = document.createElement('h'+ (headerNumber +1));
-          }
-
-          newHeader.setAttribute('tabindex', '0');
-          newHeader.setAttribute('aria-labelledby', idChart+'_title_chart');
-          newHeader.innerHTML = title;
-          headerChartParentTag.appendChild(newHeader);
-      }
-    }
-  
-    function findParentHeader(): number{
-
-      var parent: HTMLElement = rootNode.parentElement;
-      var resultHeader: number  = null;
-
-      while(parent.tagName !== 'HTML' && resultHeader === null){
-
-        Array.from(parent.children).reverse().forEach(element => {
-
-          if(element.tagName.toLowerCase().match('h1|h2|h3|h4|h5|h6') && resultHeader === null){
-
-            resultHeader =  parseInt(element.tagName[1]);
-          }
-
-        });
-        
-        parent = parent.parentElement;
-      }
-
-      return resultHeader;
-    }
-  
-    function generateId(){
-
-      return Date.now().toString(36) + Math.floor(Math.pow(10, 12) + Math.random() * 9*Math.pow(10, 12)).toString(36);
-    }
-  
-    function getXCoordinateForPercent(percent: number){
-      
-      //console.log("getXCoordinateForPercent: ", Math.cos(2 * Math.PI * percent));
-      return  Math.cos(2 * Math.PI * percent);
-    }
-  
-    function getYCoordinateForPercent(percent: number) {
-
-      //console.log("getYCoordinateForPercent: ", Math.sin(2 * Math.PI * percent));
-      return  Math.sin(2 * Math.PI * percent);
-    }
-  
-    function calculateLargeArcFlag(percent: number){
-    
-        //console.log("calculateLargeArcFlag: ", percent > .5 ? 1 : 0);
-        return percent > .5 ? 1 : 0;
-    }
-  
   
     function moveSliceForward(event: Event){
 
@@ -148,8 +83,9 @@
   
   </script>
       <ThemeContext>
-          <div bind:this="{rootNode}" class="wrapper">
+          <div id="{idChart}" bind:this="{rootNode}" class="wrapper">
             <div bind:this="{headerChartParentTag}" class="title">
+              
             </div>
             <div tabindex="0" class="description" aria-labelledby="{idChart}_desc_chart">
               {desc}
@@ -174,13 +110,13 @@
                         on:blur="{() => removeAllChildNodes()}" 
                         on:focus="{event => moveSliceForward(event)}"
                         fill="{colors ? colors[index] : '#000'}"
-                        d="{'M ' + getXCoordinateForPercent(cumulativePercents[index]) + " " 
-                          + getYCoordinateForPercent(cumulativePercents[index])
-                          + " A 1 1 0 " + calculateLargeArcFlag(slice.percent) + " 1 " 
-                          + getXCoordinateForPercent(cumulativePercents[index] + slice.percent) + " " 
-                          + getYCoordinateForPercent(cumulativePercents[index] + slice.percent) + "L 0 0 L"
-                          + getXCoordinateForPercent(cumulativePercents[index]) + " " 
-                          + getYCoordinateForPercent(cumulativePercents[index])}"
+                        d="{'M ' + calculateXPositionOnCircleByPercent(cumulativePercents[index]) + " " 
+                          + calculateYPositionOnCircleByPercent(cumulativePercents[index])
+                          + " A 1 1 0 " + calculateLargeArcFlagByPercent(slice.percent) + " 1 " 
+                          + calculateXPositionOnCircleByPercent(cumulativePercents[index] + slice.percent) + " " 
+                          + calculateYPositionOnCircleByPercent(cumulativePercents[index] + slice.percent) + "L 0 0 L"
+                          + calculateXPositionOnCircleByPercent(cumulativePercents[index]) + " " 
+                          + calculateYPositionOnCircleByPercent(cumulativePercents[index])}"
                       >
                       </path>
                       <!-- svelte-ignore component-name-lowercase -->
@@ -189,8 +125,8 @@
                           cumulativePercents[index+1] >= 0.5 
                           && cumulativePercents[index+1] <= 0.75 ? 'end':'start'
                           }"
-                        x="{getXCoordinateForPercent((cumulativePercents[index+1] - (slice.percent/2)))*1.1}" 
-                        y="{getYCoordinateForPercent((cumulativePercents[index+1] - (slice.percent/2)))*1.1}">
+                        x="{calculateXPositionOnCircleByPercent((cumulativePercents[index+1] - (slice.percent/2)))*1.1}" 
+                        y="{calculateYPositionOnCircleByPercent((cumulativePercents[index+1] - (slice.percent/2)))*1.1}">
                         {slice.name}
                       </text>
                     {/each}                    
