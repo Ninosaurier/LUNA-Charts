@@ -1,18 +1,22 @@
-
-export function getXCoordinateForPercent(decimalPointPercent: number){
+export function calculateXPositionOnCircleByPercent(decimalPointPercent: number){
     
     //console.log("getXCoordinateForPercent: ", Math.cos(2 * Math.PI * percent));
     return  Math.cos(2 * Math.PI * decimalPointPercent);
 }
 
-function getYCoordinateForPercent(decimalPointPercent: number) {
+export function calculateYPositionOnCircleByPercent(decimalPointPercent: number) {
 
     //console.log("getYCoordinateForPercent: ", Math.sin(2 * Math.PI * percent));
     return  Math.sin(2 * Math.PI * decimalPointPercent);
 }
 
-function calculateLargeArcFlag(decimalPointPercent: number){
+export function calculateLargeArcFlagByPercent(decimalPointPercent: number){
 
     //console.log("calculateLargeArcFlag: ", percent > .5 ? 1 : 0);
     return decimalPointPercent > .5 ? 1 : 0;
+}
+
+export function sayHello(ausgabe: string){
+
+    alert(ausgabe);
 }

@@ -3,8 +3,7 @@
     import ThemeContext from '../theme/ThemeContext.svelte';
     import type {PieSeries} from './../models/PieChart';
     import {defaultTheme} from '../theme/defaultTheme';
-    import type  {TodoType} from '../types/testType'
-    import {getXCoordinateForPercent} from '../math/geometry/circle';
+
   
     export let title: string = '';
     export let desc: string = "";
@@ -15,7 +14,6 @@
     export let source: string = "";
   
     var svgImage: Element = null;
-    let test: TodoType;
     var svgWidth: number = 0;
     var svgHeight: number = 0;
     var colors: any[];
@@ -25,7 +23,7 @@
     var rootNode: HTMLElement;
     var headerChartParentTag: HTMLElement;
     let cumulativePercents:number[]  = partialSum(series);
-    let displayFront:SVGElement;
+    let displayFront:SVGElement;  
 
     function partialSum(series:PieSeries[]){
       
@@ -53,6 +51,7 @@
       idChart = generateId(); 
       console.log('cumulative: ',cumulativePercents)
       createHeaderTag(findParentHeader());
+      
     });
 
     function createHeaderTag(headerNumber: number){
@@ -107,11 +106,11 @@
       return Date.now().toString(36) + Math.floor(Math.pow(10, 12) + Math.random() * 9*Math.pow(10, 12)).toString(36);
     }
   
-    // function getXCoordinateForPercent(percent: number){
+    function getXCoordinateForPercent(percent: number){
       
-    //   //console.log("getXCoordinateForPercent: ", Math.cos(2 * Math.PI * percent));
-    //   return  Math.cos(2 * Math.PI * percent);
-    // }
+      //console.log("getXCoordinateForPercent: ", Math.cos(2 * Math.PI * percent));
+      return  Math.cos(2 * Math.PI * percent);
+    }
   
     function getYCoordinateForPercent(percent: number) {
 
