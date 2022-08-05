@@ -113,7 +113,7 @@
               <rect width="90%" class="background-chart"></rect> 
             </g>
             <g class="grid" transform='translate({svgWidth*0.1},{svgHeight*0.1})'>
-              <rect class="grid_surface" style="height:{svgHeight*0.7}" fill="url(#{idChart}_grid_pattern)" transform="scale(1, 1)"></rect>
+              <rect class="grid_surface" height="{svgHeight*0.7}" fill="url(#{idChart}_grid_pattern)" transform="scale(1, 1)"></rect>
             </g>
             <g class="axis" aria-hidden="true">
               <line class="" x1="10%"  x2="10%" y1="10%" y2="80%" stroke="black"/>
