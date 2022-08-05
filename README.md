@@ -5,10 +5,6 @@
 ## Table of contents
 - [How to install](#how-to-install)
 
-## Note
-it works only in chrome correctly!!!
-
-
 ## How to install
 1. First clone the repo: 
 ```
