@@ -34,7 +34,10 @@
     "typescript": "^4.7.4"
   },
   "dependencies": {
-    "@sinclair/typebox": "^0.24.20",
+    "@sinclair/typebox": "^0.24.27",
     "rollup-plugin-peer-deps-external": "^2.2.4"
+  },
+  "peerDependencies": {
+    "@sinclair/typebox": "^0.24.27"
   }
 }
