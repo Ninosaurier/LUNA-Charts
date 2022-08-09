@@ -1,3 +1,5 @@
+import { Type } from '@sinclair/typebox';
+
 function noop() { }
 function assign(tar, src) {
     // @ts-ignore
@@ -639,6 +641,45 @@ class ThemeContext extends SvelteComponent {
 	}
 }
 
+function findParentHeaderOfElement(startNode) {
+    let parent = startNode.parentElement;
+    let resultHeader = -1;
+    while (parent.tagName !== 'HTML' && resultHeader === -1) {
+        Array.from(parent.children).reverse().forEach(element => {
+            if (element.tagName.toLowerCase().match('h1|h2|h3|h4|h5|h6') && resultHeader === -1) {
+                resultHeader = parseInt(element.tagName[1]);
+            }
+        });
+        parent = parent.parentElement;
+    }
+    return resultHeader;
+}
+function createHeaderTagForElement(parendNode, title) {
+    let headerNumber = findParentHeaderOfElement(parendNode);
+    let newHeader;
+    if (headerNumber > 5) {
+        console.warn('Headline cannot be created. HTML allows only h1 - h6. The chart would get h' + (++headerNumber));
+    }
+    else {
+        //console.log('Headernumber: ', headerNumber);
+        if (headerNumber === null) {
+            console.warn('Creating a h1 header! Is this intended?');
+            newHeader = document.createElement('h' + (headerNumber + 1));
+        }
+        else {
+            newHeader = document.createElement('h' + (headerNumber + 1));
+        }
+        newHeader.setAttribute('tabindex', '0');
+        newHeader.setAttribute('aria-label', title);
+        newHeader.innerHTML = title;
+        parendNode.appendChild(newHeader);
+    }
+}
+
+function generateId() {
+    return Date.now().toString(36) + Math.floor(Math.pow(10, 12) + Math.random() * 9 * Math.pow(10, 12)).toString(36);
+}
+
 function styleInject(css, ref) {
   if ( ref === void 0 ) ref = {};
   var insertAt = ref.insertAt;
@@ -673,43 +714,43 @@ styleInject(css_248z$2);
 
 function get_each_context$2(ctx, list, i) {
 	const child_ctx = ctx.slice();
-	child_ctx[38] = list[i];
-	child_ctx[40] = i;
+	child_ctx[36] = list[i];
+	child_ctx[38] = i;
 	return child_ctx;
 }
 
 function get_each_context_1$1(ctx, list, i) {
 	const child_ctx = ctx.slice();
-	child_ctx[41] = list[i];
-	child_ctx[40] = i;
+	child_ctx[39] = list[i];
+	child_ctx[38] = i;
 	return child_ctx;
 }
 
 function get_each_context_2$1(ctx, list, i) {
 	const child_ctx = ctx.slice();
-	child_ctx[43] = list[i];
-	child_ctx[45] = i;
+	child_ctx[41] = list[i];
+	child_ctx[43] = i;
 	return child_ctx;
 }
 
 function get_each_context_3$1(ctx, list, i) {
 	const child_ctx = ctx.slice();
-	child_ctx[46] = list[i];
-	child_ctx[48] = i;
+	child_ctx[44] = list[i];
+	child_ctx[46] = i;
 	return child_ctx;
 }
 
 function get_each_context_4$1(ctx, list, i) {
 	const child_ctx = ctx.slice();
-	child_ctx[46] = list[i];
-	child_ctx[48] = i;
+	child_ctx[44] = list[i];
+	child_ctx[46] = i;
 	return child_ctx;
 }
 
-// (189:10) {#each Array(Math.floor((svgHeight*0.7)/gridGap)) as _, i}
+// (148:10) {#each Array(Math.floor((svgHeight*0.7)/gridGap)) as _, i}
 function create_each_block_4$1(ctx) {
 	let text_1;
-	let t_value = gridGap$1 * /*i*/ ctx[48] + "";
+	let t_value = gridGap$1 * /*i*/ ctx[46] + "";
 	let t;
 
 	return {
@@ -719,7 +760,7 @@ function create_each_block_4$1(ctx) {
 			attr(text_1, "text-anchor", "middle");
 			attr(text_1, "alignment-baseline", "central");
 			attr(text_1, "x", "5%");
-			attr(text_1, "y", gridGap$1 * /*i*/ ctx[48] * -1);
+			attr(text_1, "y", gridGap$1 * /*i*/ ctx[46] * -1);
 			attr(text_1, "class", "svelte-1mmlpvr");
 		},
 		m(target, anchor) {
@@ -733,10 +774,10 @@ function create_each_block_4$1(ctx) {
 	};
 }
 
-// (193:10) {#if i%2 == 0}
+// (152:10) {#if i%2 == 0}
 function create_if_block_1(ctx) {
 	let text_1;
-	let t_value = gridGap$1 * /*i*/ ctx[48] + "";
+	let t_value = gridGap$1 * /*i*/ ctx[46] + "";
 	let t;
 	let text_1_x_value;
 
@@ -745,7 +786,7 @@ function create_if_block_1(ctx) {
 			text_1 = svg_element("text");
 			t = text(t_value);
 			attr(text_1, "text-anchor", "middle");
-			attr(text_1, "x", text_1_x_value = gridGap$1 * /*i*/ ctx[48] + /*svgWidth*/ ctx[11] * 0.1);
+			attr(text_1, "x", text_1_x_value = gridGap$1 * /*i*/ ctx[46] + /*svgWidth*/ ctx[11] * 0.1);
 			attr(text_1, "y", "7%");
 			attr(text_1, "class", "svelte-1mmlpvr");
 		},
@@ -754,7 +795,7 @@ function create_if_block_1(ctx) {
 			append(text_1, t);
 		},
 		p(ctx, dirty) {
-			if (dirty[0] & /*svgWidth*/ 2048 && text_1_x_value !== (text_1_x_value = gridGap$1 * /*i*/ ctx[48] + /*svgWidth*/ ctx[11] * 0.1)) {
+			if (dirty[0] & /*svgWidth*/ 2048 && text_1_x_value !== (text_1_x_value = gridGap$1 * /*i*/ ctx[46] + /*svgWidth*/ ctx[11] * 0.1)) {
 				attr(text_1, "x", text_1_x_value);
 			}
 		},
@@ -764,10 +805,10 @@ function create_if_block_1(ctx) {
 	};
 }
 
-// (192:10) {#each Array(Math.floor((svgWidth*0.8)/gridGap)) as _, i}
+// (151:10) {#each Array(Math.floor((svgWidth*0.8)/gridGap)) as _, i}
 function create_each_block_3$1(ctx) {
 	let if_block_anchor;
-	let if_block = /*i*/ ctx[48] % 2 == 0 && create_if_block_1(ctx);
+	let if_block = /*i*/ ctx[46] % 2 == 0 && create_if_block_1(ctx);
 
 	return {
 		c() {
@@ -779,7 +820,7 @@ function create_each_block_3$1(ctx) {
 			insert(target, if_block_anchor, anchor);
 		},
 		p(ctx, dirty) {
-			if (/*i*/ ctx[48] % 2 == 0) if_block.p(ctx, dirty);
+			if (/*i*/ ctx[46] % 2 == 0) if_block.p(ctx, dirty);
 		},
 		d(detaching) {
 			if (if_block) if_block.d(detaching);
@@ -788,10 +829,10 @@ function create_each_block_3$1(ctx) {
 	};
 }
 
-// (221:16) {#if p == (lines.points.length-1)}
+// (180:16) {#if p == (lines.points.length-1)}
 function create_if_block(ctx) {
 	let text_1;
-	let t_value = /*lines*/ ctx[41].name + "";
+	let t_value = /*lines*/ ctx[39].name + "";
 	let t;
 	let text_1_stroke_value;
 	let text_1_x_value;
@@ -805,30 +846,30 @@ function create_if_block(ctx) {
 			attr(text_1, "transform", "scale(1 -1)");
 
 			attr(text_1, "stroke", text_1_stroke_value = /*colors*/ ctx[13]
-			? /*colors*/ ctx[13][/*l*/ ctx[40]]
+			? /*colors*/ ctx[13][/*l*/ ctx[38]]
 			: 'black');
 
-			attr(text_1, "x", text_1_x_value = /*point*/ ctx[43].x + 20);
-			attr(text_1, "y", text_1_y_value = /*point*/ ctx[43].y * -1);
+			attr(text_1, "x", text_1_x_value = /*point*/ ctx[41].x + 20);
+			attr(text_1, "y", text_1_y_value = /*point*/ ctx[41].y * -1);
 		},
 		m(target, anchor) {
 			insert(target, text_1, anchor);
 			append(text_1, t);
 		},
 		p(ctx, dirty) {
-			if (dirty[0] & /*series*/ 256 && t_value !== (t_value = /*lines*/ ctx[41].name + "")) set_data(t, t_value);
+			if (dirty[0] & /*series*/ 256 && t_value !== (t_value = /*lines*/ ctx[39].name + "")) set_data(t, t_value);
 
 			if (dirty[0] & /*colors*/ 8192 && text_1_stroke_value !== (text_1_stroke_value = /*colors*/ ctx[13]
-			? /*colors*/ ctx[13][/*l*/ ctx[40]]
+			? /*colors*/ ctx[13][/*l*/ ctx[38]]
 			: 'black')) {
 				attr(text_1, "stroke", text_1_stroke_value);
 			}
 
-			if (dirty[0] & /*series*/ 256 && text_1_x_value !== (text_1_x_value = /*point*/ ctx[43].x + 20)) {
+			if (dirty[0] & /*series*/ 256 && text_1_x_value !== (text_1_x_value = /*point*/ ctx[41].x + 20)) {
 				attr(text_1, "x", text_1_x_value);
 			}
 
-			if (dirty[0] & /*series*/ 256 && text_1_y_value !== (text_1_y_value = /*point*/ ctx[43].y * -1)) {
+			if (dirty[0] & /*series*/ 256 && text_1_y_value !== (text_1_y_value = /*point*/ ctx[41].y * -1)) {
 				attr(text_1, "y", text_1_y_value);
 			}
 		},
@@ -838,7 +879,7 @@ function create_if_block(ctx) {
 	};
 }
 
-// (205:14) {#each lines.points as point, p}
+// (164:14) {#each lines.points as point, p}
 function create_each_block_2$1(ctx) {
 	let circle;
 	let circle_aria_label_value;
@@ -847,10 +888,10 @@ function create_each_block_2$1(ctx) {
 	let circle_cx_value;
 	let circle_cy_value;
 	let text_1;
-	let t0_value = /*point*/ ctx[43].x + "";
+	let t0_value = /*point*/ ctx[41].x + "";
 	let t0;
 	let t1;
-	let t2_value = /*point*/ ctx[43].y + "";
+	let t2_value = /*point*/ ctx[41].y + "";
 	let t2;
 	let text_1_x_value;
 	let text_1_y_value;
@@ -858,7 +899,7 @@ function create_each_block_2$1(ctx) {
 	let if_block_anchor;
 	let mounted;
 	let dispose;
-	let if_block = /*p*/ ctx[45] == /*lines*/ ctx[41].points.length - 1 && create_if_block(ctx);
+	let if_block = /*p*/ ctx[43] == /*lines*/ ctx[39].points.length - 1 && create_if_block(ctx);
 
 	return {
 		c() {
@@ -872,26 +913,26 @@ function create_each_block_2$1(ctx) {
 			attr(circle, "tabindex", "0");
 			attr(circle, "class", "point svelte-1mmlpvr");
 			attr(circle, "role", "graphics-symbol");
-			attr(circle, "aria-label", circle_aria_label_value = "" + (/*point*/ ctx[43].ariaLabel + ". This is point " + (/*p*/ ctx[45] + 1) + " of " + /*lines*/ ctx[41].points.length));
+			attr(circle, "aria-label", circle_aria_label_value = "" + (/*point*/ ctx[41].ariaLabel + ". This is point " + (/*p*/ ctx[43] + 1) + " of " + /*lines*/ ctx[39].points.length));
 
 			attr(circle, "stroke", circle_stroke_value = /*colors*/ ctx[13]
-			? /*colors*/ ctx[13][/*l*/ ctx[40]]
+			? /*colors*/ ctx[13][/*l*/ ctx[38]]
 			: 'black');
 
 			attr(circle, "fill", circle_fill_value = /*colors*/ ctx[13]
-			? /*colors*/ ctx[13][/*l*/ ctx[40]]
+			? /*colors*/ ctx[13][/*l*/ ctx[38]]
 			: 'black');
 
-			attr(circle, "cx", circle_cx_value = /*point*/ ctx[43].x);
-			attr(circle, "cy", circle_cy_value = /*point*/ ctx[43].y);
+			attr(circle, "cx", circle_cx_value = /*point*/ ctx[41].x);
+			attr(circle, "cy", circle_cy_value = /*point*/ ctx[41].y);
 			attr(circle, "r", "3");
 			attr(text_1, "class", "info blur_info svelte-1mmlpvr");
 			attr(text_1, "filter", "url(#info_box)");
-			attr(text_1, "x", text_1_x_value = /*point*/ ctx[43].x + 20);
-			attr(text_1, "y", text_1_y_value = /*point*/ ctx[43].y * -1);
+			attr(text_1, "x", text_1_x_value = /*point*/ ctx[41].x + 20);
+			attr(text_1, "y", text_1_y_value = /*point*/ ctx[41].y * -1);
 
 			attr(text_1, "stroke", text_1_stroke_value = /*colors*/ ctx[13]
-			? /*colors*/ ctx[13][/*l*/ ctx[40]]
+			? /*colors*/ ctx[13][/*l*/ ctx[38]]
 			: 'black');
 		},
 		m(target, anchor) {
@@ -913,48 +954,48 @@ function create_each_block_2$1(ctx) {
 			}
 		},
 		p(ctx, dirty) {
-			if (dirty[0] & /*series*/ 256 && circle_aria_label_value !== (circle_aria_label_value = "" + (/*point*/ ctx[43].ariaLabel + ". This is point " + (/*p*/ ctx[45] + 1) + " of " + /*lines*/ ctx[41].points.length))) {
+			if (dirty[0] & /*series*/ 256 && circle_aria_label_value !== (circle_aria_label_value = "" + (/*point*/ ctx[41].ariaLabel + ". This is point " + (/*p*/ ctx[43] + 1) + " of " + /*lines*/ ctx[39].points.length))) {
 				attr(circle, "aria-label", circle_aria_label_value);
 			}
 
 			if (dirty[0] & /*colors*/ 8192 && circle_stroke_value !== (circle_stroke_value = /*colors*/ ctx[13]
-			? /*colors*/ ctx[13][/*l*/ ctx[40]]
+			? /*colors*/ ctx[13][/*l*/ ctx[38]]
 			: 'black')) {
 				attr(circle, "stroke", circle_stroke_value);
 			}
 
 			if (dirty[0] & /*colors*/ 8192 && circle_fill_value !== (circle_fill_value = /*colors*/ ctx[13]
-			? /*colors*/ ctx[13][/*l*/ ctx[40]]
+			? /*colors*/ ctx[13][/*l*/ ctx[38]]
 			: 'black')) {
 				attr(circle, "fill", circle_fill_value);
 			}
 
-			if (dirty[0] & /*series*/ 256 && circle_cx_value !== (circle_cx_value = /*point*/ ctx[43].x)) {
+			if (dirty[0] & /*series*/ 256 && circle_cx_value !== (circle_cx_value = /*point*/ ctx[41].x)) {
 				attr(circle, "cx", circle_cx_value);
 			}
 
-			if (dirty[0] & /*series*/ 256 && circle_cy_value !== (circle_cy_value = /*point*/ ctx[43].y)) {
+			if (dirty[0] & /*series*/ 256 && circle_cy_value !== (circle_cy_value = /*point*/ ctx[41].y)) {
 				attr(circle, "cy", circle_cy_value);
 			}
 
-			if (dirty[0] & /*series*/ 256 && t0_value !== (t0_value = /*point*/ ctx[43].x + "")) set_data(t0, t0_value);
-			if (dirty[0] & /*series*/ 256 && t2_value !== (t2_value = /*point*/ ctx[43].y + "")) set_data(t2, t2_value);
+			if (dirty[0] & /*series*/ 256 && t0_value !== (t0_value = /*point*/ ctx[41].x + "")) set_data(t0, t0_value);
+			if (dirty[0] & /*series*/ 256 && t2_value !== (t2_value = /*point*/ ctx[41].y + "")) set_data(t2, t2_value);
 
-			if (dirty[0] & /*series*/ 256 && text_1_x_value !== (text_1_x_value = /*point*/ ctx[43].x + 20)) {
+			if (dirty[0] & /*series*/ 256 && text_1_x_value !== (text_1_x_value = /*point*/ ctx[41].x + 20)) {
 				attr(text_1, "x", text_1_x_value);
 			}
 
-			if (dirty[0] & /*series*/ 256 && text_1_y_value !== (text_1_y_value = /*point*/ ctx[43].y * -1)) {
+			if (dirty[0] & /*series*/ 256 && text_1_y_value !== (text_1_y_value = /*point*/ ctx[41].y * -1)) {
 				attr(text_1, "y", text_1_y_value);
 			}
 
 			if (dirty[0] & /*colors*/ 8192 && text_1_stroke_value !== (text_1_stroke_value = /*colors*/ ctx[13]
-			? /*colors*/ ctx[13][/*l*/ ctx[40]]
+			? /*colors*/ ctx[13][/*l*/ ctx[38]]
 			: 'black')) {
 				attr(text_1, "stroke", text_1_stroke_value);
 			}
 
-			if (/*p*/ ctx[45] == /*lines*/ ctx[41].points.length - 1) {
+			if (/*p*/ ctx[43] == /*lines*/ ctx[39].points.length - 1) {
 				if (if_block) {
 					if_block.p(ctx, dirty);
 				} else {
@@ -978,14 +1019,14 @@ function create_each_block_2$1(ctx) {
 	};
 }
 
-// (202:10) {#each series as lines, l}
+// (161:10) {#each series as lines, l}
 function create_each_block_1$1(ctx) {
 	let g;
 	let polyline;
 	let polyline_points_value;
 	let polyline_stroke_value;
 	let g_id_value;
-	let each_value_2 = /*lines*/ ctx[41].points;
+	let each_value_2 = /*lines*/ ctx[39].points;
 	let each_blocks = [];
 
 	for (let i = 0; i < each_value_2.length; i += 1) {
@@ -1001,15 +1042,15 @@ function create_each_block_1$1(ctx) {
 				each_blocks[i].c();
 			}
 
-			attr(polyline, "points", polyline_points_value = /*getPoints*/ ctx[19](/*lines*/ ctx[41].points));
+			attr(polyline, "points", polyline_points_value = /*getPoints*/ ctx[19](/*lines*/ ctx[39].points));
 			attr(polyline, "fill", "none");
 
 			attr(polyline, "stroke", polyline_stroke_value = /*colors*/ ctx[13]
-			? /*colors*/ ctx[13][/*l*/ ctx[40]]
+			? /*colors*/ ctx[13][/*l*/ ctx[38]]
 			: 'black');
 
 			attr(polyline, "class", "svelte-1mmlpvr");
-			attr(g, "id", g_id_value = "" + (/*idChart*/ ctx[15] + "_" + cleanIdName$1(/*lines*/ ctx[41].name)));
+			attr(g, "id", g_id_value = "" + (/*idChart*/ ctx[15] + "_" + cleanIdName$1(/*lines*/ ctx[39].name)));
 			attr(g, "class", "show_line svelte-1mmlpvr");
 		},
 		m(target, anchor) {
@@ -1021,18 +1062,18 @@ function create_each_block_1$1(ctx) {
 			}
 		},
 		p(ctx, dirty) {
-			if (dirty[0] & /*series*/ 256 && polyline_points_value !== (polyline_points_value = /*getPoints*/ ctx[19](/*lines*/ ctx[41].points))) {
+			if (dirty[0] & /*series*/ 256 && polyline_points_value !== (polyline_points_value = /*getPoints*/ ctx[19](/*lines*/ ctx[39].points))) {
 				attr(polyline, "points", polyline_points_value);
 			}
 
 			if (dirty[0] & /*colors*/ 8192 && polyline_stroke_value !== (polyline_stroke_value = /*colors*/ ctx[13]
-			? /*colors*/ ctx[13][/*l*/ ctx[40]]
+			? /*colors*/ ctx[13][/*l*/ ctx[38]]
 			: 'black')) {
 				attr(polyline, "stroke", polyline_stroke_value);
 			}
 
 			if (dirty[0] & /*colors, series, showInfoBox, showVerticalInterception, blurInfoBox, removeVerticalInterception*/ 28320000) {
-				each_value_2 = /*lines*/ ctx[41].points;
+				each_value_2 = /*lines*/ ctx[39].points;
 				let i;
 
 				for (i = 0; i < each_value_2.length; i += 1) {
@@ -1054,7 +1095,7 @@ function create_each_block_1$1(ctx) {
 				each_blocks.length = each_value_2.length;
 			}
 
-			if (dirty[0] & /*idChart, series*/ 33024 && g_id_value !== (g_id_value = "" + (/*idChart*/ ctx[15] + "_" + cleanIdName$1(/*lines*/ ctx[41].name)))) {
+			if (dirty[0] & /*idChart, series*/ 33024 && g_id_value !== (g_id_value = "" + (/*idChart*/ ctx[15] + "_" + cleanIdName$1(/*lines*/ ctx[39].name)))) {
 				attr(g, "id", g_id_value);
 			}
 		},
@@ -1065,12 +1106,12 @@ function create_each_block_1$1(ctx) {
 	};
 }
 
-// (233:6) {#each series as line, l}
+// (192:6) {#each series as line, l}
 function create_each_block$2(ctx) {
 	let button;
 	let span;
 	let t0;
-	let t1_value = /*line*/ ctx[38].name + "";
+	let t1_value = /*line*/ ctx[36].name + "";
 	let t1;
 	let t2;
 	let button_id_value;
@@ -1088,12 +1129,12 @@ function create_each_block$2(ctx) {
 			attr(span, "class", "dot svelte-1mmlpvr");
 
 			set_style(span, "background-color", /*colors*/ ctx[13]
-			? /*colors*/ ctx[13][/*l*/ ctx[40]]
+			? /*colors*/ ctx[13][/*l*/ ctx[38]]
 			: '#ccc');
 
 			attr(button, "tabindex", "0");
-			attr(button, "id", button_id_value = "" + (/*idChart*/ ctx[15] + "_" + cleanIdName$1(/*line*/ ctx[38].name)));
-			attr(button, "aria-label", button_aria_label_value = /*line*/ ctx[38].name);
+			attr(button, "id", button_id_value = "" + (/*idChart*/ ctx[15] + "_" + cleanIdName$1(/*line*/ ctx[36].name)));
+			attr(button, "aria-label", button_aria_label_value = /*line*/ ctx[36].name);
 			attr(button, "class", "caption svelte-1mmlpvr");
 		},
 		m(target, anchor) {
@@ -1111,17 +1152,17 @@ function create_each_block$2(ctx) {
 		p(ctx, dirty) {
 			if (dirty[0] & /*colors*/ 8192) {
 				set_style(span, "background-color", /*colors*/ ctx[13]
-				? /*colors*/ ctx[13][/*l*/ ctx[40]]
+				? /*colors*/ ctx[13][/*l*/ ctx[38]]
 				: '#ccc');
 			}
 
-			if (dirty[0] & /*series*/ 256 && t1_value !== (t1_value = /*line*/ ctx[38].name + "")) set_data(t1, t1_value);
+			if (dirty[0] & /*series*/ 256 && t1_value !== (t1_value = /*line*/ ctx[36].name + "")) set_data(t1, t1_value);
 
-			if (dirty[0] & /*idChart, series*/ 33024 && button_id_value !== (button_id_value = "" + (/*idChart*/ ctx[15] + "_" + cleanIdName$1(/*line*/ ctx[38].name)))) {
+			if (dirty[0] & /*idChart, series*/ 33024 && button_id_value !== (button_id_value = "" + (/*idChart*/ ctx[15] + "_" + cleanIdName$1(/*line*/ ctx[36].name)))) {
 				attr(button, "id", button_id_value);
 			}
 
-			if (dirty[0] & /*series*/ 256 && button_aria_label_value !== (button_aria_label_value = /*line*/ ctx[38].name)) {
+			if (dirty[0] & /*series*/ 256 && button_aria_label_value !== (button_aria_label_value = /*line*/ ctx[36].name)) {
 				attr(button, "aria-label", button_aria_label_value);
 			}
 		},
@@ -1133,7 +1174,7 @@ function create_each_block$2(ctx) {
 	};
 }
 
-// (135:0) <ThemeContext bind:theme={theme}>
+// (94:0) <ThemeContext bind:theme={theme}>
 function create_default_slot$2(ctx) {
 	let div5;
 	let div0;
@@ -1164,6 +1205,7 @@ function create_default_slot$2(ctx) {
 	let rect0;
 	let g1;
 	let rect1;
+	let rect1_height_value;
 	let rect1_fill_value;
 	let g1_transform_value;
 	let g7;
@@ -1343,7 +1385,7 @@ function create_default_slot$2(ctx) {
 			attr(g0, "role", "none");
 			attr(g0, "aria-hidden", "true");
 			attr(rect1, "class", "grid_surface svelte-1mmlpvr");
-			set_style(rect1, "height", /*svgHeight*/ ctx[12] * 0.7);
+			attr(rect1, "height", rect1_height_value = /*svgHeight*/ ctx[12] * 0.7);
 			attr(rect1, "fill", rect1_fill_value = "url(#" + /*idChart*/ ctx[15] + "_grid_pattern)");
 			attr(rect1, "transform", "scale(1, 1)");
 			attr(g1, "class", "grid svelte-1mmlpvr");
@@ -1521,8 +1563,8 @@ function create_default_slot$2(ctx) {
 				attr(pattern, "id", pattern_id_value);
 			}
 
-			if (dirty[0] & /*svgHeight*/ 4096) {
-				set_style(rect1, "height", /*svgHeight*/ ctx[12] * 0.7);
+			if (dirty[0] & /*svgHeight*/ 4096 && rect1_height_value !== (rect1_height_value = /*svgHeight*/ ctx[12] * 0.7)) {
+				attr(rect1, "height", rect1_height_value);
 			}
 
 			if (dirty[0] & /*idChart*/ 32768 && rect1_fill_value !== (rect1_fill_value = "url(#" + /*idChart*/ ctx[15] + "_grid_pattern)")) {
@@ -1737,7 +1779,7 @@ function create_fragment$2(ctx) {
 		p(ctx, dirty) {
 			const themecontext_changes = {};
 
-			if (dirty[0] & /*rootNode, source, svgWidth, series, idChart, colors, svgHeight, width, height, svgImage, showedInfoBox, verticalInterceptionGroup, secondYLabel, yLabel, xLabel, desc, title, headerChartParentTag*/ 524286 | dirty[1] & /*$$scope*/ 524288) {
+			if (dirty[0] & /*rootNode, source, svgWidth, series, idChart, colors, svgHeight, width, height, svgImage, showedInfoBox, verticalInterceptionGroup, secondYLabel, yLabel, xLabel, desc, title, headerChartParentTag*/ 524286 | dirty[1] & /*$$scope*/ 131072) {
 				themecontext_changes.$$scope = { dirty, ctx };
 			}
 
@@ -1765,10 +1807,6 @@ function create_fragment$2(ctx) {
 }
 
 var gridGap$1 = 20;
-
-function generateId$2() {
-	return Date.now().toString(36) + Math.floor(Math.pow(10, 12) + Math.random() * 9 * Math.pow(10, 12)).toString(36);
-}
 
 function removeAllChildNodes(parent) {
 	while (parent.firstChild) {
@@ -1850,48 +1888,9 @@ function instance$2($$self, $$props, $$invalidate) {
 	onMount(() => __awaiter(void 0, void 0, void 0, function* () {
 		console.log('onMount() (LineChart)');
 		$$invalidate(13, colors = Object.values(theme[0].color));
-		$$invalidate(15, idChart = generateId$2());
-		createHeaderTag(findParentHeader());
+		$$invalidate(15, idChart = generateId());
+		createHeaderTagForElement(headerChartParentTag, title);
 	}));
-
-	function createHeaderTag(headerNumber) {
-		var newHeader;
-
-		if (headerNumber > 5) {
-			console.warn('Headline cannot be created. HTML allows only h1 - h6. The chart would get h' + ++headerNumber);
-		} else {
-			console.log('Headernumber: ', headerNumber);
-
-			if (headerNumber === null) {
-				console.warn('Creating a h1 header! Is this intended?');
-				newHeader = document.createElement('h' + (headerNumber + 1));
-			} else {
-				newHeader = document.createElement('h' + (headerNumber + 1));
-			}
-
-			newHeader.setAttribute('tabindex', '0');
-			newHeader.setAttribute('aria-labelledby', idChart + '_title_chart');
-			newHeader.innerHTML = title;
-			headerChartParentTag.appendChild(newHeader);
-		}
-	}
-
-	function findParentHeader() {
-		var parent = rootNode.parentElement;
-		var resultHeader = null;
-
-		while (parent.tagName !== 'HTML' && resultHeader === null) {
-			Array.from(parent.children).reverse().forEach(element => {
-				if (element.tagName.toLowerCase().match('h1|h2|h3|h4|h5|h6') && resultHeader === null) {
-					resultHeader = parseInt(element.tagName[1]);
-				}
-			});
-
-			parent = parent.parentElement;
-		}
-
-		return resultHeader;
-	}
 
 	function showInfoBox(event) {
 		var element = event.target.nextSibling.cloneNode(true);
@@ -1926,16 +1925,7 @@ function instance$2($$self, $$props, $$invalidate) {
 		var circle = event.target;
 		var bbox = circle.getBBox();
 		var interception = document.createElementNS('http://www.w3.org/2000/svg', 'line');
-
-		// var interceptionText = document.createElementNS('http://www.w3.org/2000/svg','text');
-		// interceptionText.innerHTML = (bbox.x + (bbox.width / 2)).toString();
-		// interceptionText.setAttribute('x', (bbox.x + (bbox.width / 2)).toString());
-		// interceptionText.setAttribute('y', (svgHeight*0.8*-1).toString());
-		// interceptionText.setAttribute('filter', 'url(#info_box)');
-		// interceptionText.setAttribute('transform', "scale(1,-1)");
-		// verticalInterceptionGroup.appendChild(interceptionText);
 		interception.setAttribute('x1', (bbox.x + bbox.width / 2).toString());
-
 		interception.setAttribute('x2', (bbox.x + bbox.width / 2).toString());
 		interception.setAttribute('y1', (svgHeight * 0.1).toString());
 		interception.setAttribute('y2', (svgHeight * 0.8).toString());
@@ -2095,43 +2085,43 @@ styleInject(css_248z$1);
 
 function get_each_context$1(ctx, list, i) {
 	const child_ctx = ctx.slice();
-	child_ctx[31] = list[i];
-	child_ctx[33] = i;
+	child_ctx[29] = list[i];
+	child_ctx[31] = i;
 	return child_ctx;
 }
 
 function get_each_context_1(ctx, list, i) {
 	const child_ctx = ctx.slice();
-	child_ctx[34] = list[i];
-	child_ctx[36] = i;
+	child_ctx[32] = list[i];
+	child_ctx[34] = i;
 	return child_ctx;
 }
 
 function get_each_context_2(ctx, list, i) {
 	const child_ctx = ctx.slice();
-	child_ctx[37] = list[i];
-	child_ctx[39] = i;
+	child_ctx[35] = list[i];
+	child_ctx[37] = i;
 	return child_ctx;
 }
 
 function get_each_context_3(ctx, list, i) {
 	const child_ctx = ctx.slice();
-	child_ctx[34] = list[i];
-	child_ctx[41] = i;
+	child_ctx[32] = list[i];
+	child_ctx[39] = i;
 	return child_ctx;
 }
 
 function get_each_context_4(ctx, list, i) {
 	const child_ctx = ctx.slice();
-	child_ctx[42] = list[i];
-	child_ctx[41] = i;
+	child_ctx[40] = list[i];
+	child_ctx[39] = i;
 	return child_ctx;
 }
 
-// (154:14) {#each Array(Math.floor((svgHeight*0.7)/gridGap)) as _, i}
+// (121:14) {#each Array(Math.floor((svgHeight*0.7)/gridGap)) as _, i}
 function create_each_block_4(ctx) {
 	let text_1;
-	let t_value = gridGap * /*i*/ ctx[41] + "";
+	let t_value = gridGap * /*i*/ ctx[39] + "";
 	let t;
 
 	return {
@@ -2141,7 +2131,7 @@ function create_each_block_4(ctx) {
 			attr(text_1, "text-anchor", "middle");
 			attr(text_1, "alignment-baseline", "central");
 			attr(text_1, "x", "5%");
-			attr(text_1, "y", gridGap * /*i*/ ctx[41] * -1);
+			attr(text_1, "y", gridGap * /*i*/ ctx[39] * -1);
 			attr(text_1, "class", "svelte-4gdqkx");
 		},
 		m(target, anchor) {
@@ -2155,11 +2145,11 @@ function create_each_block_4(ctx) {
 	};
 }
 
-// (159:16) {#each series.category as category, i}
+// (126:16) {#each series.category as category, i}
 function create_each_block_3(ctx) {
 	let g;
 	let text_1;
-	let t_value = /*category*/ ctx[34] + "";
+	let t_value = /*category*/ ctx[32] + "";
 	let t;
 	let g_transform_value;
 
@@ -2170,7 +2160,7 @@ function create_each_block_3(ctx) {
 			t = text(t_value);
 			attr(text_1, "text-anchor", "end");
 			attr(text_1, "class", "x_grid_text_label svelte-4gdqkx");
-			attr(g, "transform", g_transform_value = "translate(" + ((/*barGroupSize*/ ctx[16] + barGap * 2) * /*i*/ ctx[41] + barGap) + ", " + /*svgHeight*/ ctx[11] * 0.15 + ")");
+			attr(g, "transform", g_transform_value = "translate(" + ((/*barGroupSize*/ ctx[16] + barGap * 2) * /*i*/ ctx[39] + barGap) + ", " + /*svgHeight*/ ctx[11] * 0.15 + ")");
 		},
 		m(target, anchor) {
 			insert(target, g, anchor);
@@ -2178,9 +2168,9 @@ function create_each_block_3(ctx) {
 			append(text_1, t);
 		},
 		p(ctx, dirty) {
-			if (dirty[0] & /*series*/ 128 && t_value !== (t_value = /*category*/ ctx[34] + "")) set_data(t, t_value);
+			if (dirty[0] & /*series*/ 128 && t_value !== (t_value = /*category*/ ctx[32] + "")) set_data(t, t_value);
 
-			if (dirty[0] & /*svgHeight*/ 2048 && g_transform_value !== (g_transform_value = "translate(" + ((/*barGroupSize*/ ctx[16] + barGap * 2) * /*i*/ ctx[41] + barGap) + ", " + /*svgHeight*/ ctx[11] * 0.15 + ")")) {
+			if (dirty[0] & /*svgHeight*/ 2048 && g_transform_value !== (g_transform_value = "translate(" + ((/*barGroupSize*/ ctx[16] + barGap * 2) * /*i*/ ctx[39] + barGap) + ", " + /*svgHeight*/ ctx[11] * 0.15 + ")")) {
 				attr(g, "transform", g_transform_value);
 			}
 		},
@@ -2190,7 +2180,7 @@ function create_each_block_3(ctx) {
 	};
 }
 
-// (170:18) {#each series.series as bar, b}
+// (137:18) {#each series.series as bar, b}
 function create_each_block_2(ctx) {
 	let rect;
 	let rect_class_value;
@@ -2200,32 +2190,32 @@ function create_each_block_2(ctx) {
 	return {
 		c() {
 			rect = svg_element("rect");
-			attr(rect, "class", rect_class_value = "" + (/*bar*/ ctx[37].name + "_bar show_bar" + " svelte-4gdqkx"));
+			attr(rect, "class", rect_class_value = "" + (/*bar*/ ctx[35].name + "_bar show_bar" + " svelte-4gdqkx"));
 
 			attr(rect, "fill", rect_fill_value = /*colors*/ ctx[12]
-			? /*colors*/ ctx[12][/*b*/ ctx[39]]
+			? /*colors*/ ctx[12][/*b*/ ctx[37]]
 			: '#ccc');
 
 			attr(rect, "tabindex", "0");
-			attr(rect, "x", /*c*/ ctx[36] * /*barGroupSize*/ ctx[16] + /*calculateBarSize*/ ctx[17]() * /*b*/ ctx[39]);
+			attr(rect, "x", /*c*/ ctx[34] * /*barGroupSize*/ ctx[16] + /*calculateBarSize*/ ctx[17]() * /*b*/ ctx[37]);
 			attr(rect, "width", /*calculateBarSize*/ ctx[17]());
-			attr(rect, "height", rect_height_value = /*bar*/ ctx[37].data[/*c*/ ctx[36]].value);
+			attr(rect, "height", rect_height_value = /*bar*/ ctx[35].data[/*c*/ ctx[34]].value);
 		},
 		m(target, anchor) {
 			insert(target, rect, anchor);
 		},
 		p(ctx, dirty) {
-			if (dirty[0] & /*series*/ 128 && rect_class_value !== (rect_class_value = "" + (/*bar*/ ctx[37].name + "_bar show_bar" + " svelte-4gdqkx"))) {
+			if (dirty[0] & /*series*/ 128 && rect_class_value !== (rect_class_value = "" + (/*bar*/ ctx[35].name + "_bar show_bar" + " svelte-4gdqkx"))) {
 				attr(rect, "class", rect_class_value);
 			}
 
 			if (dirty[0] & /*colors*/ 4096 && rect_fill_value !== (rect_fill_value = /*colors*/ ctx[12]
-			? /*colors*/ ctx[12][/*b*/ ctx[39]]
+			? /*colors*/ ctx[12][/*b*/ ctx[37]]
 			: '#ccc')) {
 				attr(rect, "fill", rect_fill_value);
 			}
 
-			if (dirty[0] & /*series*/ 128 && rect_height_value !== (rect_height_value = /*bar*/ ctx[37].data[/*c*/ ctx[36]].value)) {
+			if (dirty[0] & /*series*/ 128 && rect_height_value !== (rect_height_value = /*bar*/ ctx[35].data[/*c*/ ctx[34]].value)) {
 				attr(rect, "height", rect_height_value);
 			}
 		},
@@ -2235,7 +2225,7 @@ function create_each_block_2(ctx) {
 	};
 }
 
-// (168:14) {#each series.category as category, c}
+// (135:14) {#each series.category as category, c}
 function create_each_block_1(ctx) {
 	let g;
 	let each_value_2 = /*series*/ ctx[7].series;
@@ -2253,7 +2243,7 @@ function create_each_block_1(ctx) {
 				each_blocks[i].c();
 			}
 
-			attr(g, "transform", "translate(" + barGap * 2 * /*c*/ ctx[36] + ",0)");
+			attr(g, "transform", "translate(" + barGap * 2 * /*c*/ ctx[34] + ",0)");
 		},
 		m(target, anchor) {
 			insert(target, g, anchor);
@@ -2293,12 +2283,12 @@ function create_each_block_1(ctx) {
 	};
 }
 
-// (180:10) {#each series.series as barSeries, l}
+// (146:10) {#each series.series as barSeries, l}
 function create_each_block$1(ctx) {
 	let button;
 	let span;
 	let t0;
-	let t1_value = /*barSeries*/ ctx[31].name + "";
+	let t1_value = /*barSeries*/ ctx[29].name + "";
 	let t1;
 	let t2;
 	let button_value_value;
@@ -2317,13 +2307,13 @@ function create_each_block$1(ctx) {
 			attr(span, "class", "dot svelte-4gdqkx");
 
 			set_style(span, "background-color", /*colors*/ ctx[12]
-			? /*colors*/ ctx[12][/*l*/ ctx[33]]
+			? /*colors*/ ctx[12][/*l*/ ctx[31]]
 			: '#ccc');
 
 			attr(button, "tabindex", "0");
-			button.value = button_value_value = /*barSeries*/ ctx[31].name;
-			attr(button, "id", button_id_value = "" + (/*idChart*/ ctx[13] + "_" + cleanIdName(/*barSeries*/ ctx[31].name)));
-			attr(button, "aria-label", button_aria_label_value = /*barSeries*/ ctx[31].name);
+			button.value = button_value_value = /*barSeries*/ ctx[29].name;
+			attr(button, "id", button_id_value = "" + (/*idChart*/ ctx[13] + "_" + cleanIdName(/*barSeries*/ ctx[29].name)));
+			attr(button, "aria-label", button_aria_label_value = /*barSeries*/ ctx[29].name);
 			attr(button, "class", "caption svelte-4gdqkx");
 		},
 		m(target, anchor) {
@@ -2341,21 +2331,21 @@ function create_each_block$1(ctx) {
 		p(ctx, dirty) {
 			if (dirty[0] & /*colors*/ 4096) {
 				set_style(span, "background-color", /*colors*/ ctx[12]
-				? /*colors*/ ctx[12][/*l*/ ctx[33]]
+				? /*colors*/ ctx[12][/*l*/ ctx[31]]
 				: '#ccc');
 			}
 
-			if (dirty[0] & /*series*/ 128 && t1_value !== (t1_value = /*barSeries*/ ctx[31].name + "")) set_data(t1, t1_value);
+			if (dirty[0] & /*series*/ 128 && t1_value !== (t1_value = /*barSeries*/ ctx[29].name + "")) set_data(t1, t1_value);
 
-			if (dirty[0] & /*series*/ 128 && button_value_value !== (button_value_value = /*barSeries*/ ctx[31].name)) {
+			if (dirty[0] & /*series*/ 128 && button_value_value !== (button_value_value = /*barSeries*/ ctx[29].name)) {
 				button.value = button_value_value;
 			}
 
-			if (dirty[0] & /*idChart, series*/ 8320 && button_id_value !== (button_id_value = "" + (/*idChart*/ ctx[13] + "_" + cleanIdName(/*barSeries*/ ctx[31].name)))) {
+			if (dirty[0] & /*idChart, series*/ 8320 && button_id_value !== (button_id_value = "" + (/*idChart*/ ctx[13] + "_" + cleanIdName(/*barSeries*/ ctx[29].name)))) {
 				attr(button, "id", button_id_value);
 			}
 
-			if (dirty[0] & /*series*/ 128 && button_aria_label_value !== (button_aria_label_value = /*barSeries*/ ctx[31].name)) {
+			if (dirty[0] & /*series*/ 128 && button_aria_label_value !== (button_aria_label_value = /*barSeries*/ ctx[29].name)) {
 				attr(button, "aria-label", button_aria_label_value);
 			}
 		},
@@ -2367,7 +2357,7 @@ function create_each_block$1(ctx) {
 	};
 }
 
-// (109:0) <ThemeContext>
+// (76:0) <ThemeContext>
 function create_default_slot$1(ctx) {
 	let div5;
 	let div0;
@@ -2394,6 +2384,7 @@ function create_default_slot$1(ctx) {
 	let rect0;
 	let g1;
 	let rect1;
+	let rect1_height_value;
 	let rect1_fill_value;
 	let g1_transform_value;
 	let g2;
@@ -2548,7 +2539,7 @@ function create_default_slot$1(ctx) {
 			attr(g0, "role", "none");
 			attr(g0, "aria-hidden", "true");
 			attr(rect1, "class", "grid_surface svelte-4gdqkx");
-			set_style(rect1, "height", /*svgHeight*/ ctx[11] * 0.7);
+			attr(rect1, "height", rect1_height_value = /*svgHeight*/ ctx[11] * 0.7);
 			attr(rect1, "fill", rect1_fill_value = "url(#" + /*idChart*/ ctx[13] + "_grid_pattern)");
 			attr(rect1, "transform", "scale(1, 1)");
 			attr(g1, "class", "grid svelte-4gdqkx");
@@ -2699,8 +2690,8 @@ function create_default_slot$1(ctx) {
 				attr(pattern0, "id", pattern0_id_value);
 			}
 
-			if (dirty[0] & /*svgHeight*/ 2048) {
-				set_style(rect1, "height", /*svgHeight*/ ctx[11] * 0.7);
+			if (dirty[0] & /*svgHeight*/ 2048 && rect1_height_value !== (rect1_height_value = /*svgHeight*/ ctx[11] * 0.7)) {
+				attr(rect1, "height", rect1_height_value);
 			}
 
 			if (dirty[0] & /*idChart*/ 8192 && rect1_fill_value !== (rect1_fill_value = "url(#" + /*idChart*/ ctx[13] + "_grid_pattern)")) {
@@ -2887,7 +2878,7 @@ function create_fragment$1(ctx) {
 		p(ctx, dirty) {
 			const themecontext_changes = {};
 
-			if (dirty[0] & /*rootNode, source, svgWidth, series, idChart, colors, svgHeight, width, height, svgImage, secondYLabel, yLabel, xLabel, desc, title, headerChartParentTag*/ 65535 | dirty[1] & /*$$scope*/ 8192) {
+			if (dirty[0] & /*rootNode, source, svgWidth, series, idChart, colors, svgHeight, width, height, svgImage, secondYLabel, yLabel, xLabel, desc, title, headerChartParentTag*/ 65535 | dirty[1] & /*$$scope*/ 2048) {
 				themecontext_changes.$$scope = { dirty, ctx };
 			}
 
@@ -2913,10 +2904,6 @@ var barGap = 6;
 
 function cleanIdName(name) {
 	return name.replace(/\s/g, "");
-}
-
-function generateId$1() {
-	return Date.now().toString(36) + Math.floor(Math.pow(10, 12) + Math.random() * 9 * Math.pow(10, 12)).toString(36);
 }
 
 function toggleBars(event) {
@@ -2995,50 +2982,13 @@ function instance$1($$self, $$props, $$invalidate) {
 	var barGroupSize = calculateBarGroupSize();
 
 	onMount(() => __awaiter(void 0, void 0, void 0, function* () {
-		$$invalidate(13, idChart = generateId$1());
-		createHeaderTag(findParentHeader());
+		$$invalidate(13, idChart = generateId());
+		createHeaderTagForElement(headerChartParentTag, title);
 		$$invalidate(12, colors = Object.values(theme[0].color));
 		console.log('bar-colors: ', colors);
 		var bar = series.series;
 		console.log('series: ', bar[0].name);
 	}));
-
-	function createHeaderTag(headerNumber) {
-		var newHeader;
-
-		if (headerNumber > 5) {
-			console.warn('Headline cannot be created. HTML allows only h1 - h6. The chart would get h' + ++headerNumber);
-		} else {
-			if (headerNumber === null) {
-				console.warn('Creating a h1 header! Is this intended?');
-				newHeader = document.createElement('h' + (headerNumber + 1));
-			} else {
-				newHeader = document.createElement('h' + (headerNumber + 1));
-			}
-
-			newHeader.setAttribute('tabindex', '0');
-			newHeader.setAttribute('aria-labelledby', idChart + '_title_chart');
-			newHeader.innerHTML = title;
-			headerChartParentTag.appendChild(newHeader);
-		}
-	}
-
-	function findParentHeader() {
-		var parent = rootNode.parentElement;
-		var resultHeader = null;
-
-		while (parent.tagName !== 'HTML' && resultHeader === null) {
-			Array.from(parent.children).reverse().forEach(element => {
-				if (element.tagName.toLowerCase().match('h1|h2|h3|h4|h5|h6') && resultHeader === null) {
-					resultHeader = parseInt(element.tagName[1]);
-				}
-			});
-
-			parent = parent.parentElement;
-		}
-
-		return resultHeader;
-	}
 
 	function calculateBarGroupSize() {
 		return parseInt(width) * 0.75 / series.category.length - barGap * 2;
@@ -3147,9 +3097,17 @@ class BarChart extends SvelteComponent {
 	}
 }
 
-function getXCoordinateForPercent(decimalPointPercent) {
+function calculateXPositionOnCircleByPercent(decimalPointPercent) {
     //console.log("getXCoordinateForPercent: ", Math.cos(2 * Math.PI * percent));
     return Math.cos(2 * Math.PI * decimalPointPercent);
+}
+function calculateYPositionOnCircleByPercent(decimalPointPercent) {
+    //console.log("getYCoordinateForPercent: ", Math.sin(2 * Math.PI * percent));
+    return Math.sin(2 * Math.PI * decimalPointPercent);
+}
+function calculateLargeArcFlagByPercent(decimalPointPercent) {
+    //console.log("calculateLargeArcFlag: ", percent > .5 ? 1 : 0);
+    return decimalPointPercent > .5 ? 1 : 0;
 }
 
 var css_248z = ".pie_chart_text.svelte-ns99wt{font-size:0.12px}.slice.svelte-ns99wt{outline:none}.show_slice_border{stroke:#646464;outline:none;stroke-width:0.05px;stroke-linecap:square;fill:none !important;border:none !important;color:none}";
@@ -3159,19 +3117,19 @@ styleInject(css_248z);
 
 function get_each_context(ctx, list, i) {
 	const child_ctx = ctx.slice();
-	child_ctx[31] = list[i];
-	child_ctx[33] = i;
+	child_ctx[28] = list[i];
+	child_ctx[30] = i;
 	return child_ctx;
 }
 
-// (133:20) {#each series as slice, index }
+// (88:20) {#each series as slice, index }
 function create_each_block(ctx) {
 	let path;
 	let path_aria_label_value;
 	let path_fill_value;
 	let path_d_value;
 	let text_1;
-	let t_value = /*slice*/ ctx[31].name + "";
+	let t_value = /*slice*/ ctx[28].name + "";
 	let t;
 	let text_1_id_value;
 	let text_1_x_value;
@@ -3186,23 +3144,23 @@ function create_each_block(ctx) {
 			t = text(t_value);
 			attr(path, "class", "slice svelte-ns99wt");
 			attr(path, "role", "graphics-symbol");
-			attr(path, "aria-label", path_aria_label_value = "This slice of pie chart has " + /*slice*/ ctx[31].percent + "%. This is slice " + (/*index*/ ctx[33] + 1) + " of " + /*series*/ ctx[4].length);
+			attr(path, "aria-label", path_aria_label_value = "This slice of pie chart has " + /*slice*/ ctx[28].percent + "%. This is slice " + (/*index*/ ctx[30] + 1) + " of " + /*series*/ ctx[4].length);
 			attr(path, "tabindex", "0");
 
 			attr(path, "fill", path_fill_value = /*colors*/ ctx[8]
-			? /*colors*/ ctx[8][/*index*/ ctx[33]]
+			? /*colors*/ ctx[8][/*index*/ ctx[30]]
 			: '#000');
 
-			attr(path, "d", path_d_value = 'M ' + getXCoordinateForPercent(/*cumulativePercents*/ ctx[13][/*index*/ ctx[33]]) + " " + getYCoordinateForPercent(/*cumulativePercents*/ ctx[13][/*index*/ ctx[33]]) + " A 1 1 0 " + calculateLargeArcFlag(/*slice*/ ctx[31].percent) + " 1 " + getXCoordinateForPercent(/*cumulativePercents*/ ctx[13][/*index*/ ctx[33]] + /*slice*/ ctx[31].percent) + " " + getYCoordinateForPercent(/*cumulativePercents*/ ctx[13][/*index*/ ctx[33]] + /*slice*/ ctx[31].percent) + "L 0 0 L" + getXCoordinateForPercent(/*cumulativePercents*/ ctx[13][/*index*/ ctx[33]]) + " " + getYCoordinateForPercent(/*cumulativePercents*/ ctx[13][/*index*/ ctx[33]]));
-			attr(text_1, "id", text_1_id_value = "" + (/*idChart*/ ctx[9] + "_" + /*slice*/ ctx[31].name + "_slice"));
+			attr(path, "d", path_d_value = 'M ' + calculateXPositionOnCircleByPercent(/*cumulativePercents*/ ctx[13][/*index*/ ctx[30]]) + " " + calculateYPositionOnCircleByPercent(/*cumulativePercents*/ ctx[13][/*index*/ ctx[30]]) + " A 1 1 0 " + calculateLargeArcFlagByPercent(/*slice*/ ctx[28].percent) + " 1 " + calculateXPositionOnCircleByPercent(/*cumulativePercents*/ ctx[13][/*index*/ ctx[30]] + /*slice*/ ctx[28].percent) + " " + calculateYPositionOnCircleByPercent(/*cumulativePercents*/ ctx[13][/*index*/ ctx[30]] + /*slice*/ ctx[28].percent) + "L 0 0 L" + calculateXPositionOnCircleByPercent(/*cumulativePercents*/ ctx[13][/*index*/ ctx[30]]) + " " + calculateYPositionOnCircleByPercent(/*cumulativePercents*/ ctx[13][/*index*/ ctx[30]]));
+			attr(text_1, "id", text_1_id_value = "" + (/*idChart*/ ctx[9] + "_" + /*slice*/ ctx[28].name + "_slice"));
 			attr(text_1, "class", "pie_chart_text svelte-ns99wt");
 
-			attr(text_1, "text-anchor", /*cumulativePercents*/ ctx[13][/*index*/ ctx[33] + 1] >= 0.5 && /*cumulativePercents*/ ctx[13][/*index*/ ctx[33] + 1] <= 0.75
+			attr(text_1, "text-anchor", /*cumulativePercents*/ ctx[13][/*index*/ ctx[30] + 1] >= 0.5 && /*cumulativePercents*/ ctx[13][/*index*/ ctx[30] + 1] <= 0.75
 			? 'end'
 			: 'start');
 
-			attr(text_1, "x", text_1_x_value = getXCoordinateForPercent(/*cumulativePercents*/ ctx[13][/*index*/ ctx[33] + 1] - /*slice*/ ctx[31].percent / 2) * 1.1);
-			attr(text_1, "y", text_1_y_value = getYCoordinateForPercent(/*cumulativePercents*/ ctx[13][/*index*/ ctx[33] + 1] - /*slice*/ ctx[31].percent / 2) * 1.1);
+			attr(text_1, "x", text_1_x_value = calculateXPositionOnCircleByPercent(/*cumulativePercents*/ ctx[13][/*index*/ ctx[30] + 1] - /*slice*/ ctx[28].percent / 2) * 1.1);
+			attr(text_1, "y", text_1_y_value = calculateYPositionOnCircleByPercent(/*cumulativePercents*/ ctx[13][/*index*/ ctx[30] + 1] - /*slice*/ ctx[28].percent / 2) * 1.1);
 		},
 		m(target, anchor) {
 			insert(target, path, anchor);
@@ -3219,31 +3177,31 @@ function create_each_block(ctx) {
 			}
 		},
 		p(ctx, dirty) {
-			if (dirty[0] & /*series*/ 16 && path_aria_label_value !== (path_aria_label_value = "This slice of pie chart has " + /*slice*/ ctx[31].percent + "%. This is slice " + (/*index*/ ctx[33] + 1) + " of " + /*series*/ ctx[4].length)) {
+			if (dirty[0] & /*series*/ 16 && path_aria_label_value !== (path_aria_label_value = "This slice of pie chart has " + /*slice*/ ctx[28].percent + "%. This is slice " + (/*index*/ ctx[30] + 1) + " of " + /*series*/ ctx[4].length)) {
 				attr(path, "aria-label", path_aria_label_value);
 			}
 
 			if (dirty[0] & /*colors*/ 256 && path_fill_value !== (path_fill_value = /*colors*/ ctx[8]
-			? /*colors*/ ctx[8][/*index*/ ctx[33]]
+			? /*colors*/ ctx[8][/*index*/ ctx[30]]
 			: '#000')) {
 				attr(path, "fill", path_fill_value);
 			}
 
-			if (dirty[0] & /*series*/ 16 && path_d_value !== (path_d_value = 'M ' + getXCoordinateForPercent(/*cumulativePercents*/ ctx[13][/*index*/ ctx[33]]) + " " + getYCoordinateForPercent(/*cumulativePercents*/ ctx[13][/*index*/ ctx[33]]) + " A 1 1 0 " + calculateLargeArcFlag(/*slice*/ ctx[31].percent) + " 1 " + getXCoordinateForPercent(/*cumulativePercents*/ ctx[13][/*index*/ ctx[33]] + /*slice*/ ctx[31].percent) + " " + getYCoordinateForPercent(/*cumulativePercents*/ ctx[13][/*index*/ ctx[33]] + /*slice*/ ctx[31].percent) + "L 0 0 L" + getXCoordinateForPercent(/*cumulativePercents*/ ctx[13][/*index*/ ctx[33]]) + " " + getYCoordinateForPercent(/*cumulativePercents*/ ctx[13][/*index*/ ctx[33]]))) {
+			if (dirty[0] & /*series*/ 16 && path_d_value !== (path_d_value = 'M ' + calculateXPositionOnCircleByPercent(/*cumulativePercents*/ ctx[13][/*index*/ ctx[30]]) + " " + calculateYPositionOnCircleByPercent(/*cumulativePercents*/ ctx[13][/*index*/ ctx[30]]) + " A 1 1 0 " + calculateLargeArcFlagByPercent(/*slice*/ ctx[28].percent) + " 1 " + calculateXPositionOnCircleByPercent(/*cumulativePercents*/ ctx[13][/*index*/ ctx[30]] + /*slice*/ ctx[28].percent) + " " + calculateYPositionOnCircleByPercent(/*cumulativePercents*/ ctx[13][/*index*/ ctx[30]] + /*slice*/ ctx[28].percent) + "L 0 0 L" + calculateXPositionOnCircleByPercent(/*cumulativePercents*/ ctx[13][/*index*/ ctx[30]]) + " " + calculateYPositionOnCircleByPercent(/*cumulativePercents*/ ctx[13][/*index*/ ctx[30]]))) {
 				attr(path, "d", path_d_value);
 			}
 
-			if (dirty[0] & /*series*/ 16 && t_value !== (t_value = /*slice*/ ctx[31].name + "")) set_data(t, t_value);
+			if (dirty[0] & /*series*/ 16 && t_value !== (t_value = /*slice*/ ctx[28].name + "")) set_data(t, t_value);
 
-			if (dirty[0] & /*idChart, series*/ 528 && text_1_id_value !== (text_1_id_value = "" + (/*idChart*/ ctx[9] + "_" + /*slice*/ ctx[31].name + "_slice"))) {
+			if (dirty[0] & /*idChart, series*/ 528 && text_1_id_value !== (text_1_id_value = "" + (/*idChart*/ ctx[9] + "_" + /*slice*/ ctx[28].name + "_slice"))) {
 				attr(text_1, "id", text_1_id_value);
 			}
 
-			if (dirty[0] & /*series*/ 16 && text_1_x_value !== (text_1_x_value = getXCoordinateForPercent(/*cumulativePercents*/ ctx[13][/*index*/ ctx[33] + 1] - /*slice*/ ctx[31].percent / 2) * 1.1)) {
+			if (dirty[0] & /*series*/ 16 && text_1_x_value !== (text_1_x_value = calculateXPositionOnCircleByPercent(/*cumulativePercents*/ ctx[13][/*index*/ ctx[30] + 1] - /*slice*/ ctx[28].percent / 2) * 1.1)) {
 				attr(text_1, "x", text_1_x_value);
 			}
 
-			if (dirty[0] & /*series*/ 16 && text_1_y_value !== (text_1_y_value = getYCoordinateForPercent(/*cumulativePercents*/ ctx[13][/*index*/ ctx[33] + 1] - /*slice*/ ctx[31].percent / 2) * 1.1)) {
+			if (dirty[0] & /*series*/ 16 && text_1_y_value !== (text_1_y_value = calculateYPositionOnCircleByPercent(/*cumulativePercents*/ ctx[13][/*index*/ ctx[30] + 1] - /*slice*/ ctx[28].percent / 2) * 1.1)) {
 				attr(text_1, "y", text_1_y_value);
 			}
 		},
@@ -3256,7 +3214,7 @@ function create_each_block(ctx) {
 	};
 }
 
-// (115:6) <ThemeContext>
+// (69:6) <ThemeContext>
 function create_default_slot(ctx) {
 	let div3;
 	let div0;
@@ -3320,6 +3278,7 @@ function create_default_slot(ctx) {
 			attr(svg, "height", /*height*/ ctx[3]);
 			attr(div2, "class", "svg_wrap");
 			add_render_callback(() => /*div2_elementresize_handler*/ ctx[23].call(div2));
+			attr(div3, "id", /*idChart*/ ctx[9]);
 			attr(div3, "class", "wrapper");
 		},
 		m(target, anchor) {
@@ -3397,6 +3356,10 @@ function create_default_slot(ctx) {
 			if (dirty[0] & /*height*/ 8) {
 				attr(svg, "height", /*height*/ ctx[3]);
 			}
+
+			if (dirty[0] & /*idChart*/ 512) {
+				attr(div3, "id", /*idChart*/ ctx[9]);
+			}
 		},
 		d(detaching) {
 			if (detaching) detach(div3);
@@ -3432,7 +3395,7 @@ function create_fragment(ctx) {
 		p(ctx, dirty) {
 			const themecontext_changes = {};
 
-			if (dirty[0] & /*rootNode, svgWidth, svgHeight, width, height, svgImage, displayFront, series, idChart, colors, desc, title, headerChartParentTag*/ 8191 | dirty[1] & /*$$scope*/ 8) {
+			if (dirty[0] & /*idChart, rootNode, svgWidth, svgHeight, width, height, svgImage, displayFront, series, colors, desc, title, headerChartParentTag*/ 8191 | dirty[1] & /*$$scope*/ 1) {
 				themecontext_changes.$$scope = { dirty, ctx };
 			}
 
@@ -3453,7 +3416,7 @@ function create_fragment(ctx) {
 	};
 }
 
-function partialSum(series) {
+function partialSum(series, unshiftZero = true) {
 	let partialSliceSums = Array(series.length).fill(0);
 
 	for (let i = 0; i < series.length; i++) {
@@ -3464,26 +3427,11 @@ function partialSum(series) {
 		}
 	}
 
-	partialSliceSums.unshift(0);
+	if (unshiftZero) {
+		partialSliceSums.unshift(0);
+	}
+
 	return partialSliceSums;
-}
-
-function generateId() {
-	return Date.now().toString(36) + Math.floor(Math.pow(10, 12) + Math.random() * 9 * Math.pow(10, 12)).toString(36);
-}
-
-// function getXCoordinateForPercent(percent: number){
-//   //console.log("getXCoordinateForPercent: ", Math.cos(2 * Math.PI * percent));
-//   return  Math.cos(2 * Math.PI * percent);
-// }
-function getYCoordinateForPercent(percent) {
-	//console.log("getYCoordinateForPercent: ", Math.sin(2 * Math.PI * percent));
-	return Math.sin(2 * Math.PI * percent);
-}
-
-function calculateLargeArcFlag(percent) {
-	//console.log("calculateLargeArcFlag: ", percent > .5 ? 1 : 0);
-	return percent > .5 ? 1 : 0;
 }
 
 function instance($$self, $$props, $$invalidate) {
@@ -3543,48 +3491,8 @@ function instance($$self, $$props, $$invalidate) {
 	onMount(() => __awaiter(void 0, void 0, void 0, function* () {
 		$$invalidate(8, colors = Object.values(theme[0].color));
 		$$invalidate(9, idChart = generateId());
-		console.log('cumulative: ', cumulativePercents);
-		createHeaderTag(findParentHeader());
+		createHeaderTagForElement(headerChartParentTag, title);
 	}));
-
-	function createHeaderTag(headerNumber) {
-		var newHeader;
-
-		if (headerNumber > 5) {
-			console.warn('Headline cannot be created. HTML allows only h1 - h6. The chart would get h' + ++headerNumber);
-		} else {
-			console.log('Headernumber: ', headerNumber);
-
-			if (headerNumber === null) {
-				console.warn('Creating a h1 header! Is this intended?');
-				newHeader = document.createElement('h' + (headerNumber + 1));
-			} else {
-				newHeader = document.createElement('h' + (headerNumber + 1));
-			}
-
-			newHeader.setAttribute('tabindex', '0');
-			newHeader.setAttribute('aria-labelledby', idChart + '_title_chart');
-			newHeader.innerHTML = title;
-			headerChartParentTag.appendChild(newHeader);
-		}
-	}
-
-	function findParentHeader() {
-		var parent = rootNode.parentElement;
-		var resultHeader = null;
-
-		while (parent.tagName !== 'HTML' && resultHeader === null) {
-			Array.from(parent.children).reverse().forEach(element => {
-				if (element.tagName.toLowerCase().match('h1|h2|h3|h4|h5|h6') && resultHeader === null) {
-					resultHeader = parseInt(element.tagName[1]);
-				}
-			});
-
-			parent = parent.parentElement;
-		}
-
-		return resultHeader;
-	}
 
 	function moveSliceForward(event) {
 		let slice = event.target;
@@ -3706,4 +3614,16 @@ class PieChart extends SvelteComponent {
 	}
 }
 
-export { BarChart, LineChart, PieChart };
+Type.Object({
+    x: Type.Integer(),
+    y: Type.Integer(),
+    ariaLabel: Type.String({
+        $comment: "this will set the aria label attribute for accessibility",
+    }),
+});
+
+var Point_type = /*#__PURE__*/Object.freeze({
+    __proto__: null
+});
+
+export { Point_type as AccessibleChartTypes, BarChart, LineChart, PieChart };

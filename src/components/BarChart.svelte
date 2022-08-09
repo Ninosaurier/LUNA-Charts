@@ -5,7 +5,7 @@
     import { onMount } from 'svelte';
     import ThemeContext from '../theme/ThemeContext.svelte';
     import {defaultTheme} from '../theme/defaultTheme';
-    import {findParentHeaderOfElement, createHeaderTagForElement} from '../utils/accessibles';
+    import {createHeaderTagForElement} from '../utils/accessibles';
     import {generateId} from '../utils/common';
 
     export let title: string = '';
@@ -19,21 +19,15 @@
     export let series: any = null;
     export let source: string = "";
 
-    var svgImage: Element = null;
-    var svgWidth: number = 0;
-    var svgHeight: number = 0;
-    var colors: any[];
-    var showedInfoBox: SVGGElement;
-    var idChart: string;
-    var verticalInterceptionGroup: SVGGElement;
-    var rootNode: HTMLElement;
-    var headerChartParentTag: HTMLElement;
-    var gridGap: number = 20;
-    var barGap: number = 6;
-    var barGroupSize: number = calculateBarGroupSize();
-    var chartWidth: number = parseInt(width)*0.75;;
-
-
+    let svgWidth: number = 0;
+    let svgHeight: number = 0;
+    let colors: any[];
+    let idChart: string;
+    let rootNode: HTMLElement;
+    let headerChartParentTag: HTMLElement;
+    let gridGap: number = 20;
+    let barGap: number = 6;
+    let barGroupSize: number = calculateBarGroupSize();
 
 
     onMount(async () => {
@@ -41,9 +35,6 @@
         idChart = generateId();
         createHeaderTagForElement(headerChartParentTag, title);
         colors = Object.values(theme[0].color);
-        console.log('bar-colors: ', colors);
-        var bar = series.series
-        console.log('series: ', bar[0].name );
     });
 
     function cleanIdName(name: string){
@@ -89,13 +80,13 @@
 
 <ThemeContext>
     <div bind:this="{rootNode}" class="wrapper">
-        <div bind:this="{headerChartParentTag}" class="title">
+        <div bind:this="{headerChartParentTag}" class="chart_title">
         </div>
-        <div tabindex="0" class="description" aria-labelledby="{idChart}_desc_chart">
+        <div tabindex="0" class="chart_desc" role="document" aria-labelledby="{idChart}_desc_chart">
             {desc}
         </div>
         <div class="svg_wrap" bind:clientWidth="{svgWidth}" bind:clientHeight="{svgHeight}">
-          <svg class="chart" role="graphics-document" xmlns="http://www.w3.org/2000/svg" bind:this={svgImage} width="{width}" height="{height}">
+          <svg class="chart" role="graphics-document" xmlns="http://www.w3.org/2000/svg" width="{width}" height="{height}">
             <title id="{idChart}_title_chart">{title}</title>
             <desc id="{idChart}_desc_chart">{desc}</desc>
             <defs>
@@ -193,7 +184,6 @@
 
   .grid_surface{
       width: 75%;
-      height: 80%;
   }
 
   .grid{
@@ -282,5 +272,13 @@
     text-align: right;
     padding-right: 10px;
     padding-bottom: 2px;
+  }
+
+  .chart_title{
+    text-align: center;
+  }
+
+  .chart_desc{
+    text-align: center !important;
   }
 </style>

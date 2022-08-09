@@ -8,8 +8,7 @@
     import {
       calculateLargeArcFlagByPercent, 
       calculateXPositionOnCircleByPercent, 
-      calculateYPositionOnCircleByPercent,
-      sayHello
+      calculateYPositionOnCircleByPercent
     } from '../math/circleGeometry';
 
   
@@ -21,7 +20,6 @@
     export let series: PieSeries[] = [];
     export let source: string = "";
   
-    var svgImage: Element = null;
     var svgWidth: number = 0;
     var svgHeight: number = 0;
     var colors: any[];
@@ -84,26 +82,28 @@
   </script>
       <ThemeContext>
           <div id="{idChart}" bind:this="{rootNode}" class="wrapper">
-            <div bind:this="{headerChartParentTag}" class="title">
+            <div bind:this="{headerChartParentTag}" class="chart_title">
               
             </div>
-            <div tabindex="0" class="description" aria-labelledby="{idChart}_desc_chart">
+            <div class="chart_desc" tabindex="0" role="document">
               {desc}
             </div>
             <div class="svg_wrap" bind:clientWidth="{svgWidth}" bind:clientHeight="{svgHeight}">
               <svg 
                 class="chart" 
-                role="graphics-document" 
+                role="graphics-document"
+                aria-labelledby="{idChart}_desc_chart"
                 xmlns="http://www.w3.org/2000/svg" 
                 viewBox="-1.25 -1.25 2.5 2.5" 
-                bind:this={svgImage} width="{width}" height="{height}"
+                width="{width}" height="{height}"
               >
                 <title id="{idChart}_title_chart">{title}</title>
                 <desc id="{idChart}_desc_chart">{desc}</desc>
-                <g transform="">
+                <g>
                     {#each series as slice, index }
                       <path 
                         class="slice"
+                        transform="rotate(-90)"
                         role="graphics-symbol"
                         aria-label="This slice of pie chart has {slice.percent}%. This is slice {index+1} of {series.length}" 
                         tabindex="0"
@@ -121,12 +121,22 @@
                       </path>
                       <!-- svelte-ignore component-name-lowercase -->
                       <text id="{idChart}_{slice.name}_slice" class="pie_chart_text"
+                        dominant-baseline="{
+                          cumulativePercents[index+1] - (slice.percent/2) > 0.25 
+                          && cumulativePercents[index+1] - (slice.percent/2) < 0.75 
+                          ? 'hanging':'auto' 
+                        }"
                         text-anchor="{
-                          cumulativePercents[index+1] >= 0.5 
-                          && cumulativePercents[index+1] <= 0.75 ? 'end':'start'
+                          cumulativePercents[index+1] - (slice.percent/2) > 0.5 
+                          && cumulativePercents[index+1] - (slice.percent/2) < 1 ? 'end':'start'
                           }"
-                        x="{calculateXPositionOnCircleByPercent((cumulativePercents[index+1] - (slice.percent/2)))*1.1}" 
-                        y="{calculateYPositionOnCircleByPercent((cumulativePercents[index+1] - (slice.percent/2)))*1.1}">
+                        x="{calculateXPositionOnCircleByPercent(
+                          (cumulativePercents[index+1] - (slice.percent/2)) + 0.75)*1.1
+                          }" 
+                        y="{calculateYPositionOnCircleByPercent(
+                          (cumulativePercents[index+1] - (slice.percent/2)) + 0.75)*1.1
+                          }"
+                        >
                         {slice.name}
                       </text>
                     {/each}                    
@@ -135,16 +145,29 @@
 
                 </g>
               </svg>
+            </div>
+            <div class="source">
+              <a tabindex="0" href="{source}">Source: {source}</a>
             </div>  
           </div>
       </ThemeContext>
 <style>
+
+  .wrapper{
+    background-color: #f7f7f7;
+    display: inline-block;
+  }
+
   .pie_chart_text{
     font-size: 0.12px;
   }
 
   .slice{
     outline: none;
+  }
+
+  .display_front{
+    rotate: -90deg;
   }
 
   :global(.show_slice_border){
@@ -155,5 +178,20 @@
     fill: none !important;
     border: none !important;
     color: none;
+  }
+
+  .source{
+    font-size: 9px;
+    text-align: right;
+    padding-right: 10px;
+    padding-bottom: 2px;
+  }
+
+  .chart_title{
+    text-align: center !important;
+  }
+
+  .chart_desc{
+    text-align: center;
   }
 </style>
