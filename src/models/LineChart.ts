@@ -1,4 +1,4 @@
-import type { Point } from "../types/Point.type";
+import type { Point } from '../types/Point.type';
 
 export interface Line {
   name: string;
@@ -16,20 +16,12 @@ export interface LineChartType {
   series: Line[];
 }
 
-export const printPoints = function (line: Line): void {
-  console.log(line.points);
-};
-
-// fyi Nino: linecahrt wrapper was dupplicate of linecharttype
-
-// Generate test data
-
 export const LineChartTestData: LineChartType = {
-  title: "test",
-  description: "This is a accessible test line chart",
-  source: "https://svelte.dev/",
+  title: 'test',
+  description: 'This is a accessible test line chart',
+  source: 'https://svelte.dev/',
   series: [],
-  yLabel: "Y points",
-  xLabel: "X points",
-  secondYLabel: "More y points",
+  yLabel: 'Y points',
+  xLabel: 'X points',
+  secondYLabel: 'More y points',
 };

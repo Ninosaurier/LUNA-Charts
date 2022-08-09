@@ -4,7 +4,7 @@
   import ThemeContext from '../theme/ThemeContext.svelte';
   import {defaultTheme} from '../theme/defaultTheme';
   import type { Point } from '../types/Point.type';
-  import {findParentHeaderOfElement, createHeaderTagForElement} from '../utils/accessibles';
+  import {createHeaderTagForElement} from '../utils/accessibles';
   import {generateId} from '../utils/common';
 
   export let title: string = '';
@@ -18,16 +18,15 @@
   export let series: any = null;
   export let source: string = "";
 
-  var svgImage: Element = null;
-  var svgWidth: number = 0;
-  var svgHeight: number = 0;
-  var colors: any[];
-  var showedInfoBox: SVGGElement;
-  var idChart: string;
-  var verticalInterceptionGroup: SVGGElement;
-  var rootNode: HTMLElement;
-  var headerChartParentTag: HTMLElement;
-  var gridGap: number = 20;
+  let svgWidth: number = 0;
+  let svgHeight: number = 0;
+  let colors: any[];
+  let showedInfoBox: SVGGElement;
+  let idChart: string;
+  let verticalInterceptionGroup: SVGGElement;
+  let rootNode: HTMLElement;
+  let headerChartParentTag: HTMLElement;
+  let gridGap: number = 20;
 
 
   var getPoints = (points: Point[]) : string => {
@@ -50,7 +49,7 @@
     createHeaderTagForElement(headerChartParentTag, title);
 	});
 
-  function removeAllChildNodes(parent) {
+  function removeAllChildNodes(parent: SVGGElement) {
     while (parent.firstChild) {
         parent.removeChild(parent.firstChild);
     }
@@ -58,7 +57,8 @@
 
   function showInfoBox(event: Event){
 
-    var element = (event.target as SVGGElement).nextSibling.cloneNode(true);
+    let element: SVGGElement = (event.target) as SVGGElement;
+    element = element.nextSibling?.cloneNode(true) as SVGGElement;
 
     element.classList.add('show_info');
     element.classList.remove('blur_info');
@@ -73,10 +73,10 @@
   function toogleCaption(event: Event){
 
     if(verticalInterceptionGroup.firstChild){verticalInterceptionGroup.removeChild(verticalInterceptionGroup.firstChild); }
-    var button = event.target as HTMLElement;
+    let button = event.target as HTMLElement;
 
-    var targetId: string = button.id.replace(/\s/g, "");
-    var line =  document.getElementById(targetId);
+    let targetId: string = button.id.replace(/\s/g, "");
+    let line: HTMLElement =  document.getElementById(targetId) as HTMLElement;
 
 
     line.classList.contains('show_line') ? line.classList.replace('show_line','hide_line') : line.classList.replace('hide_line','show_line');
@@ -85,10 +85,10 @@
 
   function showVerticalInterception(event: Event){
 
-    var circle = event.target as SVGAElement;
-    var bbox = circle.getBBox();
+    let circle = event.target as SVGAElement;
+    let bbox = circle.getBBox();
 
-    var interception = document.createElementNS('http://www.w3.org/2000/svg','line');
+    let interception = document.createElementNS('http://www.w3.org/2000/svg','line');
 
     interception.setAttribute('x1', (bbox.x + (bbox.width / 2)).toString());
     interception.setAttribute('x2', (bbox.x + (bbox.width / 2)).toString());
@@ -102,8 +102,7 @@
 
   function removeVerticalInterception(){
     if(verticalInterceptionGroup.firstChild){
-      verticalInterceptionGroup.removeChild(verticalInterceptionGroup.lastChild);
-      // verticalInterceptionGroup.removeChild(verticalInterceptionGroup.firstChild); 
+      verticalInterceptionGroup.removeChild(verticalInterceptionGroup.lastChild as Node);
     }
   }
 
@@ -116,13 +115,13 @@
 
 <ThemeContext bind:theme={theme}>
   <div bind:this="{rootNode}" class="wrapper" >
-    <div bind:this="{headerChartParentTag}" class="title">
+    <div bind:this="{headerChartParentTag}" class="chart_title">
     </div>
-    <div tabindex="0" class="description" aria-labelledby="{idChart}_desc_chart">
+    <div tabindex="0" role="document" class="chart_desc" aria-labelledby="{idChart}_desc_chart">
       {desc}
     </div>
     <div class="svg_wrap" bind:clientWidth="{svgWidth}" bind:clientHeight="{svgHeight}">
-      <svg class="chart" role="graphics-document" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 200" bind:this={svgImage} width="{width}" height="{height}">
+      <svg class="chart" role="graphics-document" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 200" width="{width}" height="{height}">
         <title id="{idChart}_title_chart">{title}</title>
         <desc id="{idChart}_desc_chart">{desc}</desc>
         <defs>
@@ -258,7 +257,7 @@
 
   .grid_surface{
       width: 75%;
-      height: 80%;
+      height: 70%;
   }
 
   .grid{
@@ -363,5 +362,13 @@
     border-radius: 50%;
     display: inline-block;
     pointer-events: none;
-  }  
+  }
+  
+  .chart_title{
+    text-align: center;
+  }
+
+  .chart_desc{
+    text-align: center !important;
+  }
 </style>
