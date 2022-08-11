@@ -2,11 +2,10 @@
     import { setContext, onMount, getContext, getAllContexts } from "svelte";
     import { writable, get } from "svelte/store";
     import { testTheme as presets } from "./defaultTheme";
-    import type {LineTheme, PieTheme} from "../types/theme/Theme.type";
-import LineChart from "../components/LineChart.svelte";
-import PieChart from "../components/PieChart.svelte";
+    import type {LineTheme, PieTheme, BarTheme} from "../types/theme/Theme.type";
+
     // expose props for customization and set default values
-    export let theme: LineTheme | PieTheme = presets;
+    export let theme: LineTheme | PieTheme | BarTheme = presets;
 
     // set state of current theme's name
     //let _current = presets[0].name;
