@@ -1,15 +1,6 @@
-export interface Point {
-    x: number,
-    y: number,
-    ariaLabel: string
-}
-
-export interface Line {
-    name: string,
-    points: Point[],
-    color: string,
-
-}
+/* eslint-disable import/prefer-default-export */
+import type { LineSeries } from '../types/series/LineSeries.type';
+import type { Point } from '../types/series/Point.type';
 
 const testLineOne: Point[] = [
   {
@@ -77,16 +68,33 @@ const testLineTwo: Point[] = [
   },
 ];
 
-export const testLineSeries: Line[] = [
+const testLineThree: Point[] = [
+  {
+    x: 100,
+    y: 10,
+    ariaLabel: 'Point 1',
+  },
+  {
+    x: 120,
+    y: 50,
+    ariaLabel: 'Point 2',
+  },
+];
+
+export const testLineSeries: LineSeries[] = [
   {
     name: 'Line 1',
     points: testLineOne,
     color: '',
-
   },
   {
     name: 'Line 2',
     points: testLineTwo,
+    color: '',
+  },
+  {
+    name: 'Line 3',
+    points: testLineThree,
     color: '',
   },
 ];

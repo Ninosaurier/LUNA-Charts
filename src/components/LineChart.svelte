@@ -2,25 +2,26 @@
 
   import { onMount } from 'svelte';
   import ThemeContext from '../theme/ThemeContext.svelte';
-  import {defaultTheme} from '../theme/defaultTheme';
-  import type { Point } from '../types/Point.type';
+  import {testTheme} from '../theme/defaultTheme';
+  import type { Point } from '../types/series/Point.type';
+  import type { LineSeries } from '../types/series/LineSeries.type';
+  import type {LineTheme} from '../types/theme/Theme.type';
   import {createHeaderTagForElement} from '../utils/accessibles';
   import {generateId} from '../utils/common';
 
   export let title: string = '';
   export let desc: string = "";
-  export let theme: any = defaultTheme;
+  export let theme: LineTheme = testTheme;
   export let width: string = "600";
   export let height: string = "200";
   export let yLabel: string = 'Y-Axis';
   export let xLabel: string = 'X-Axis';
   export let secondYLabel: string = 'Second Y-Axis';
-  export let series: any = null;
+  export let series: LineSeries;
   export let source: string = "";
 
   let svgWidth: number = 0;
   let svgHeight: number = 0;
-  let colors: any[];
   let showedInfoBox: SVGGElement;
   let idChart: string;
   let verticalInterceptionGroup: SVGGElement;
@@ -44,7 +45,6 @@
 	onMount(async () => {
 
     console.log('onMount() (LineChart)');
-    colors = Object.values(theme[0].color);
     idChart = generateId(); 
     createHeaderTagForElement(headerChartParentTag, title);
 	});
@@ -171,52 +171,56 @@
             <text text-anchor="middle" alignment-baseline="central"  x="5%" y="{(gridGap*i*-1)}">{gridGap*i}</text>
           {/each}
           {#each Array(Math.floor((svgWidth*0.8)/gridGap)) as _, i}
-          {#if i%2 == 0}
-          <text text-anchor="middle"  x="{(gridGap*i)+(svgWidth*0.1)}" y="7%">{gridGap*i}</text>
-          {/if}
-        {/each}
+            {#if i%2 == 0}
+            <text text-anchor="middle"  x="{(gridGap*i)+(svgWidth*0.1)}" y="7%">{gridGap*i}</text>
+            {/if}
+          {/each}
         </g>
         <g id="vertical_intercept" bind:this="{verticalInterceptionGroup}" transform='translate({svgWidth*0.1},0)'>
           
         </g>
         <g role="graphics-object" transform='translate({svgWidth*0.1},{svgHeight*0.1})' class="functions">
-          {#each series as lines, l}
-            <g id="{idChart}_{cleanIdName(lines.name)}" class="show_line">
-              <polyline points="{getPoints(lines.points)}" fill="none" stroke='{colors ? colors[l]:'black'}'/>
-              {#each lines.points as point, p}
-                <circle 
-                on:focus="{(event) => {showInfoBox(event); showVerticalInterception(event);}}"
-                on:blur="{() => {blurInfoBox(); removeVerticalInterception()}}"
-                tabindex="0"
-                class="point"
-                role="graphics-symbol" 
-                aria-label="{point.ariaLabel}. This is point {p+1} of {lines.points.length}" 
-                stroke="{colors ? colors[l]:'black'}" 
-                fill="{colors ? colors[l]:'black'}"  
-                cx="{point.x}" 
-                cy="{point.y}" 
-                r="3"/>
+          {#if Object.keys(series).length !== 0}
+            {#each series as lines, l}
+              <g id="{idChart}_{cleanIdName(lines.name)}" class="show_line">
+                <polyline points="{getPoints(lines.points)}" fill="none" stroke='{theme ? theme.colors[l]:'black'}'/>
+                {#each lines.points as point, p}
+                  <circle 
+                  on:focus="{(event) => {showInfoBox(event); showVerticalInterception(event);}}"
+                  on:blur="{() => {blurInfoBox(); removeVerticalInterception()}}"
+                  tabindex="0"
+                  class="point"
+                  role="graphics-symbol" 
+                  aria-label="{point.ariaLabel}. This is point {p+1} of {lines.points.length}" 
+                  stroke="{theme ? theme.colors[l]:'black'}" 
+                  fill="{theme ? theme.colors[l]:'black'}"  
+                  cx="{point.x}" 
+                  cy="{point.y}" 
+                  r="3"/>
 
-                <text class="info blur_info" filter="url(#info_box)" x="{point.x+20}" y="{point.y*-1}" stroke="{colors ? colors[l]:'black'}">{point.x},{point.y}</text>
+                  <text class="info blur_info" filter="url(#info_box)" x="{point.x+20}" y="{point.y*-1}" stroke="{theme ? theme.colors[l]:'black'}">{point.x},{point.y}</text>
+                  
+                  {#if p == (lines.points.length-1)}
+                    <text font-size="smaller" transform="scale(1 -1)" stroke="{theme ? theme.colors[l]:'black'}" x="{point.x+20}" y="{point.y*-1}">{lines.name}</text>
+                  {/if}
+                {/each}
                 
-                {#if p == (lines.points.length-1)}
-                  <text font-size="smaller" transform="scale(1 -1)" stroke="{colors ? colors[l]:'black'}" x="{point.x+20}" y="{point.y*-1}">{lines.name}</text>
-                {/if}
-              {/each}
-              
-            </g>
-          {/each}     
+              </g>
+            {/each}  
+          {/if}
         </g>
         <g bind:this="{showedInfoBox}" role="graphics-object" transform='translate({svgWidth*0.1},{svgHeight*0.1}) scale(1, -1)' id="actually_focus"></g>
       </svg>
     </div>
     <div class="captions" style="padding: 0 {svgWidth*0.1}px;">
-      {#each series as line, l}
-        <button tabindex="0" id="{idChart}_{cleanIdName(line.name)}" aria-label="{line.name}" class="caption" on:click="{(event) => toogleCaption(event)}">
-          <span class="dot" style="background-color: {colors ? colors[l]:'#ccc'};"></span>   
-            {line.name}
-        </button>
-      {/each}
+      {#if Object.keys(series).length !== 0}
+        {#each series as line, l}
+          <button tabindex="0" id="{idChart}_{cleanIdName(line.name)}" aria-label="{line.name}" class="caption" on:click="{(event) => toogleCaption(event)}">
+            <span class="dot" style="background-color: {theme ? theme.colors[l]:'#ccc'};"></span>   
+              {line.name}
+          </button>
+        {/each}
+      {/if}
     </div>
     <div class="source">
       <a tabindex="0" href="{source}">Source: {source}</a>
@@ -226,7 +230,7 @@
 <style>
 
   .wrapper{
-    background-color: #f7f7f7;
+    background-color: var(--chartStyles-backgroundColor);
     display: inline-block;
   }
 
@@ -235,10 +239,10 @@
   }
 
   circle:focus{
-    outline: var(--circles-focus-color);
+    outline: var(--circles-focusColor);
     outline-style: solid;
     outline-width: 2px;
-    border-radius: var(--circles-focus-radius);
+    border-radius: var(--circles-focusRadius);
     text-anchor: middle;
   }
 

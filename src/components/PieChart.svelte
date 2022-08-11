@@ -2,22 +2,23 @@
     import { onMount } from 'svelte';
     import {generateId} from '../utils/common';
     import ThemeContext from '../theme/ThemeContext.svelte';
-    import type {PieSeries} from './../models/PieChart';
-    import {defaultTheme} from '../theme/defaultTheme';
-    import {findParentHeaderOfElement, createHeaderTagForElement} from '../utils/accessibles';
+    import type {PieSeries, PieSlice} from './../types/series/PieSeries.Type';
+    import type {PieTheme} from '../types/theme/Theme.type';
+    import {testPieTheme} from '../theme/defaultTheme';
+    import {testPieSeries} from '../example_data/pie_series';
+    import {createHeaderTagForElement} from '../utils/accessibles';
     import {
       calculateLargeArcFlagByPercent, 
       calculateXPositionOnCircleByPercent, 
       calculateYPositionOnCircleByPercent
     } from '../math/circleGeometry';
 
-  
     export let title: string = '';
     export let desc: string = "";
-    export let theme: any = defaultTheme;
+    export let theme: PieTheme = testPieTheme;
     export let width: string = "800";
     export let height: string = "300";
-    export let series: PieSeries[] = [];
+    export let series: PieSeries = testPieSeries;
     export let source: string = "";
   
     var svgWidth: number = 0;
@@ -28,10 +29,10 @@
     var verticalInterceptionGroup: SVGGElement;
     var rootNode: HTMLElement;
     var headerChartParentTag: HTMLElement;
-    let cumulativePercents:number[]  = partialSum(series);
+    let cumulativePercents:number[]  = partialSum(series.slices);
     let displayFront:SVGElement;  
 
-    function partialSum(series:PieSeries[], unshiftZero:boolean = true){
+    function partialSum(series:PieSlice[], unshiftZero:boolean = true){
       
       let partialSliceSums:number[] = Array(series.length).fill(0);
 
@@ -53,7 +54,7 @@
 
     onMount(async () => {
 
-      colors = Object.values(theme[0].color);
+      colors = Object.values(theme.colors);
       idChart = generateId(); 
       createHeaderTagForElement(headerChartParentTag, title);
     });
@@ -100,12 +101,12 @@
                 <title id="{idChart}_title_chart">{title}</title>
                 <desc id="{idChart}_desc_chart">{desc}</desc>
                 <g>
-                    {#each series as slice, index }
+                    {#each series.slices as slice, index }
                       <path 
                         class="slice"
                         transform="rotate(-90)"
                         role="graphics-symbol"
-                        aria-label="This slice of pie chart has {slice.percent}%. This is slice {index+1} of {series.length}" 
+                        aria-label="This slice of pie chart has {slice.percent}%. This is slice {index+1} of {series.slices.length}" 
                         tabindex="0"
                         on:blur="{() => removeAllChildNodes()}" 
                         on:focus="{event => moveSliceForward(event)}"
