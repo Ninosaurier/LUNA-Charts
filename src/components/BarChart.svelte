@@ -4,24 +4,26 @@
 
     import { onMount } from 'svelte';
     import ThemeContext from '../theme/ThemeContext.svelte';
-    import {defaultTheme} from '../theme/defaultTheme';
+    import {testBarTheme} from '../theme/defaultTheme';
     import {createHeaderTagForElement} from '../utils/accessibles';
     import {generateId} from '../utils/common';
+    import type { BarTheme } from '../types/theme/Theme.type';
+    import {testBarSeries} from '../example_data/bar_series'
+    import type { BarSeries } from '../types/series/BarSeries.type';
 
     export let title: string = '';
     export let desc: string = "";
-    export let theme: any = defaultTheme;
+    export let theme: BarTheme = testBarTheme;
     export let width: string = "800";
     export let height: string = "300";
     export let yLabel: string = 'Y-Axis';
     export let xLabel: string = 'X-Axis';
     export let secondYLabel: string = 'Second Y-Axis';
-    export let series: any = null;
+    export let series: BarSeries = testBarSeries;
     export let source: string = "";
 
     let svgWidth: number = 0;
     let svgHeight: number = 0;
-    let colors: any[];
     let idChart: string;
     let rootNode: HTMLElement;
     let headerChartParentTag: HTMLElement;
@@ -34,7 +36,6 @@
 
         idChart = generateId();
         createHeaderTagForElement(headerChartParentTag, title);
-        colors = Object.values(theme[0].color);
     });
 
     function cleanIdName(name: string){
@@ -44,6 +45,8 @@
 
     function calculateBarGroupSize(): number{
 
+      console.log('Breite: ', parseInt(width)*0.75)
+      console.log('calculateBarGroupSize: ', (parseInt(width)*0.75/series.category.length) - barGap*2);
       return (parseInt(width)*0.75/series.category.length) - barGap*2;
     }
 
@@ -124,24 +127,39 @@
             </g>
             <g class="y_grid_label" transform="translate(1, {svgHeight*0.1})" >
               {#each Array(Math.floor((svgHeight*0.7)/gridGap)) as _, i}
-                <text text-anchor="middle" alignment-baseline="central"  x="5%" y="{(gridGap*i*-1)}">{gridGap*i}</text>
+                <text 
+                  text-anchor="end" 
+                  alignment-baseline="central"  
+                  x="5%" 
+                  y="{(gridGap*i*-1)}"
+                >
+                  {gridGap*i}
+                </text>
               {/each}
             </g>
+            <!-- Bug hier. Position der X-labels stimmen nicht -->
             <g class="x_grid_label" transform="translate({svgWidth*0.1}, 0)">     
-                {#each series.category as category, i}
-                  <g transform="translate({((barGroupSize+barGap*2)*i)+barGap}, {svgHeight*0.15})">
-                    <text text-anchor="end"  class="x_grid_text_label">
-                      {category}
-                    </text>
-                  </g>
-                {/each}
             </g>
             <g role="graphics-object" transform='translate({svgWidth*0.1},{svgHeight*0.1})' class="functions">
               {#each series.category as category, c}
                 <g transform='translate({barGap*2*c},0)'>
-                  {#each series.series as bar, b}
-                    <rect class="{bar.name}_bar show_bar" fill="{colors ? colors[b]:'#ccc'}" tabindex="0" x="{(c*barGroupSize)+(calculateBarSize()*b)}" width="{calculateBarSize()}" height="{bar.data[c].value}"></rect>
+                  {#each series.series as bar, barIndex}
+                    <rect 
+                      class="{bar.name}_bar show_bar" 
+                      fill="{theme ? theme.colors[barIndex]:'#ccc'}" 
+                      tabindex="0" 
+                      x="{(c*barGroupSize)+(calculateBarSize()*barIndex)}" 
+                      width="{calculateBarSize()}" 
+                      height="{bar.barValues[barIndex].value}">
+                    </rect>
                     {/each}
+                    <g transform="translate({(c*barGroupSize)+(calculateBarSize())-(barGroupSize*0.1)},{svgHeight*0.025})">
+                      <text 
+                      text-anchor="middle" 
+                      class="x_grid_text_label">
+                      {category}
+                    </text>
+                    </g>
                 </g>
               {/each}
             </g>
@@ -149,8 +167,16 @@
         </div>
         <div class="captions" style="padding: 0 {svgWidth*0.1}px;">
           {#each series.series as barSeries, l}
-            <button tabindex="0" value="{barSeries.name}" id="{idChart}_{cleanIdName(barSeries.name)}" aria-label="{barSeries.name}" class="caption" on:click="{(event) => toggleBars(event)}">
-              <span class="dot" style="background-color: {colors ? colors[l]:'#ccc'};"></span>   
+            <button 
+              tabindex="0" 
+              value="{barSeries.name}" 
+              id="{idChart}_{cleanIdName(barSeries.name)}" 
+              aria-label="{barSeries.name}" 
+              class="caption" on:click="{
+                (event) => toggleBars(event)
+                }"
+            >
+              <span class="dot" style="background-color: {theme ? theme.colors[l]:'#ccc'};"></span>   
                 {barSeries.name}
             </button>
           {/each}

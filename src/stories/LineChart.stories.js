@@ -19,6 +19,6 @@ const Template = (args) => ({
 export const FirstTest = Template.bind({});
 FirstTest.args = {
   series: testLineSeries,
-  title: 'Test title',
+  title: 'First Line chart',
   desc: 'This description is accessible and  your screenreader will detect it.',
 };
