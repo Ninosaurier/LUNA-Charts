@@ -1,23 +1,24 @@
 <script lang="ts">
 
   import { onMount } from 'svelte';
-  import ThemeContext from '../theme/ThemeContext.svelte';
-  import {testTheme} from '../theme/defaultTheme';
+  import ThemeContext from '../core/ThemeContext.svelte';
+  import {defaultLineTheme} from '../theme/defaultTheme';
   import type { Point } from '../types/series/Point.type';
   import type { LineSeries } from '../types/series/LineSeries.type';
   import type {LineTheme} from '../types/theme/Theme.type';
   import {createHeaderTagForElement} from '../utils/accessibles';
   import {generateId} from '../utils/common';
+import { testLineSeries } from '../example_data/line_series';
 
   export let title: string = '';
   export let desc: string = "";
-  export let theme: LineTheme = testTheme;
+  export let theme: LineTheme = defaultLineTheme;
   export let width: string = "600";
   export let height: string = "200";
   export let yLabel: string = 'Y-Axis';
   export let xLabel: string = 'X-Axis';
   export let secondYLabel: string = 'Second Y-Axis';
-  export let series: LineSeries;
+  export let series: LineSeries[] = [];
   export let source: string = "";
 
   let svgWidth: number = 0;
@@ -75,7 +76,7 @@
     if(verticalInterceptionGroup.firstChild){verticalInterceptionGroup.removeChild(verticalInterceptionGroup.firstChild); }
     let button = event.target as HTMLElement;
 
-    let targetId: string = button.id.replace(/\s/g, "");
+    let targetId: string = button.id.replace(/\s/g, "").replace('-caption', '');
     let line: HTMLElement =  document.getElementById(targetId) as HTMLElement;
 
 
@@ -154,12 +155,6 @@
           <g transform='translate({svgWidth*0.7},{svgHeight*0.8}) scale(0.3 , 0.2)'>
             <text class="second_y_label" x="50%" y="15%">{secondYLabel}</text>
           </g>
-          <g transform='translate(0,{svgHeight*0.8}) scale(0.2 , 0.2)'>
-            <text class="y_label" x="50%" y="15%">{yLabel}</text>
-          </g>
-          <g transform='translate({svgWidth*0.7},{svgHeight*0.8}) scale(0.3 , 0.2)'>
-            <text class="second_y_label" x="50%" y="15%">{secondYLabel}</text>
-          </g>
         </g>
         <g class="axis" aria-hidden="true">
           <line class="" x1="10%"  x2="10%" y1="10%" y2="80%" stroke="black"/>
@@ -180,7 +175,7 @@
           
         </g>
         <g role="graphics-object" transform='translate({svgWidth*0.1},{svgHeight*0.1})' class="functions">
-          {#if Object.keys(series).length !== 0}
+          {#if series.length !== 0}
             {#each series as lines, l}
               <g id="{idChart}_{cleanIdName(lines.name)}" class="show_line">
                 <polyline points="{getPoints(lines.points)}" fill="none" stroke='{theme ? theme.colors[l]:'black'}'/>
@@ -199,10 +194,6 @@
                   r="3"/>
 
                   <text class="info blur_info" filter="url(#info_box)" x="{point.x+20}" y="{point.y*-1}" stroke="{theme ? theme.colors[l]:'black'}">{point.x},{point.y}</text>
-                  
-                  {#if p == (lines.points.length-1)}
-                    <text font-size="smaller" transform="scale(1 -1)" stroke="{theme ? theme.colors[l]:'black'}" x="{point.x+20}" y="{point.y*-1}">{lines.name}</text>
-                  {/if}
                 {/each}
                 
               </g>
@@ -213,9 +204,9 @@
       </svg>
     </div>
     <div class="captions" style="padding: 0 {svgWidth*0.1}px;">
-      {#if Object.keys(series).length !== 0}
+      {#if series.length !== 0}
         {#each series as line, l}
-          <button tabindex="0" id="{idChart}_{cleanIdName(line.name)}" aria-label="{line.name}" class="caption" on:click="{(event) => toogleCaption(event)}">
+          <button tabindex="0" id="{idChart}_{cleanIdName(line.name) + '-caption'}" aria-label="{line.name}" class="caption" on:click="{(event) => toogleCaption(event)}">
             <span class="dot" style="background-color: {theme ? theme.colors[l]:'#ccc'};"></span>   
               {line.name}
           </button>
@@ -230,7 +221,7 @@
 <style>
 
   .wrapper{
-    background-color: var(--chartStyles-backgroundColor);
+    background-color: var(--wrapperStyles-backgroundColor);
     display: inline-block;
   }
 
@@ -276,7 +267,8 @@
     transform:  scale(5, -5)  !important;
     transform-origin: center center;
     transform-box: fill-box;
-    font-size: 11px;
+    font-size: 14px;
+    background-color: var(--wrapperStyles-backgroundColor);
   }
 
   .y_label{
@@ -284,15 +276,17 @@
     transform-origin: center center;
     transform-box: fill-box;
     text-anchor: middle;
-    font-size: 11px;
+    font-size: 14px;
+    background-color: var(--wrapperStyles-backgroundColor);
   }
 
   .second_y_label{
     transform:  scale(3, -5)  !important;
     transform-origin: center center;
     transform-box: fill-box;
-    font-size: 11px;
+    font-size: 14px;
     text-anchor: middle;
+    background-color: var(--wrapperStyles-backgroundColor);
   }
 
   .captions{
@@ -324,7 +318,8 @@
 
   .grid_label > text{
     transform: scale(1, -1);
-    font-size: 9px;
+    font-size: 11px;
+    background-color: var(--wrapperStyles-backgroundColor);
   }
 
   .show_line{

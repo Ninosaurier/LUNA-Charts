@@ -6,7 +6,7 @@ export default {
   component: LineChart,
   argTypes: {
     title: 'Test title',
-    desc: 'This description is accessible and  your screenreader wil detect it.',
+    desc: 'This description is accessible and your screenreader will detect it.',
     source: 'https://www.capgemini.com/',
   },
 };
@@ -20,5 +20,11 @@ export const FirstTest = Template.bind({});
 FirstTest.args = {
   series: testLineSeries,
   title: 'First Line chart',
+  desc: 'This description is accessible and your screenreader will detect it.',
+};
+
+export const EmptyTest = Template.bind({});
+EmptyTest.args = {
+  title: 'Empty Chart',
   desc: 'This description is accessible and  your screenreader will detect it.',
 };

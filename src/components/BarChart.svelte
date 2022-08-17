@@ -3,24 +3,25 @@
 <script lang="ts">
 
     import { onMount } from 'svelte';
-    import ThemeContext from '../theme/ThemeContext.svelte';
-    import {testBarTheme} from '../theme/defaultTheme';
+    import ThemeContext from '../core/ThemeContext.svelte';
+    import {defaultBarTheme} from '../theme/defaultTheme';
     import {createHeaderTagForElement} from '../utils/accessibles';
     import {generateId} from '../utils/common';
-    import type { BarTheme } from '../types/theme/Theme.type';
-    import {testBarSeries} from '../example_data/bar_series'
+    import type { BarTheme, Colors } from '../types/theme/Theme.type';
     import type { BarSeries } from '../types/series/BarSeries.type';
+    import Hatch from '../hatches/Hatch.svelte';
 
     export let title: string = '';
     export let desc: string = "";
-    export let theme: BarTheme = testBarTheme;
+    export let theme: BarTheme = defaultBarTheme;
     export let width: string = "800";
     export let height: string = "300";
     export let yLabel: string = 'Y-Axis';
     export let xLabel: string = 'X-Axis';
     export let secondYLabel: string = 'Second Y-Axis';
-    export let series: BarSeries = testBarSeries;
+    export let series: BarSeries = {} as BarSeries;
     export let source: string = "";
+    export let hatchPatterns: boolean = false;
 
     let svgWidth: number = 0;
     let svgHeight: number = 0;
@@ -30,7 +31,6 @@
     let gridGap: number = 20;
     let barGap: number = 6;
     let barGroupSize: number = calculateBarGroupSize();
-
 
     onMount(async () => {
 
@@ -44,15 +44,26 @@
     }
 
     function calculateBarGroupSize(): number{
-
-      console.log('Breite: ', parseInt(width)*0.75)
-      console.log('calculateBarGroupSize: ', (parseInt(width)*0.75/series.category.length) - barGap*2);
-      return (parseInt(width)*0.75/series.category.length) - barGap*2;
+      
+      //console.log('calculateBarGroupSize: ', (parseInt(width)*0.75/series.category.length) - barGap*2);
+      if(!isSeriesEmpty(series)){
+        return (parseInt(width)*0.75/series.category.length) - barGap*2;
+      }
+      
+      return 0;
     }
 
     function calculateBarSize(): number{
 
-      return barGroupSize/series.series.length;
+      if (!isSeriesEmpty(series)){
+
+        return barGroupSize/series.series.length;
+      }
+      else{
+        console.log('Is it empty? YES!');
+      }
+
+      return 0;
     }
 
     function toggleBars(event: Event){
@@ -79,9 +90,19 @@
       }     
     }
 
+    function isSeriesEmpty(series: BarSeries): boolean{
+
+      if (series.series === undefined){
+        console.log('Series is empty');
+        return true;
+      }
+
+      return false;
+    }
+
 </script>
 
-<ThemeContext>
+<ThemeContext bind:theme={theme}>
     <div bind:this="{rootNode}" class="wrapper">
         <div bind:this="{headerChartParentTag}" class="chart_title">
         </div>
@@ -96,12 +117,29 @@
               <pattern id="{idChart}_grid_pattern"  width="{gridGap}" height="{gridGap}" patternUnits="userSpaceOnUse">
                   <path class="grid_path" d="M 0 {gridGap} H 0 {gridGap}" fill="none" stroke-width="0.5"/>
               </pattern>
-              <pattern id="diagonalHatch" patternUnits="userSpaceOnUse" width="4" height="4">
-                <path d="M-1,1 l2,-2
-                         M0,4 l4,-4
-                         M3,5 l2,-2" 
-                      style="stroke:black; stroke-width:1" />
-              </pattern>
+            </defs>
+            <defs>
+              <!-- {#if !isSeriesEmpty(series) && hatchPatterns}
+                {#each theme.hatches as hatch, hatchIndex}
+                <Hatch 
+                  pattern="{hatch}" 
+                  color="{theme.colors[hatchIndex]}" 
+                  idPattern="{idChart}_pattern_{series.series[hatchIndex].name}"
+                />
+                {/each}
+              {/if} -->
+              {#if !isSeriesEmpty(series) && hatchPatterns}
+                {#each theme.hatches as hatch, hatchIndex}
+                <Hatch 
+                  pattern="{hatch}" 
+                  color="{theme.colors[hatchIndex]}"
+                  idPattern="{
+                    series.series[hatchIndex] === undefined ? 
+                    '' : idChart + '_pattern_' + series.series[hatchIndex].name 
+                    }" 
+                />
+                {/each}
+              {/if}
             </defs>
             <g role="none" aria-hidden="true">
               <rect width="90%" class="background-chart"></rect> 
@@ -137,49 +175,54 @@
                 </text>
               {/each}
             </g>
-            <!-- Bug hier. Position der X-labels stimmen nicht -->
             <g class="x_grid_label" transform="translate({svgWidth*0.1}, 0)">     
             </g>
             <g role="graphics-object" transform='translate({svgWidth*0.1},{svgHeight*0.1})' class="functions">
-              {#each series.category as category, c}
-                <g transform='translate({barGap*2*c},0)'>
-                  {#each series.series as bar, barIndex}
-                    <rect 
-                      class="{bar.name}_bar show_bar" 
-                      fill="{theme ? theme.colors[barIndex]:'#ccc'}" 
-                      tabindex="0" 
-                      x="{(c*barGroupSize)+(calculateBarSize()*barIndex)}" 
-                      width="{calculateBarSize()}" 
-                      height="{bar.barValues[barIndex].value}">
-                    </rect>
-                    {/each}
-                    <g transform="translate({(c*barGroupSize)+(calculateBarSize())-(barGroupSize*0.1)},{svgHeight*0.025})">
-                      <text 
-                      text-anchor="middle" 
-                      class="x_grid_text_label">
-                      {category}
-                    </text>
-                    </g>
-                </g>
-              {/each}
+              {#if !isSeriesEmpty(series)}
+                {#each series.category as category, c}
+                  <g transform='translate({barGap*2*c},0)'>
+                    {#each series.series as bar, barIndex}
+                      <rect 
+                        stroke="{theme.colors[barIndex]}"
+                        style="stroke-width:4;"
+                        class="{bar.name}_bar show_bar"
+                        fill="{hatchPatterns ? 'url(#' + idChart + '_pattern_' + bar.name +')' : theme.colors[barIndex]}" 
+                        tabindex="0" 
+                        x="{(c*barGroupSize)+(calculateBarSize()*barIndex)}" 
+                        width="{calculateBarSize()}" 
+                        height="{bar.barValues[barIndex].value}">
+                      </rect>
+                      {/each}
+                      <g transform="translate({(c*barGroupSize)+(calculateBarSize())-(barGroupSize*0.1)},{svgHeight*0.05*(-1)})">
+                        <text 
+                        text-anchor="start" 
+                        class="x_grid_text_label">
+                        {category}
+                        </text>
+                      </g>
+                  </g>
+                {/each}
+              {/if}
             </g>
           </svg>
         </div>
         <div class="captions" style="padding: 0 {svgWidth*0.1}px;">
-          {#each series.series as barSeries, l}
-            <button 
-              tabindex="0" 
-              value="{barSeries.name}" 
-              id="{idChart}_{cleanIdName(barSeries.name)}" 
-              aria-label="{barSeries.name}" 
-              class="caption" on:click="{
-                (event) => toggleBars(event)
-                }"
-            >
-              <span class="dot" style="background-color: {theme ? theme.colors[l]:'#ccc'};"></span>   
-                {barSeries.name}
-            </button>
-          {/each}
+          {#if !isSeriesEmpty(series)}
+            {#each series.series as barSeries, l}
+              <button 
+                tabindex="0" 
+                value="{barSeries.name}" 
+                id="{idChart}_{cleanIdName(barSeries.name)}" 
+                aria-label="{barSeries.name}" 
+                class="caption" on:click="{
+                  (event) => toggleBars(event)
+                  }"
+              >
+                <span class="dot" style="background-color: {theme ? theme.colors[l]:'#ccc'};"></span>   
+                  {barSeries.name}
+              </button>
+            {/each}
+          {/if}
         </div>
         <div class="source">
           <a tabindex="0" href="{source}">Source: {source}</a>
@@ -191,25 +234,24 @@
 <style>
 
   .x_grid_text_label{
-    transform: scale(1, -1) rotate(-45deg);
-    transform-origin: center center;
+    transform: scale(1, -1);
     font-size: 9px;
   }
 
   .wrapper{
-    background-color: #f7f7f7;
+    background-color: var(--wrapperStyles-backgroundColor);
     display: inline-block;
   }
 
   .chart{
-      transform: scale(1,-1);
-      width: 100%;
-      height: 100%;
-      overflow: visible;
+    transform: scale(1,-1);
+    width: 100%;
+    height: 100%;
+    overflow: visible;
   }
 
   .grid_surface{
-      width: 75%;
+    width: 75%;
   }
 
   .grid{
@@ -224,7 +266,8 @@
     transform:  scale(5, -5)  !important;
     transform-origin: center center;
     transform-box: fill-box;
-    font-size: 11px;
+    font-size: 14px;
+    background-color: var(--wrapperStyles-backgroundColor);
   }
 
   .y_label{
@@ -232,15 +275,17 @@
     transform-origin: center center;
     transform-box: fill-box;
     text-anchor: middle;
-    font-size: 11px;
+    font-size: 14px;
+    background-color: var(--wrapperStyles-backgroundColor);
   }
 
   .second_y_label{
     transform:  scale(3, -5)  !important;
     transform-origin: center center;
     transform-box: fill-box;
-    font-size: 11px;
+    font-size: 14px;
     text-anchor: middle;
+    background-color: var(--wrapperStyles-backgroundColor);
   }
 
   .captions{
@@ -272,10 +317,15 @@
 
   .y_grid_label > text{
     transform: scale(1, -1);
-    font-size: 9px;
+    font-size: 12px;
+    background-color: var(--wrapperStyles-backgroundColor);
   }
 
-
+  .x_grid_text_label{
+    font-size: 11px;
+    letter-spacing: 0.2em;
+    background-color: var(--wrapperStyles-backgroundColor);
+  }
 
   :global(.hide_bar){
     display: none !important;
@@ -283,6 +333,7 @@
 
   :global(.show_bar){
     display: block !important;
+    stroke-width: 2px !important;
   }
 
   .dot {
@@ -307,4 +358,6 @@
   .chart_desc{
     text-align: center !important;
   }
+
+
 </style>

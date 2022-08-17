@@ -1,38 +1,17 @@
+//
+import { HATCH_PATTERNS } from '../types/theme/Hatch.type.ts';
+import { CONTRAST_COLORS } from '../types/theme/Theme.type.ts';
 import type { LineTheme, PieTheme, BarTheme } from '../types/theme/Theme.type';
 
-// eslint-disable-next-line import/prefer-default-export
-export const defaultTheme = [
-  {
-    name: 'default',
-    color: {
-      primary: '#1580bc',
-      secondary: '#bd8016',
-      tertiary: '#0ccd6c',
-      quaternary: '#cd0c0c',
-    },
-    circles: {
-      radius: '3px',
-      'focus-color': '#FF0000',
-      'focus-radius': '50px',
-    },
-    chart: {
-      'background-color': '#659DBD',
-    },
-    grid: {
-      color: '#ffffff',
-    },
-  },
-];
-
-export const testTheme: LineTheme = {
-  name: 'test-theme',
-  colors: ['#1580bc', '#bd8016', '#0ccd6c', '#cd0c0c'],
+export const defaultLineTheme: LineTheme = {
+  name: 'defaultLineTheme',
+  colors: CONTRAST_COLORS,
   circles: {
     radius: '3px',
-    focusColor: '#FF0000',
+    focusColor: '#000000',
     focusRadius: '50px',
   },
-  chartStyles: {
+  wrapperStyles: {
     backgroundColor: '#F7F7F7',
   },
   grid: {
@@ -41,21 +20,23 @@ export const testTheme: LineTheme = {
   },
 };
 
-export const testPieTheme: PieTheme = {
-  name: 'test-theme',
-  colors: ['#1580bc', '#bd8016', '#0ccd6c', '#cd0c0c'],
-  focusBorder: 'grey',
+export const defaultPieTheme: PieTheme = {
+  name: 'pieDefaultTheme',
+  colors: CONTRAST_COLORS,
+  focusBorder: '#e56db1',
+  wrapperStyles: { backgroundColor: '#F7F7F7' },
 };
 
-export const testBarTheme: BarTheme = {
-  name: 'test-theme',
-  colors: ['#1580bc', '#bd8016', '#0ccd6c', '#cd0c0c'],
-  focusColor: '#FF0000',
-  chartStyles: {
+export const defaultBarTheme: BarTheme = {
+  name: 'barDefaultTheme',
+  colors: CONTRAST_COLORS,
+  focusColor: '#000000',
+  wrapperStyles: {
     backgroundColor: '#F7F7F7',
   },
   grid: {
     gridColor: '',
     gridSize: '',
   },
+  hatches: [HATCH_PATTERNS.CIRCLES, HATCH_PATTERNS.DIAGONAL, HATCH_PATTERNS.H_LINE],
 };

@@ -1,4 +1,4 @@
-import { barChartTestData } from '../example_data/bar_series.ts';
+import { testBarSeries, testTwoBarSeries } from '../example_data/bar_series.ts';
 import BarChart from '../components/BarChart.svelte';
 
 export default {
@@ -6,7 +6,7 @@ export default {
   component: BarChart,
   argTypes: {
     title: 'Test title',
-    desc: 'This description is accessible and  your screenreader wil detect it.',
+    desc: 'This description is accessible and your screenreader will detect it.',
     source: 'https://www.capgemini.com/',
   },
 };
@@ -18,7 +18,29 @@ const Template = (args) => ({
 
 export const FirstTest = Template.bind({});
 FirstTest.args = {
-  series: barChartTestData,
+  series: testBarSeries,
+  hatchPatterns: true,
   title: 'Test title',
+  desc: 'This description is accessible and your screenreader will detect it.',
+};
+
+export const SecondTest = Template.bind({});
+SecondTest.args = {
+  series: testTwoBarSeries,
+  hatchPatterns: true,
+  title: 'Test title',
+  desc: 'This description is accessible and your screenreader will detect it.',
+};
+
+export const WithoutHatches = Template.bind({});
+WithoutHatches.args = {
+  series: testBarSeries,
+  title: 'Bar Chart',
+  desc: 'Hatches are not shown. Value of "hatchPatterns" are false.',
+};
+
+export const EmptyTest = Template.bind({});
+EmptyTest.args = {
+  title: 'Test title with empty Series',
   desc: 'This description is accessible and  your screenreader will detect it.',
 };

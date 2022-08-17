@@ -1,21 +1,21 @@
 import { Type } from '@sinclair/typebox';
 import type { Static } from '@sinclair/typebox';
 
-export const BarValue = Type.Object({
+const BarValueSchema = Type.Object({
   value: Type.Number(),
   ariaLabel: Type.String(),
 });
 
-export const Bar = Type.Object({
+const BarSchema = Type.Object({
   name: Type.String(),
-  barValues: Type.Array(BarValue),
+  barValues: Type.Array(BarValueSchema),
 });
 
-const BarSeries = Type.Object({
-  series: Type.Array(Bar),
+const BarSeriesSchema = Type.Object({
+  series: Type.Array(BarSchema),
   category: Type.Array(Type.String()),
 });
 
-export type BarValue = Static<typeof BarValue>;
-export type Bar = Static<typeof Bar>;
-export type BarSeries = Static<typeof BarSeries>;
+export type BarValue = Static<typeof BarValueSchema>;
+export type Bar = Static<typeof BarSchema>;
+export type BarSeries = Static<typeof BarSeriesSchema>;

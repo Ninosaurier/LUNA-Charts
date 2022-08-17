@@ -88,7 +88,7 @@ export const testLineSeries: LineSeries[] = [
     color: '',
   },
   {
-    name: 'Line 2',
+    name: 'test line 2',
     points: testLineTwo,
     color: '',
   },

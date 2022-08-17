@@ -38,18 +38,47 @@ const londonBarValues: BarValue[] = [
   },
 ];
 
+const berlinBarValues: BarValue[] = [
+  {
+    value: 100,
+    ariaLabel: 'The Rainfall for spring is: ',
+  },
+  {
+    value: 33,
+    ariaLabel: 'The Rainfall for summer is: ',
+  },
+  {
+    value: 93,
+    ariaLabel: 'The Rainfall for autumn is: ',
+  },
+  {
+    value: 65,
+    ariaLabel: 'The Rainfall for winter is: ',
+  },
+];
+
 const milanRainFall: Bar = {
-  name: 'milan',
+  name: 'Milan',
   barValues: milanBarValues,
 };
 
-const LondonRainFall: Bar = {
+const londonRainFall: Bar = {
   name: 'London',
   barValues: londonBarValues,
 };
 
+const berlinRainFall: Bar = {
+  name: 'Berlin',
+  barValues: berlinBarValues,
+};
+
 // eslint-disable-next-line import/prefer-default-export
 export const testBarSeries: BarSeries = {
-  series: [milanRainFall, LondonRainFall],
+  series: [milanRainFall, londonRainFall],
+  category: ['Spring', 'Summer', 'Autumn', 'Winter'],
+};
+
+export const testTwoBarSeries: BarSeries = {
+  series: [milanRainFall, londonRainFall, berlinRainFall],
   category: ['Spring', 'Summer', 'Autumn', 'Winter'],
 };

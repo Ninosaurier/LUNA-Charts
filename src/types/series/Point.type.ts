@@ -1,7 +1,7 @@
 import { Type } from '@sinclair/typebox';
 import type { Static } from '@sinclair/typebox';
 
-const Point = Type.Object({
+export const PointSchema = Type.Object({
   x: Type.Integer(),
   y: Type.Integer(),
   ariaLabel: Type.String({
@@ -10,4 +10,4 @@ const Point = Type.Object({
   }),
 });
 
-export type Point = Static<typeof Point>;
+export type Point = Static<typeof PointSchema>;
