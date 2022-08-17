@@ -19,7 +19,34 @@ const pieSlices: PieSlice[] = [
   },
 ];
 
+const problemSlices: PieSlice[] = [
+  {
+    name: 'Inter Milan',
+    percent: 0.50,
+  },
+  {
+    name: 'Bayern',
+    percent: 0.02,
+  },
+  {
+    name: 'Real Madrid',
+    percent: 0.02,
+  },
+  {
+    name: 'Liverpool',
+    percent: 0.01,
+  },
+  {
+    name: 'Rot Weiss Essen',
+    percent: 0.45,
+  },
+];
+
 // eslint-disable-next-line import/prefer-default-export
 export const testPieSeries: PieSeries = {
   slices: pieSlices,
+};
+
+export const problemPieSeries: PieSeries = {
+  slices: problemSlices,
 };

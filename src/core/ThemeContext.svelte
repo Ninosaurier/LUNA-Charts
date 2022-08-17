@@ -1,11 +1,10 @@
 <script lang="ts">
     import { setContext, onMount, getContext, getAllContexts } from "svelte";
     import { writable, get } from "svelte/store";
-    import { testTheme as presets } from "./defaultTheme";
     import type {LineTheme, PieTheme, BarTheme} from "../types/theme/Theme.type";
 
     // expose props for customization and set default values
-    export let theme: LineTheme | PieTheme | BarTheme = presets;
+    export let theme: LineTheme | PieTheme | BarTheme;
 
     // set state of current theme's name
     //let _current = presets[0].name;
@@ -40,7 +39,7 @@
   
     // sets CSS vars for easy use in components
     // ex: var(--theme-background)
-    const setRootColors = theme => {
+    const setRootColors = (theme:LineTheme | PieTheme | BarTheme) => {
       for (let [attr, obj] of Object.entries(theme)) {
         //   console.log(attr + ', ' + obj);
 
@@ -48,13 +47,20 @@
             continue;
         }
         else{
+
+            if(attr === "focusBorder"){
+              
+              console.log(`--${attr}`, `${obj}`)
+              document.documentElement.style.setProperty(`--${attr}`, `${obj}`);
+              continue;
+            }
             for(let [prop, value] of Object.entries(obj)){
 
                 let varString;
+                console.log('attr: ', attr)
 
                 if(attr !== 'colors'){
                   varString = `--${attr}-${prop}`;
-                  //console.log(varString)
                   document.documentElement.style.setProperty(varString, value);
                 }
             }
@@ -68,3 +74,9 @@
   <slot>
     <!-- content will go here -->
   </slot>
+
+<style>
+  :global(text){
+      font-family: 'Fira Sans', 'Helvetica Neue', 'Helvetica', sans-serif !important;
+  }
+</style>  

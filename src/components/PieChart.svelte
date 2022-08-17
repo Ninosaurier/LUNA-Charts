@@ -1,10 +1,10 @@
 <script lang="ts">
     import { onMount } from 'svelte';
     import {generateId} from '../utils/common';
-    import ThemeContext from '../theme/ThemeContext.svelte';
+    import ThemeContext from '../core/ThemeContext.svelte';
     import type {PieSeries, PieSlice} from './../types/series/PieSeries.Type';
     import type {PieTheme} from '../types/theme/Theme.type';
-    import {testPieTheme} from '../theme/defaultTheme';
+    import {defaultPieTheme} from '../theme/defaultTheme';
     import {testPieSeries} from '../example_data/pie_series';
     import {createHeaderTagForElement} from '../utils/accessibles';
     import {
@@ -15,7 +15,7 @@
 
     export let title: string = '';
     export let desc: string = "";
-    export let theme: PieTheme = testPieTheme;
+    export let theme: PieTheme = defaultPieTheme;
     export let width: string = "800";
     export let height: string = "300";
     export let series: PieSeries = testPieSeries;
@@ -81,7 +81,7 @@
     }
   
   </script>
-      <ThemeContext>
+      <ThemeContext bind:theme={theme}>
           <div id="{idChart}" bind:this="{rootNode}" class="wrapper">
             <div bind:this="{headerChartParentTag}" class="chart_title">
               
@@ -155,12 +155,13 @@
 <style>
 
   .wrapper{
-    background-color: #f7f7f7;
+    background-color: var(--wrapperStyles-backgroundColor);
     display: inline-block;
   }
 
   .pie_chart_text{
     font-size: 0.12px;
+    background-color: var(--wrapperStyles-backgroundColor);
   }
 
   .slice{
@@ -172,7 +173,7 @@
   }
 
   :global(.show_slice_border){
-    stroke: #646464;
+    stroke: var(--focusBorder);
     outline: none;
     stroke-width: 0.05px;
     stroke-linecap: square;
