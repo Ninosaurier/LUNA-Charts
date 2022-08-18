@@ -7,7 +7,7 @@
     import {defaultBarTheme} from '../theme/defaultTheme';
     import {createHeaderTagForElement} from '../utils/accessibles';
     import {generateId} from '../utils/common';
-    import type { BarTheme, Colors } from '../types/theme/Theme.type';
+    import type { BarTheme } from '../types/theme/Theme.type';
     import type { BarSeries } from '../types/series/BarSeries.type';
     import Hatch from '../hatches/Hatch.svelte';
 
@@ -29,14 +29,11 @@
     let headerChartParentTag: HTMLElement;
     let gridGap: number = 20;
     let barGap: number = 6;
-    let test: any;
     let barGroupSize: number = calculateBarGroupSize();
 
     onMount(async () => {
 
         idChart = generateId();
-        console.log('BarChart: ', test);
-        console.log('BarChart: ', headerChartParentTag);
         createHeaderTagForElement(headerChartParentTag, title);
     });
 
@@ -99,8 +96,8 @@
 
 </script>
 <ThemeContext bind:theme={theme}>
-    <div bind:this="{test}" class="wrapper">
-        <div bind:this={headerChartParentTag} class="chart_title">
+    <div class="wrapper">
+        <div bind:this="{headerChartParentTag}" class="chart_title">
         </div>
         <div tabindex="0" class="chart_desc" role="document" aria-labelledby="{idChart}_desc_chart">
             {desc}
