@@ -18,22 +18,21 @@
     export let theme: PieTheme = defaultPieTheme;
     export let width: string = "800";
     export let height: string = "300";
-    export let series: PieSeries = testPieSeries;
+    export let series: PieSeries = {} as PieSeries;
     export let source: string = "";
   
-    var svgWidth: number = 0;
-    var svgHeight: number = 0;
-    var colors: any[];
-    var showedInfoBox: SVGGElement;
-    var idChart: string;
-    var verticalInterceptionGroup: SVGGElement;
-    var rootNode: HTMLElement;
-    var headerChartParentTag: HTMLElement;
+    let colors: any[];
+    let idChart: string;
+    let headerChartParentTag: HTMLElement;
     let cumulativePercents:number[]  = partialSum(series.slices);
     let displayFront:SVGElement;  
 
-    function partialSum(series:PieSlice[], unshiftZero:boolean = true){
+    function partialSum(series:PieSlice[], unshiftZero:boolean = true): number[]{
       
+      if(series === undefined){
+        return [];
+      }
+
       let partialSliceSums:number[] = Array(series.length).fill(0);
 
       for(let i = 0; i<series.length; i++){
@@ -82,14 +81,14 @@
   
   </script>
       <ThemeContext bind:theme={theme}>
-          <div id="{idChart}" bind:this="{rootNode}" class="wrapper">
+          <div id="{idChart}" class="wrapper">
             <div bind:this="{headerChartParentTag}" class="chart_title">
               
             </div>
             <div class="chart_desc" tabindex="0" role="document">
               {desc}
             </div>
-            <div class="svg_wrap" bind:clientWidth="{svgWidth}" bind:clientHeight="{svgHeight}">
+            <div class="svg_wrap">
               <svg 
                 class="chart" 
                 role="graphics-document"
@@ -101,6 +100,7 @@
                 <title id="{idChart}_title_chart">{title}</title>
                 <desc id="{idChart}_desc_chart">{desc}</desc>
                 <g>
+                  {#if series.slices !== undefined}
                     {#each series.slices as slice, index }
                       <path 
                         class="slice"
@@ -140,7 +140,11 @@
                         >
                         {slice.name}
                       </text>
-                    {/each}                    
+                    {/each}
+                  {:else} 
+                    <text text-anchor="middle" class="pie_chart_text" >There are no series.</text>
+                  {/if}
+                            
                 </g>
                 <g class="display_front" bind:this="{displayFront}">
 

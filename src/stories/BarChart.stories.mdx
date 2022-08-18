@@ -1,0 +1,67 @@
+<!-- Checkbox.stories.mdx -->
+
+import { Canvas, Meta, Story, ArgsTable } from '@storybook/addon-docs';
+import { salesSeries } from '../example_data/bar_series.ts'
+
+import  BarChart  from '../components/BarChart.svelte';
+
+<Meta title="MDX/BarChart" component="{BarChart}" />
+
+export const Template = (args) => ({
+  Component: BarChart,
+  props: args,
+});
+
+# BarChart - Component
+
+Welcome, you cool developer, designer or UX-Engineer B-)
+
+Here I explain everything you need to know about the bar chart, from our library! 
+Let's go straight to it.
+
+## What is a bar chart good for?
+
+Balkendiagramme kennt jeder und werden häufig genutzt. Balkendiagramme kommen immer dann zum Einsatz, 
+wenn man Datenreihen hat und diese einfacher visualisieren möchte. Besonders eignen sie sich, 
+wenn man mehrere Elemente miteinander vergleichen möchte. Z.B. könnte du die Umsätze von mehreren 
+Unternehmen vergleichen und das quartalsweise. 
+
+## How it works
+
+Du benötigst nur einen Befehl: ```<BarChart /> ```. Die Library baut anhand des Tags ein vollständiges Balkendiagramm.
+Natürlich dürfen die Daten nicht fehlen. Welche Daten du übergeben kannst, findest du hier [here](#parameters).
+
+<Canvas>
+    <Story 
+        name="Introduction"
+        args={{ 
+            title: 'Company sales',
+            series: salesSeries,
+            yLabel: 'Sales in dollar',
+            secondYLabel: '',
+            xLabel: 'Time',
+            desc: 'This chart describes the sales of Apple, Microsoft and Google.',
+            source: 'https://www.w3.org/standards/webdesign/accessibility',
+        }}>
+        {Template.bind({})}
+    </Story>
+    <Story 
+        name="Hatches"
+        args={{ 
+            title: 'Company sales',
+            series: salesSeries,
+            yLabel: 'Sales in dollar',
+            secondYLabel: '',
+            xLabel: 'Time',
+            desc: 'This chart describes the sales of Apple, Microsoft and Google.',
+            source: 'https://www.w3.org/standards/webdesign/accessibility',
+            hatchPatterns: true
+        }}>
+        {Template.bind({})}
+    </Story>
+</Canvas>
+
+## Parameters
+
+<ArgsTable of={BarChart} />
+

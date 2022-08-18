@@ -1,4 +1,3 @@
-//
 import { HATCH_PATTERNS } from '../types/theme/Hatch.type.ts';
 import { CONTRAST_COLORS } from '../types/theme/Theme.type.ts';
 import type { LineTheme, PieTheme, BarTheme } from '../types/theme/Theme.type';

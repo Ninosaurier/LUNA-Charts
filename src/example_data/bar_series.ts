@@ -82,3 +82,80 @@ export const testTwoBarSeries: BarSeries = {
   series: [milanRainFall, londonRainFall, berlinRainFall],
   category: ['Spring', 'Summer', 'Autumn', 'Winter'],
 };
+
+const appleBarValues: BarValue[] = [
+  {
+    value: 100,
+    ariaLabel: 'The sales for spring is: ',
+  },
+  {
+    value: 33,
+    ariaLabel: 'The sales for summer is: ',
+  },
+  {
+    value: 93,
+    ariaLabel: 'The sales for autumn is: ',
+  },
+  {
+    value: 65,
+    ariaLabel: 'The sales for winter is: ',
+  },
+];
+
+const appleSales: Bar = {
+  name: 'Apple',
+  barValues: appleBarValues,
+};
+
+const microsoftBarValues: BarValue[] = [
+  {
+    value: 25,
+    ariaLabel: 'The sales for spring is: ',
+  },
+  {
+    value: 40,
+    ariaLabel: 'The sales for summer is: ',
+  },
+  {
+    value: 77,
+    ariaLabel: 'The sales for autumn is: ',
+  },
+  {
+    value: 111,
+    ariaLabel: 'The sales for winter is: ',
+  },
+];
+
+const microsoftSales: Bar = {
+  name: 'Microsoft',
+  barValues: microsoftBarValues,
+};
+
+const googleBarValues: BarValue[] = [
+  {
+    value: 45,
+    ariaLabel: 'The sales for spring is: ',
+  },
+  {
+    value: 55,
+    ariaLabel: 'The sales for summer is: ',
+  },
+  {
+    value: 85,
+    ariaLabel: 'The sales for autumn is: ',
+  },
+  {
+    value: 27,
+    ariaLabel: 'The sales for winter is: ',
+  },
+];
+
+const googletSales: Bar = {
+  name: 'Google',
+  barValues: googleBarValues,
+};
+
+export const salesSeries: BarSeries = {
+  series: [appleSales, microsoftSales, googletSales],
+  category: ['Spring', 'Summer', 'Autumn', 'Winter'],
+};

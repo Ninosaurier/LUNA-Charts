@@ -7,7 +7,8 @@ module.exports = {
     "@storybook/addon-links",
     "@storybook/addon-essentials",
     "@storybook/addon-a11y",
-    "@storybook/addon-interactions"
+    "@storybook/addon-interactions",
+    "@storybook/addon-docs"
   ],
   "framework": "@storybook/svelte",
   "core": {

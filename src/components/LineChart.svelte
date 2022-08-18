@@ -8,7 +8,6 @@
   import type {LineTheme} from '../types/theme/Theme.type';
   import {createHeaderTagForElement} from '../utils/accessibles';
   import {generateId} from '../utils/common';
-import { testLineSeries } from '../example_data/line_series';
 
   export let title: string = '';
   export let desc: string = "";
@@ -26,7 +25,6 @@ import { testLineSeries } from '../example_data/line_series';
   let showedInfoBox: SVGGElement;
   let idChart: string;
   let verticalInterceptionGroup: SVGGElement;
-  let rootNode: HTMLElement;
   let headerChartParentTag: HTMLElement;
   let gridGap: number = 20;
 
@@ -115,7 +113,7 @@ import { testLineSeries } from '../example_data/line_series';
 </script>
 
 <ThemeContext bind:theme={theme}>
-  <div bind:this="{rootNode}" class="wrapper" >
+  <div class="wrapper" >
     <div bind:this="{headerChartParentTag}" class="chart_title">
     </div>
     <div tabindex="0" role="document" class="chart_desc" aria-labelledby="{idChart}_desc_chart">

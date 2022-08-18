@@ -6,7 +6,7 @@ export let color:string = ''
 
 const square: string = "M 5 0 L 5 5 L 0 5 L 0 0 Z"; 
 const circles: string = "M 6 6 m -5 0 a 1 1 90 1 0 5 0 a 1 1 90 1 0 -5 0"; 
-const hLine: string = "M0,0 L8,0"; // L
+const hLine: string = "M0,0 L8,0";
 const diagonal: string = "M0,0 l8,10"; 
 
 const HATCHES: HatchPattern[] = [{
@@ -44,8 +44,6 @@ function getPatternByName(name: string) {
         stroke-width="{pattern === 'hLine' ? 12:2}">
     </path>
 </pattern>
-
-
 
 <style>
 

@@ -18,6 +18,7 @@ export function findParentHeaderOfElement(startNode: HTMLElement): number {
 }
 
 export function createHeaderTagForElement(parendNode: HTMLElement, title: string) {
+  console.log('parent: ', parendNode);
   const headerNumber = findParentHeaderOfElement(parendNode);
   let newHeader: HTMLElement;
 
@@ -25,7 +26,6 @@ export function createHeaderTagForElement(parendNode: HTMLElement, title: string
     // eslint-disable-next-line no-console
     console.warn(`Headline cannot be created. HTML allows only h1 - h6. The chart would get h${headerNumber + 1}`);
   } else {
-    // console.log('Headernumber: ', headerNumber);
 
     if (headerNumber === 0) {
       // eslint-disable-next-line no-console

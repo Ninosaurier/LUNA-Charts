@@ -26,15 +26,17 @@
     let svgWidth: number = 0;
     let svgHeight: number = 0;
     let idChart: string;
-    let rootNode: HTMLElement;
     let headerChartParentTag: HTMLElement;
     let gridGap: number = 20;
     let barGap: number = 6;
+    let test: any;
     let barGroupSize: number = calculateBarGroupSize();
 
     onMount(async () => {
 
         idChart = generateId();
+        console.log('BarChart: ', test);
+        console.log('BarChart: ', headerChartParentTag);
         createHeaderTagForElement(headerChartParentTag, title);
     });
 
@@ -45,7 +47,6 @@
 
     function calculateBarGroupSize(): number{
       
-      //console.log('calculateBarGroupSize: ', (parseInt(width)*0.75/series.category.length) - barGap*2);
       if(!isSeriesEmpty(series)){
         return (parseInt(width)*0.75/series.category.length) - barGap*2;
       }
@@ -58,9 +59,6 @@
       if (!isSeriesEmpty(series)){
 
         return barGroupSize/series.series.length;
-      }
-      else{
-        console.log('Is it empty? YES!');
       }
 
       return 0;
@@ -93,7 +91,6 @@
     function isSeriesEmpty(series: BarSeries): boolean{
 
       if (series.series === undefined){
-        console.log('Series is empty');
         return true;
       }
 
@@ -101,10 +98,9 @@
     }
 
 </script>
-
 <ThemeContext bind:theme={theme}>
-    <div bind:this="{rootNode}" class="wrapper">
-        <div bind:this="{headerChartParentTag}" class="chart_title">
+    <div bind:this="{test}" class="wrapper">
+        <div bind:this={headerChartParentTag} class="chart_title">
         </div>
         <div tabindex="0" class="chart_desc" role="document" aria-labelledby="{idChart}_desc_chart">
             {desc}
@@ -119,15 +115,6 @@
               </pattern>
             </defs>
             <defs>
-              <!-- {#if !isSeriesEmpty(series) && hatchPatterns}
-                {#each theme.hatches as hatch, hatchIndex}
-                <Hatch 
-                  pattern="{hatch}" 
-                  color="{theme.colors[hatchIndex]}" 
-                  idPattern="{idChart}_pattern_{series.series[hatchIndex].name}"
-                />
-                {/each}
-              {/if} -->
               {#if !isSeriesEmpty(series) && hatchPatterns}
                 {#each theme.hatches as hatch, hatchIndex}
                 <Hatch 
@@ -358,6 +345,4 @@
   .chart_desc{
     text-align: center !important;
   }
-
-
 </style>
