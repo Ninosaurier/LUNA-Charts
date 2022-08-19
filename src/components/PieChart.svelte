@@ -5,45 +5,46 @@
     import type {PieSeries, PieSlice} from './../types/series/PieSeries.Type';
     import type {PieTheme} from '../types/theme/Theme.type';
     import {defaultPieTheme} from '../theme/defaultTheme';
-    import {testPieSeries} from '../example_data/pie_series';
     import {createHeaderTagForElement} from '../utils/accessibles';
+    import type {ChartInfo} from '../types/attributes/ChartInfo.types';
+    import type {Dimension} from '../types/attributes/Dimension.type';
     import {
       calculateLargeArcFlagByPercent, 
       calculateXPositionOnCircleByPercent, 
       calculateYPositionOnCircleByPercent
     } from '../math/circleGeometry';
 
-    export let title: string = '';
-    export let desc: string = "";
+    export let chartInfo: ChartInfo = {
+      title: "Pie chart title",
+      desc: "This description is accessible and your screenreader will detect it.",
+      source: ""
+    } as ChartInfo
     export let theme: PieTheme = defaultPieTheme;
-    export let width: string = "800";
-    export let height: string = "300";
-    export let series: PieSeries = testPieSeries;
-    export let source: string = "";
+    export let dimension: Dimension = {width: "800", height: "300"} as Dimension;
+    export let series: PieSeries = {} as PieSeries;
   
-    var svgWidth: number = 0;
-    var svgHeight: number = 0;
-    var colors: any[];
-    var showedInfoBox: SVGGElement;
-    var idChart: string;
-    var verticalInterceptionGroup: SVGGElement;
-    var rootNode: HTMLElement;
-    var headerChartParentTag: HTMLElement;
+    let colors: any[];
+    let idChart: string;
+    let headerChartParentTag: HTMLElement;
     let cumulativePercents:number[]  = partialSum(series.slices);
     let displayFront:SVGElement;  
 
-    function partialSum(series:PieSlice[], unshiftZero:boolean = true){
+    function partialSum(slices:PieSlice[], unshiftZero:boolean = true){
       
-      let partialSliceSums:number[] = Array(series.length).fill(0);
+      if(slices === undefined){
+        return [] as number[];
+      }
 
-      for(let i = 0; i<series.length; i++){
+      let partialSliceSums:number[] = Array(slices.length).fill(0);
+
+      for(let i = 0; i<slices.length; i++){
 
         if(i === 0){
-          partialSliceSums[i] = series[i].percent;
+          partialSliceSums[i] = slices[i].percent;
         }
         else{
 
-          partialSliceSums[i] = partialSliceSums[i-1] + series[i].percent;
+          partialSliceSums[i] = partialSliceSums[i-1] + slices[i].percent;
         }
       }
 
@@ -56,13 +57,12 @@
 
       colors = Object.values(theme.colors);
       idChart = generateId(); 
-      createHeaderTagForElement(headerChartParentTag, title);
+      createHeaderTagForElement(headerChartParentTag, chartInfo.title);
     });
   
     function moveSliceForward(event: Event){
 
       let slice: SVGElement = (event.target as SVGElement);
-      //console.log(slice.getAttribute('d'));
       
       let sliceBorder: SVGElement = document.createElementNS('http://www.w3.org/2000/svg', 'path');
       sliceBorder.setAttribute('d', slice.getAttribute('d')!.toString());
@@ -76,31 +76,40 @@
       
       while (displayFront.firstChild) {
         displayFront.removeChild(displayFront.firstChild);
-        console.log('remove');
       }
     }
   
   </script>
       <ThemeContext bind:theme={theme}>
-          <div id="{idChart}" bind:this="{rootNode}" class="wrapper">
+          <div id="{idChart}" class="wrapper">
             <div bind:this="{headerChartParentTag}" class="chart_title">
               
             </div>
-            <div class="chart_desc" tabindex="0" role="document">
-              {desc}
+            <div class="chart_desc">
+              <p aria-label="{chartInfo.desc}" tabindex="0" role="note">{chartInfo.desc}</p>
             </div>
-            <div class="svg_wrap" bind:clientWidth="{svgWidth}" bind:clientHeight="{svgHeight}">
+            {#if series.slices === undefined}
+              <div                 
+              role="note"
+              aria-label="No series available"
+              tabindex="0" 
+              class="no_series_text">
+                  No series available
+              </div>
+            {/if}
+            <div class="svg_wrap">
               <svg 
                 class="chart" 
                 role="graphics-document"
                 aria-labelledby="{idChart}_desc_chart"
                 xmlns="http://www.w3.org/2000/svg" 
                 viewBox="-1.25 -1.25 2.5 2.5" 
-                width="{width}" height="{height}"
+                width="{dimension.width}" height="{dimension.height}"
               >
-                <title id="{idChart}_title_chart">{title}</title>
-                <desc id="{idChart}_desc_chart">{desc}</desc>
+                <title id="{idChart}_title_chart">{chartInfo.title}</title>
+                <desc id="{idChart}_desc_chart">{chartInfo.desc}</desc>
                 <g>
+                  {#if series.slices !== undefined}
                     {#each series.slices as slice, index }
                       <path 
                         class="slice"
@@ -140,16 +149,23 @@
                         >
                         {slice.name}
                       </text>
-                    {/each}                    
+                    {/each}                     
+
+                  {/if}
                 </g>
                 <g class="display_front" bind:this="{displayFront}">
 
                 </g>
               </svg>
             </div>
-            <div class="source">
-              <a tabindex="0" href="{source}">Source: {source}</a>
-            </div>  
+            {#if chartInfo.source !== ''}
+              <div class="source">
+                <a 
+                tabindex="0" 
+                aria-label="Read more about the source of the diagram and visit the website {chartInfo.source}" 
+                href="{chartInfo.source}">Source: {chartInfo.source}</a>
+              </div>
+            {/if}  
           </div>
       </ThemeContext>
 <style>
@@ -157,6 +173,15 @@
   .wrapper{
     background-color: var(--wrapperStyles-backgroundColor);
     display: inline-block;
+  }
+
+  .no_series_text{
+    font-size: 18px;
+    
+    margin: auto;
+    text-align: center;
+    margin-top: 40px;
+    background-color: var(--wrapperStyles-backgroundColor);
   }
 
   .pie_chart_text{
@@ -173,7 +198,7 @@
   }
 
   :global(.show_slice_border){
-    stroke: var(--focusBorder);
+    stroke: var(--focusColor);
     outline: none;
     stroke-width: 0.05px;
     stroke-linecap: square;

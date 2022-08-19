@@ -1,4 +1,3 @@
-//
 import { HATCH_PATTERNS } from '../types/theme/Hatch.type.ts';
 import { CONTRAST_COLORS } from '../types/theme/Theme.type.ts';
 import type { LineTheme, PieTheme, BarTheme } from '../types/theme/Theme.type';
@@ -23,14 +22,14 @@ export const defaultLineTheme: LineTheme = {
 export const defaultPieTheme: PieTheme = {
   name: 'pieDefaultTheme',
   colors: CONTRAST_COLORS,
-  focusBorder: '#e56db1',
+  focusColor: '#66ff99',
   wrapperStyles: { backgroundColor: '#F7F7F7' },
 };
 
 export const defaultBarTheme: BarTheme = {
   name: 'barDefaultTheme',
   colors: CONTRAST_COLORS,
-  focusColor: '#000000',
+  focusColor: '#66ff99',
   wrapperStyles: {
     backgroundColor: '#F7F7F7',
   },

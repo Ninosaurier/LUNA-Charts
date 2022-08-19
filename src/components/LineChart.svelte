@@ -8,25 +8,26 @@
   import type {LineTheme} from '../types/theme/Theme.type';
   import {createHeaderTagForElement} from '../utils/accessibles';
   import {generateId} from '../utils/common';
-import { testLineSeries } from '../example_data/line_series';
+  import type {ChartInfo} from '../types/attributes/ChartInfo.types';
+  import type {Dimension} from '../types/attributes/Dimension.type';
+  import {type Label, defaultLabel} from '../types/attributes/Labels.type';
 
-  export let title: string = '';
-  export let desc: string = "";
+  export let labels: Label = defaultLabel;
+  export let chartInfo: ChartInfo = {
+      title: "Line chart title",
+      desc: "This description is accessible and your screenreader will detect it.",
+      source: ""
+    } as ChartInfo
   export let theme: LineTheme = defaultLineTheme;
-  export let width: string = "600";
-  export let height: string = "200";
-  export let yLabel: string = 'Y-Axis';
-  export let xLabel: string = 'X-Axis';
-  export let secondYLabel: string = 'Second Y-Axis';
+  export let dimension: Dimension = {width: "600", height: "200"} as Dimension;
   export let series: LineSeries[] = [];
-  export let source: string = "";
+
 
   let svgWidth: number = 0;
   let svgHeight: number = 0;
   let showedInfoBox: SVGGElement;
   let idChart: string;
   let verticalInterceptionGroup: SVGGElement;
-  let rootNode: HTMLElement;
   let headerChartParentTag: HTMLElement;
   let gridGap: number = 20;
 
@@ -45,9 +46,8 @@ import { testLineSeries } from '../example_data/line_series';
   
 	onMount(async () => {
 
-    console.log('onMount() (LineChart)');
     idChart = generateId(); 
-    createHeaderTagForElement(headerChartParentTag, title);
+    createHeaderTagForElement(headerChartParentTag, chartInfo.title);
 	});
 
   function removeAllChildNodes(parent: SVGGElement) {
@@ -112,19 +112,34 @@ import { testLineSeries } from '../example_data/line_series';
     return name.replace(/\s/g, "");
   }
 
+  function isSeriesEmpty(series: LineSeries[]): boolean{
+    
+    if (series.length !== 0){
+      return true;
+    }
+
+    return false;
+  }
+
 </script>
 
 <ThemeContext bind:theme={theme}>
-  <div bind:this="{rootNode}" class="wrapper" >
+  <div class="wrapper" >
     <div bind:this="{headerChartParentTag}" class="chart_title">
     </div>
-    <div tabindex="0" role="document" class="chart_desc" aria-labelledby="{idChart}_desc_chart">
-      {desc}
+    <div tabindex="0" role="note" class="chart_desc" aria-label="{chartInfo.desc}">
+      {chartInfo.desc}
     </div>
     <div class="svg_wrap" bind:clientWidth="{svgWidth}" bind:clientHeight="{svgHeight}">
-      <svg class="chart" role="graphics-document" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 200" width="{width}" height="{height}">
-        <title id="{idChart}_title_chart">{title}</title>
-        <desc id="{idChart}_desc_chart">{desc}</desc>
+      <svg 
+        class="chart" 
+        role="graphics-document" 
+        xmlns="http://www.w3.org/2000/svg" 
+        viewBox="0 0 600 200" 
+        width="{dimension.width}" 
+        height="{dimension.height}">
+        <title id="{idChart}_title_chart">{chartInfo.title}</title>
+        <desc id="{idChart}_desc_chart">{chartInfo.desc}</desc>
         <defs>
           <pattern id="{idChart}_grid_pattern"  width="{gridGap}" height="{gridGap}" patternUnits="userSpaceOnUse">
               <path class="grid_path" d="M 0 {gridGap} L 0 0 {gridGap} 0" fill="none" stroke-width="0.5"/>
@@ -143,17 +158,24 @@ import { testLineSeries } from '../example_data/line_series';
           <rect width="90%" class="background-chart"></rect> 
         </g>
         <g class="grid" transform='translate({svgWidth*0.1},{svgHeight*0.1}) ' aria-hidden="true">
-          <rect class="grid_surface" height="{svgHeight*0.7}" fill="url(#{idChart}_grid_pattern)" transform="scale(1, 1)"></rect>
+          {#if isSeriesEmpty(series)}
+            <rect 
+              class="grid_surface" 
+              height="{svgHeight*0.7}" 
+              fill="url(#{idChart}_grid_pattern)" 
+              transform="scale(1, 1)">
+            </rect>
+          {/if}
         </g>
         <g class="labels">
           <g transform='translate({svgWidth*0.9},{svgHeight*0.1}) scale(0.2 , 0.2)'>
-            <text class="x_label">{xLabel}</text>
+            <text class="x_label">{labels.x}</text>
           </g>
           <g transform='translate(0,{svgHeight*0.8}) scale(0.2 , 0.2)'>
-            <text class="y_label" x="50%" y="15%">{yLabel}</text>
+            <text class="y_label" x="50%" y="15%">{labels.y}</text>
           </g>
           <g transform='translate({svgWidth*0.7},{svgHeight*0.8}) scale(0.3 , 0.2)'>
-            <text class="second_y_label" x="50%" y="15%">{secondYLabel}</text>
+            <text class="second_y_label" x="50%" y="15%">{labels.y}</text>
           </g>
         </g>
         <g class="axis" aria-hidden="true">
@@ -162,14 +184,16 @@ import { testLineSeries } from '../example_data/line_series';
           <line class="" x1="85%"  x2="85%" y1="10%" y2="80%" stroke="black"/>
         </g>
         <g class="grid_label" transform="translate(1, {svgHeight*0.1})" >
-          {#each Array(Math.floor((svgHeight*0.7)/gridGap)) as _, i}
-            <text text-anchor="middle" alignment-baseline="central"  x="5%" y="{(gridGap*i*-1)}">{gridGap*i}</text>
-          {/each}
-          {#each Array(Math.floor((svgWidth*0.8)/gridGap)) as _, i}
-            {#if i%2 == 0}
-            <text text-anchor="middle"  x="{(gridGap*i)+(svgWidth*0.1)}" y="7%">{gridGap*i}</text>
-            {/if}
-          {/each}
+          {#if isSeriesEmpty(series)}
+            {#each Array(Math.floor((svgHeight*0.7)/gridGap)) as _, i}
+              <text text-anchor="middle" alignment-baseline="central"  x="5%" y="{(gridGap*i*-1)}">{gridGap*i}</text>
+            {/each}
+            {#each Array(Math.floor((svgWidth*0.8)/gridGap)) as _, i}
+              {#if i%2 == 0}
+              <text text-anchor="middle"  x="{(gridGap*i)+(svgWidth*0.1)}" y="7%">{gridGap*i}</text>
+              {/if}
+            {/each}
+          {/if}
         </g>
         <g id="vertical_intercept" bind:this="{verticalInterceptionGroup}" transform='translate({svgWidth*0.1},0)'>
           
@@ -186,7 +210,7 @@ import { testLineSeries } from '../example_data/line_series';
                   tabindex="0"
                   class="point"
                   role="graphics-symbol" 
-                  aria-label="{point.ariaLabel}. This is point {p+1} of {lines.points.length}" 
+                  aria-label="{point.ariaLabel}. This is point {p+1} of {lines.points.length} from {lines.name}." 
                   stroke="{theme ? theme.colors[l]:'black'}" 
                   fill="{theme ? theme.colors[l]:'black'}"  
                   cx="{point.x}" 
@@ -197,7 +221,17 @@ import { testLineSeries } from '../example_data/line_series';
                 {/each}
                 
               </g>
-            {/each}  
+            {/each}
+          {:else}  
+            <text 
+              x="25%"
+              y="-30%"
+              tabindex="0"
+              role="note" 
+              class="no_series_label"
+              aria-label="No series available">
+              No series available
+            </text>
           {/if}
         </g>
         <g bind:this="{showedInfoBox}" role="graphics-object" transform='translate({svgWidth*0.1},{svgHeight*0.1}) scale(1, -1)' id="actually_focus"></g>
@@ -213,9 +247,11 @@ import { testLineSeries } from '../example_data/line_series';
         {/each}
       {/if}
     </div>
-    <div class="source">
-      <a tabindex="0" href="{source}">Source: {source}</a>
-    </div>
+    {#if chartInfo.source !== ''}
+      <div class="source">
+        <a tabindex="0" aria-label="Read more about the source of the diagram and visit the website {chartInfo.source}" href="{chartInfo.source}">Source: {chartInfo.source}</a>
+      </div>
+    {/if}
   </div>
 </ThemeContext>
 <style>

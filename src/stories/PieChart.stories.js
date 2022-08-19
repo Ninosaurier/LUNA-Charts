@@ -1,4 +1,4 @@
-import { pieSeriesExample, problemPieSeries } from '../example_data/pie_series.ts';
+import { testPieSeries } from '../example_data/pie_series.ts';
 import PieChart from '../components/PieChart.svelte';
 
 export default {
@@ -18,14 +18,13 @@ const Template = (args) => ({
 
 export const FirstTest = Template.bind({});
 FirstTest.args = {
-  series: pieSeriesExample,
+  series: testPieSeries,
   title: 'Pie Chart',
   desc: 'This description is accessible and your screenreader will detect it.',
 };
 
-export const ProblemTest = Template.bind({});
-ProblemTest.args = {
-  series: problemPieSeries,
-  title: 'Problem of the Pie Chart',
-  desc: 'This happens, then a lot of series has a little percent value.',
+export const EmptyTest = Template.bind({});
+EmptyTest.args = {
+  title: 'Empty pie Chart',
+  desc: 'This description is accessible and your screenreader will detect it.',
 };

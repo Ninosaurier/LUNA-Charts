@@ -39,7 +39,7 @@ export type LineTheme = Static<typeof LineThemeSchema>;
 export const PieThemeSchema = Type.Object({
   name: Type.String(),
   colors: Colors,
-  focusBorder: Type.String(),
+  focusColor: Type.String(),
   wrapperStyles: WrapperStyle,
 });
 

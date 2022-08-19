@@ -1,0 +1,130 @@
+import { Canvas, Meta, Story, ArgsTable  } from '@storybook/addon-docs';
+import { testPieSeries } from '../example_data/pie_series.ts';
+import {defaultLabel} from '../types/attributes/Labels.type';
+
+import PieChart from '../components/PieChart.svelte';
+
+<Meta title="MDX/PieChart" component={PieChart} />
+
+# PieChart - Component
+
+## What is a pie chart needed for?
+
+Line charts illustrate quantitative information as a series of data points connected by a line. 
+These charts are often used to visualize data that changes over time
+
+## Basic example
+
+Below you can see an accessible diagram, with all its functions. Feel free to navigate with the 
+tab key to navigate over the diagram. The screen reader will recognize 
+the necessary text areas and read them for you.
+
+
+export const Template = (args) => ({
+  Component: PieChart,
+  props: args,
+});
+
+<Canvas>
+  <Story 
+    name="Basic example"
+    args={{
+      chartInfo: {
+        title: "Browser market share",
+        desc: "This is a accessible description. Your screenreader will read it for you.",
+        source: "https://www.w3.org"
+      },
+      series: testPieSeries,
+    }}>
+    {Template.bind({})}
+  </Story>
+</Canvas>
+
+### Adding Information
+
+In order to understand what the chart should represent, we will add some information to the chart. 
+For this we use the data type **ChartInfo**. With **ChartInfo** you can give the chart a title, 
+a description and a source. The special thing about the title is that the chart automatically generates the correct header tag.
+Should there be a **h1**-tag on the web page, 
+the title will automatically adapt and create a **h2**-tag.
+
+```ts
+import type {ChartInfo} from '../types/attributes/ChartInfo.types';
+
+export let chartInfo: ChartInfo = {
+  title: "A typical line chart",
+  desc: "This is a accessible description. Your screenreader will read it for you.",
+  source: "https://www.w3.org"
+} as ChartInfo
+```
+### Adding series
+
+To visualize the lines, we still need to give the Series to the diagram. For each diagram there is a suitable
+data type. For a pie chart we use **PieSeries**. Furthermore we need 
+the data type **PieSlice**.
+
+```ts
+import type { PieSeries, PieSlice } from '../types/series/PieSeries.Type';
+
+const pieSlices: PieSlice[] = [
+  {
+    name: 'Firefox',
+    percent: 0.35,
+  },
+  {
+    name: 'Chrome',
+    percent: 0.35,
+  },
+  {
+    name: 'Safari',
+    percent: 0.2,
+  },
+  {
+    name: 'IE',
+    percent: 0.1,
+  },
+];
+
+export const testPieSeries: PieSeries = {
+  slices: pieSlices,
+};
+
+```
+### Theming
+
+You can add colors to the diagram. But you don't have to. The library provides automatically defined colors.
+You can find them in "src/theme/defaultTheme.ts". Here is an example:
+
+```ts
+import { CONTRAST_COLORS } from '../types/theme/Theme.type.ts';
+import type { PieTheme } from '../types/theme/Theme.type';
+
+export const defaultPieTheme: PieTheme = {
+  name: 'pieDefaultTheme',
+  colors: CONTRAST_COLORS,
+  focusColor: '#66ff99',
+  wrapperStyles: { backgroundColor: '#F7F7F7' },
+};
+```
+At this point, there is one more small feature. The library creates a CSS variable from each attribute.
+Except **colors**. For example, if you want to use the color of the wrapper in the style, 
+you can write the following:
+
+```css
+.an_element{
+  background-color: var(--wrapperStyles-backgroundColor);
+}
+```
+
+### Dimension
+
+With **Dimension** you can give the diagram a fixed width and size:
+```ts
+import type {Dimension} from '../types/attributes/Dimension.type';
+
+export let dimension: Dimension = {width: "800", height: "300"} as Dimension;
+```
+
+# Arguments
+
+<ArgsTable of={PieChart} />

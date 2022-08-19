@@ -24,12 +24,14 @@ FirstTest.args = {
   desc: 'This description is accessible and your screenreader will detect it.',
 };
 
-export const SecondTest = Template.bind({});
-SecondTest.args = {
+export const WithSecondYLabel = Template.bind({});
+WithSecondYLabel.args = {
   series: testTwoBarSeries,
   hatchPatterns: true,
   title: 'Test title',
   desc: 'This description is accessible and your screenreader will detect it.',
+  secondYLabel: 'Second Y Label',
+  source: 'http://www.capgemini.com',
 };
 
 export const WithoutHatches = Template.bind({});
