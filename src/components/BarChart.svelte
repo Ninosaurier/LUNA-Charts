@@ -12,9 +12,9 @@
     import Hatch from '../hatches/Hatch.svelte';
     import type {ChartInfo} from '../types/attributes/ChartInfo.types';
     import type {Dimension} from '../types/attributes/Dimension.type';
-    import {type Label, defaultLabel} from '../types/attributes/Labels.type';
+    import {type Labels, defaultLabel} from '../types/attributes/Labels.type';
 
-    export let labels: Label = defaultLabel;
+    export let labels: Labels = defaultLabel;
     export let chartInfo: ChartInfo = {
       title: "Bar chart title",
       desc: "This description is accessible and your screenreader will detect it.",
