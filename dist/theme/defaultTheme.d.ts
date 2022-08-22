@@ -8,11 +8,11 @@ export declare const defaultTheme: {
     };
     circles: {
         radius: string;
-        "focus-color": string;
-        "focus-radius": string;
+        'focus-color': string;
+        'focus-radius': string;
     };
     chart: {
-        "background-color": string;
+        'background-color': string;
     };
     grid: {
         color: string;
