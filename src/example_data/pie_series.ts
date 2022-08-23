@@ -1,5 +1,5 @@
 import type { PieSeries, PieSlice } from '../types/series/PieSeries.Type';
-import {CONTRAST_COLORS} from '../types/theme/Theme.type'
+import { CONTRAST_COLORS } from '../types/theme/Theme.type';
 
 const pieSlices: PieSlice[] = [
   {

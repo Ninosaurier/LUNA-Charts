@@ -7,7 +7,7 @@
     import {defaultPieTheme} from '../theme/defaultTheme';
     import {createHeaderTagForElement} from '../utils/accessibles';
     import type {ChartInfo} from '../types/attributes/ChartInfo.type';
-    import type {PiDimension} from '../types/attributes/PieDimension.type';
+    import type {PieDimension} from '../types/attributes/PieDimension.type';
     import {
       calculateLargeArcFlagByPercent,
       calculateXPositionOnCircleByPercent,
@@ -20,7 +20,7 @@
       source: ""
     } as ChartInfo
     export let theme: PieTheme = defaultPieTheme;
-    export let dimension: PiDimension = {width: "800", height: "300", resolution:800, zoom:1.2} as PiDimension;
+    export let dimension: PieDimension = {width: "800", height: "300", resolution:800, zoom:1.2} as PieDimension;
     export let series: PieSeries = {} as PieSeries;
 
     let colors: any[];
@@ -76,7 +76,7 @@
       let name: string = (event.target as SVGElement).id + "_low_legend";
 
       if( document.getElementById(name) !== null){
-        document.getElementById(name).classList.remove("marked_legend");
+        document.getElementById(name)?.classList.remove("marked_legend");
       }
     }
 
@@ -84,7 +84,7 @@
       let name: string = (event.target as SVGElement).id + "_low_legend";
 
       if( document.getElementById(name) !== null){
-        document.getElementById(name).classList.add("marked_legend");
+        document.getElementById(name)?.classList.add("marked_legend");
       }
     }
 
@@ -101,7 +101,7 @@
             <div bind:this="{headerChartParentTag}" class="chart_title">
 
             </div>
-            <div class="chart_desc" bind:clientWidth="{dimension.width}">
+            <div class="chart_desc">
               <p aria-label="{chartInfo.desc}" tabindex="0" role="note">{chartInfo.desc}</p>
             </div>
             <div class="svg_wrap">

@@ -1,5 +1,5 @@
-import { HATCH_PATTERNS } from '../types/theme/Hatch.type.ts';
-import { CONTRAST_COLORS } from '../types/theme/Theme.type.ts';
+import { HATCH_PATTERNS } from '../types/theme/Hatch.type';
+import { CONTRAST_COLORS } from '../types/theme/Theme.type';
 import type { LineTheme, PieTheme, BarTheme } from '../types/theme/Theme.type';
 
 export const defaultLineTheme: LineTheme = {

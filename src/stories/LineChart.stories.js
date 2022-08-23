@@ -1,4 +1,4 @@
-import { testLineSeries } from '../example_data/line_series.ts';
+import { testLineSeries } from '../example_data/line_series';
 import LineChart from '../components/LineChart.svelte';
 
 export default {

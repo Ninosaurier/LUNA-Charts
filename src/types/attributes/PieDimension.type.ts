@@ -1,11 +1,11 @@
 import { Type } from '@sinclair/typebox';
 import type { Static } from '@sinclair/typebox';
 
-const PiDimensionSchema = Type.Object({
+const PieDimensionSchema = Type.Object({
   width: Type.String(),
   height: Type.String(),
   resolution: Type.Number(),
   zoom: Type.Number(),
 });
 
-export type PiDimension = Static<typeof PiDimensionSchema>;
+export type PieDimension = Static<typeof PieDimensionSchema>;

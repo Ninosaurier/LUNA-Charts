@@ -1,4 +1,4 @@
-import { testPieSeries } from '../example_data/pie_series.ts';
+import { testPieSeries } from '../example_data/pie_series';
 import PieChart from '../components/PieChart.svelte';
 
 export default {

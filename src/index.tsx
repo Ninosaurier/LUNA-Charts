@@ -6,6 +6,7 @@ export * as AccessibleChartTypes from './types/series/Point.type';
 
 export type { ChartInfo } from './types/attributes/ChartInfo.type';
 export type { Dimension } from './types/attributes/Dimension.type';
+export type { PieDimension } from './types/attributes/PieDimension.type';
 export type { Labels } from './types/attributes/Labels.type';
 
 export type { BarSeries, Bar, BarValue } from './types/series/BarSeries.type';

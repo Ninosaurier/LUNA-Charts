@@ -70,18 +70,22 @@ const pieSlices: PieSlice[] = [
   {
     name: 'Firefox',
     percent: 0.35,
+    color: 'ff0000',
   },
   {
     name: 'Chrome',
     percent: 0.35,
+    color: 'ffff00',
   },
   {
     name: 'Safari',
     percent: 0.2,
+    color: 'ffffff',
   },
   {
     name: 'IE',
     percent: 0.1,
+    color: '000000',
   },
 ];
 
@@ -120,9 +124,9 @@ you can write the following:
 
 With **Dimension** you can give the diagram a fixed width and size:
 ```ts
-import type {Dimension} from '../types/attributes/Dimension.type';
+import type {PieDimension} from '../types/attributes/PieDimension.type';
 
-export let dimension: Dimension = {width: "800", height: "300"} as Dimension;
+export let dimension: PieDimension = {width: "800", height: "300", resolution:800, zoom:1.2} as PieDimension;
 ```
 
 # Arguments

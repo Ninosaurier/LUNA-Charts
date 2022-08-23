@@ -1,4 +1,4 @@
-import { testBarSeries, testTwoBarSeries } from '../example_data/bar_series.ts';
+import { testBarSeries, testTwoBarSeries } from '../example_data/bar_series';
 import BarChart from '../components/BarChart.svelte';
 
 export default {
