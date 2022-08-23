@@ -8,7 +8,7 @@
   import type {LineTheme} from '../types/theme/Theme.type';
   import {createHeaderTagForElement} from '../utils/accessibles';
   import {generateId} from '../utils/common';
-  import type {ChartInfo} from '../types/attributes/ChartInfo.types';
+  import type {ChartInfo} from '../types/attributes/ChartInfo.type';
   import type {Dimension} from '../types/attributes/Dimension.type';
   import {type Labels, defaultLabel} from '../types/attributes/Labels.type';
 
@@ -43,10 +43,10 @@
 
     return polyPoints;
   }
-  
+
 	onMount(async () => {
 
-    idChart = generateId(); 
+    idChart = generateId();
     createHeaderTagForElement(headerChartParentTag, chartInfo.title);
 	});
 
@@ -64,7 +64,7 @@
     element.classList.add('show_info');
     element.classList.remove('blur_info');
     showedInfoBox.appendChild(element);
-  
+
   }
 
   function blurInfoBox(){
@@ -98,7 +98,7 @@
     interception.setAttribute('stroke', 'black');
 
     verticalInterceptionGroup.appendChild(interception);
-    
+
   }
 
   function removeVerticalInterception(){
@@ -113,12 +113,12 @@
   }
 
   function isSeriesEmpty(series: LineSeries[]): boolean{
-    
+
     if (series.length !== 0){
-      return true;
+      return false;
     }
 
-    return false;
+    return true;
   }
 
 </script>
@@ -131,12 +131,12 @@
       {chartInfo.desc}
     </div>
     <div class="svg_wrap" bind:clientWidth="{svgWidth}" bind:clientHeight="{svgHeight}">
-      <svg 
-        class="chart" 
-        role="graphics-document" 
-        xmlns="http://www.w3.org/2000/svg" 
-        viewBox="0 0 600 200" 
-        width="{dimension.width}" 
+      <svg
+        class="chart"
+        role="graphics-document"
+        xmlns="http://www.w3.org/2000/svg"
+        viewBox="0 0 600 200"
+        width="{dimension.width}"
         height="{dimension.height}">
         <title id="{idChart}_title_chart">{chartInfo.title}</title>
         <desc id="{idChart}_desc_chart">{chartInfo.desc}</desc>
@@ -155,14 +155,14 @@
           </filter>
         </defs>
         <g role="none" aria-hidden="true">
-          <rect width="90%" class="background-chart"></rect> 
+          <rect width="90%" class="background-chart"></rect>
         </g>
         <g class="grid" transform='translate({svgWidth*0.1},{svgHeight*0.1}) ' aria-hidden="true">
-          {#if isSeriesEmpty(series)}
-            <rect 
-              class="grid_surface" 
-              height="{svgHeight*0.7}" 
-              fill="url(#{idChart}_grid_pattern)" 
+          {#if !isSeriesEmpty(series)}
+            <rect
+              class="grid_surface"
+              height="{svgHeight*0.7}"
+              fill="url(#{idChart}_grid_pattern)"
               transform="scale(1, 1)">
             </rect>
           {/if}
@@ -184,7 +184,7 @@
           <line class="" x1="85%"  x2="85%" y1="10%" y2="80%" stroke="black"/>
         </g>
         <g class="grid_label" transform="translate(1, {svgHeight*0.1})" >
-          {#if isSeriesEmpty(series)}
+          {#if !isSeriesEmpty(series)}
             {#each Array(Math.floor((svgHeight*0.7)/gridGap)) as _, i}
               <text text-anchor="middle" alignment-baseline="central"  x="5%" y="{(gridGap*i*-1)}">{gridGap*i}</text>
             {/each}
@@ -196,7 +196,7 @@
           {/if}
         </g>
         <g id="vertical_intercept" bind:this="{verticalInterceptionGroup}" transform='translate({svgWidth*0.1},0)'>
-          
+
         </g>
         <g role="graphics-object" transform='translate({svgWidth*0.1},{svgHeight*0.1})' class="functions">
           {#if series.length !== 0}
@@ -204,30 +204,30 @@
               <g id="{idChart}_{cleanIdName(lines.name)}" class="show_line">
                 <polyline points="{getPoints(lines.points)}" fill="none" stroke='{theme ? theme.colors[l]:'black'}'/>
                 {#each lines.points as point, p}
-                  <circle 
+                  <circle
                   on:focus="{(event) => {showInfoBox(event); showVerticalInterception(event);}}"
                   on:blur="{() => {blurInfoBox(); removeVerticalInterception()}}"
                   tabindex="0"
                   class="point"
-                  role="graphics-symbol" 
-                  aria-label="{point.ariaLabel}. This is point {p+1} of {lines.points.length} from {lines.name}." 
-                  stroke="{theme ? theme.colors[l]:'black'}" 
-                  fill="{theme ? theme.colors[l]:'black'}"  
-                  cx="{point.x}" 
-                  cy="{point.y}" 
+                  role="graphics-symbol"
+                  aria-label="{point.ariaLabel}. This is point {p+1} of {lines.points.length} from {lines.name}."
+                  stroke="{theme ? theme.colors[l]:'black'}"
+                  fill="{theme ? theme.colors[l]:'black'}"
+                  cx="{point.x}"
+                  cy="{point.y}"
                   r="3"/>
 
                   <text class="info blur_info" filter="url(#info_box)" x="{point.x+20}" y="{point.y*-1}" stroke="{theme ? theme.colors[l]:'black'}">{point.x},{point.y}</text>
                 {/each}
-                
+
               </g>
             {/each}
-          {:else}  
-            <text 
+          {:else}
+            <text
               x="25%"
               y="-30%"
               tabindex="0"
-              role="note" 
+              role="note"
               class="no_series_label"
               aria-label="No series available">
               No series available
@@ -241,7 +241,7 @@
       {#if series.length !== 0}
         {#each series as line, l}
           <button tabindex="0" id="{idChart}_{cleanIdName(line.name) + '-caption'}" aria-label="{line.name}" class="caption" on:click="{(event) => toogleCaption(event)}">
-            <span class="dot" style="background-color: {theme ? theme.colors[l]:'#ccc'};"></span>   
+            <span class="dot" style="background-color: {theme ? theme.colors[l]:'#ccc'};"></span>
               {line.name}
           </button>
         {/each}
@@ -374,7 +374,7 @@
     font-size: 9px !important;
     font-weight: lighter;
     letter-spacing: 2px;
-  } 
+  }
 
   .blur_info{
     display: none;
@@ -398,7 +398,7 @@
     display: inline-block;
     pointer-events: none;
   }
-  
+
   .chart_title{
     text-align: center;
   }

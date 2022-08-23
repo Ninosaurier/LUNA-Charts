@@ -4,9 +4,9 @@ export { default as BarChart } from './components/BarChart.svelte';
 export { default as PieChart } from './components/PieChart.svelte';
 export * as AccessibleChartTypes from './types/series/Point.type';
 
-export { type ChartInfo } from './types/attributes/ChartInfo.types';
-export { type Dimension } from './types/attributes/Dimension.type';
-export { type Labels } from './types/attributes/Labels.type';
+export type { ChartInfo } from './types/attributes/ChartInfo.type';
+export type { Dimension } from './types/attributes/Dimension.type';
+export type { Labels } from './types/attributes/Labels.type';
 
 export type { BarSeries, Bar, BarValue } from './types/series/BarSeries.type';
 export type { LineSeries } from './types/series/LineSeries.type';

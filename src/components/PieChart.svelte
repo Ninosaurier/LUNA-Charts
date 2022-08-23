@@ -6,11 +6,11 @@
     import type {PieTheme} from '../types/theme/Theme.type';
     import {defaultPieTheme} from '../theme/defaultTheme';
     import {createHeaderTagForElement} from '../utils/accessibles';
-    import type {ChartInfo} from '../types/attributes/ChartInfo.types';
-    import type {Dimension} from '../types/attributes/Dimension.type';
+    import type {ChartInfo} from '../types/attributes/ChartInfo.type';
+    import type {PiDimension} from '../types/attributes/PieDimension.type';
     import {
-      calculateLargeArcFlagByPercent, 
-      calculateXPositionOnCircleByPercent, 
+      calculateLargeArcFlagByPercent,
+      calculateXPositionOnCircleByPercent,
       calculateYPositionOnCircleByPercent
     } from '../math/circleGeometry';
 
@@ -20,17 +20,17 @@
       source: ""
     } as ChartInfo
     export let theme: PieTheme = defaultPieTheme;
-    export let dimension: Dimension = {width: "800", height: "300"} as Dimension;
+    export let dimension: PiDimension = {width: "800", height: "300", resolution:800, zoom:1.2} as PiDimension;
     export let series: PieSeries = {} as PieSeries;
-  
+
     let colors: any[];
     let idChart: string;
     let headerChartParentTag: HTMLElement;
-    let cumulativePercents:number[]  = partialSum(series.slices);
-    let displayFront:SVGElement;  
+    let cumulativePercents:number[] = partialSum(series.slices);
+    let displayFront:SVGElement;
 
     function partialSum(slices:PieSlice[], unshiftZero:boolean = true){
-      
+
       if(slices === undefined){
         return [] as number[];
       }
@@ -56,54 +56,61 @@
     onMount(async () => {
 
       colors = Object.values(theme.colors);
-      idChart = generateId(); 
+      idChart = generateId();
       createHeaderTagForElement(headerChartParentTag, chartInfo.title);
     });
-  
-    function moveSliceForward(event: Event){
+
+    function moveSliceForward(event: Event): void{
 
       let slice: SVGElement = (event.target as SVGElement);
-      
+
       let sliceBorder: SVGElement = document.createElementNS('http://www.w3.org/2000/svg', 'path');
       sliceBorder.setAttribute('d', slice.getAttribute('d')!.toString());
       sliceBorder.classList.add('show_slice_border');
-      
+
       displayFront.appendChild(sliceBorder);
 
     }
 
+    function unmaskLegend(event: Event): void{
+      let name: string = (event.target as SVGElement).id + "_low_legend";
+
+      if( document.getElementById(name) !== null){
+        document.getElementById(name).classList.remove("marked_legend");
+      }
+    }
+
+    function markLowLegend(event: Event): void{
+      let name: string = (event.target as SVGElement).id + "_low_legend";
+
+      if( document.getElementById(name) !== null){
+        document.getElementById(name).classList.add("marked_legend");
+      }
+    }
+
     function removeAllChildNodes() {
-      
+
       while (displayFront.firstChild) {
         displayFront.removeChild(displayFront.firstChild);
       }
     }
-  
+
   </script>
       <ThemeContext bind:theme={theme}>
           <div id="{idChart}" class="wrapper">
             <div bind:this="{headerChartParentTag}" class="chart_title">
-              
+
             </div>
-            <div class="chart_desc">
+            <div class="chart_desc" bind:clientWidth="{dimension.width}">
               <p aria-label="{chartInfo.desc}" tabindex="0" role="note">{chartInfo.desc}</p>
             </div>
-            {#if series.slices === undefined}
-              <div                 
-              role="note"
-              aria-label="No series available"
-              tabindex="0" 
-              class="no_series_text">
-                  No series available
-              </div>
-            {/if}
             <div class="svg_wrap">
-              <svg 
-                class="chart" 
+              <svg
+                class="chart"
                 role="graphics-document"
                 aria-labelledby="{idChart}_desc_chart"
-                xmlns="http://www.w3.org/2000/svg" 
-                viewBox="-1.25 -1.25 2.5 2.5" 
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="{-(dimension.resolution*dimension.zoom)/2} {-(dimension.resolution*dimension.zoom)/2} {dimension.resolution*dimension.zoom} {dimension.resolution*dimension.zoom}"
                 width="{dimension.width}" height="{dimension.height}"
               >
                 <title id="{idChart}_title_chart">{chartInfo.title}</title>
@@ -111,46 +118,65 @@
                 <g>
                   {#if series.slices !== undefined}
                     {#each series.slices as slice, index }
-                      <path 
+                      <path
+                        id="{idChart}_{slice.name}_slice"
                         class="slice"
                         transform="rotate(-90)"
                         role="graphics-symbol"
-                        aria-label="This slice of pie chart has {slice.percent}%. This is slice {index+1} of {series.slices.length}" 
+                        aria-label="This slice of pie chart has {slice.percent}%. The name of the slice is {slice.name}. This is slice {index+1} of {series.slices.length}"
                         tabindex="0"
-                        on:blur="{() => removeAllChildNodes()}" 
-                        on:focus="{event => moveSliceForward(event)}"
-                        fill="{colors ? colors[index] : '#000'}"
-                        d="{'M ' + calculateXPositionOnCircleByPercent(cumulativePercents[index]) + " " 
-                          + calculateYPositionOnCircleByPercent(cumulativePercents[index])
-                          + " A 1 1 0 " + calculateLargeArcFlagByPercent(slice.percent) + " 1 " 
-                          + calculateXPositionOnCircleByPercent(cumulativePercents[index] + slice.percent) + " " 
-                          + calculateYPositionOnCircleByPercent(cumulativePercents[index] + slice.percent) + "L 0 0 L"
-                          + calculateXPositionOnCircleByPercent(cumulativePercents[index]) + " " 
-                          + calculateYPositionOnCircleByPercent(cumulativePercents[index])}"
+                        on:blur="{(event) => {removeAllChildNodes(); unmaskLegend(event);}}"
+                        on:focus="{event => {moveSliceForward(event); markLowLegend(event);}}"
+                        fill="{slice.color ? slice.color : colors[index]}"
+                        d="{'M ' + calculateXPositionOnCircleByPercent(cumulativePercents[index])*dimension.resolution/2 + " "
+                          + calculateYPositionOnCircleByPercent(cumulativePercents[index]) *dimension.resolution/2
+                          + " A " + dimension.resolution/2 + " " + dimension.resolution/2 + " 0 " + calculateLargeArcFlagByPercent(slice.percent) + " 1 "
+                          + calculateXPositionOnCircleByPercent(cumulativePercents[index] + slice.percent)*dimension.resolution/2 + " "
+                          + calculateYPositionOnCircleByPercent(cumulativePercents[index] + slice.percent)*dimension.resolution/2 + "L 0 0 L"
+                          + calculateXPositionOnCircleByPercent(cumulativePercents[index])*dimension.resolution/2 + " "
+                          + calculateYPositionOnCircleByPercent(cumulativePercents[index])*dimension.resolution/2}"
                       >
                       </path>
                       <!-- svelte-ignore component-name-lowercase -->
-                      <text id="{idChart}_{slice.name}_slice" class="pie_chart_text"
-                        dominant-baseline="{
-                          cumulativePercents[index+1] - (slice.percent/2) > 0.25 
-                          && cumulativePercents[index+1] - (slice.percent/2) < 0.75 
-                          ? 'hanging':'auto' 
+                      {#if slice.percent > 0.05}
+                        <text class="pie_chart_text"
+                              dominant-baseline="{
+                          cumulativePercents[index+1] - (slice.percent/2) > 0.25
+                          && cumulativePercents[index+1] - (slice.percent/2) < 0.75
+                          ? 'hanging':'auto'
                         }"
-                        text-anchor="{
-                          cumulativePercents[index+1] - (slice.percent/2) > 0.5 
+                              text-anchor="{
+                          cumulativePercents[index+1] - (slice.percent/2) > 0.5
                           && cumulativePercents[index+1] - (slice.percent/2) < 1 ? 'end':'start'
                           }"
-                        x="{calculateXPositionOnCircleByPercent(
-                          (cumulativePercents[index+1] - (slice.percent/2)) + 0.75)*1.1
-                          }" 
-                        y="{calculateYPositionOnCircleByPercent(
-                          (cumulativePercents[index+1] - (slice.percent/2)) + 0.75)*1.1
+                              x="{calculateXPositionOnCircleByPercent(
+                          (cumulativePercents[index+1] - (slice.percent/2)) + 0.75)*(dimension.resolution/2)*1.1
+                          }"
+                              y="{calculateYPositionOnCircleByPercent(
+                          (cumulativePercents[index+1] - (slice.percent/2)) + 0.75)*(dimension.resolution/2)*1.1
                           }"
                         >
-                        {slice.name}
-                      </text>
-                    {/each}                     
-
+                          {slice.name + " " + slice.percent + "%"}
+                        </text>
+                      {/if}
+                    {/each}
+                  {:else}
+                    <text text-anchor="middle" class="no_series_text" x="0" y="0">No series available</text>
+                  {/if}
+                </g>
+                <g class="legend">
+                  {#if series.slices !== undefined}
+                    {#each series.slices as slice, index }
+                      {#if slice.percent <= 0.05}
+                        <circle fill="{slice.color ? slice.color : colors[index]}" cx="{-(dimension.resolution*dimension.zoom*1.25)}" cy="{(-(dimension.resolution*dimension.zoom*1.15)/2)*(1-(index*0.15))-10}" r="10"/>
+                        <text
+                          id="{idChart}_{slice.name}_slice_low_legend"
+                          class="pie_chart_text" x="{-(dimension.resolution*dimension.zoom*1.2)}"
+                          y="{(-(dimension.resolution*dimension.zoom*1.1)/2)*(1-(index*0.15))}">
+                          {slice.name + " " + slice.percent + "%"}
+                        </text>
+                      {/if}
+                    {/each}
                   {/if}
                 </g>
                 <g class="display_front" bind:this="{displayFront}">
@@ -160,15 +186,20 @@
             </div>
             {#if chartInfo.source !== ''}
               <div class="source">
-                <a 
-                tabindex="0" 
-                aria-label="Read more about the source of the diagram and visit the website {chartInfo.source}" 
+                <a
+                tabindex="0"
+                aria-label="Read more about the source of the diagram and visit the website {chartInfo.source}"
                 href="{chartInfo.source}">Source: {chartInfo.source}</a>
               </div>
-            {/if}  
+            {/if}
           </div>
       </ThemeContext>
 <style>
+
+  :global(.marked_legend){
+    text-decoration: underline var(--focusColor) 3px;
+    z-index: 1000;
+  }
 
   .wrapper{
     background-color: var(--wrapperStyles-backgroundColor);
@@ -176,8 +207,7 @@
   }
 
   .no_series_text{
-    font-size: 18px;
-    
+    font-size: 3em;
     margin: auto;
     text-align: center;
     margin-top: 40px;
@@ -185,7 +215,7 @@
   }
 
   .pie_chart_text{
-    font-size: 0.12px;
+    font-size: 3em;
     background-color: var(--wrapperStyles-backgroundColor);
   }
 
@@ -200,7 +230,7 @@
   :global(.show_slice_border){
     stroke: var(--focusColor);
     outline: none;
-    stroke-width: 0.05px;
+    stroke-width: 20px;
     stroke-linecap: square;
     fill: none !important;
     border: none !important;

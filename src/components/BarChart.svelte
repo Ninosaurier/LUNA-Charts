@@ -10,9 +10,10 @@
     import type { BarTheme } from '../types/theme/Theme.type';
     import type { BarSeries } from '../types/series/BarSeries.type';
     import Hatch from '../hatches/Hatch.svelte';
-    import type {ChartInfo} from '../types/attributes/ChartInfo.types';
+    import type {ChartInfo} from '../types/attributes/ChartInfo.type';
     import type {Dimension} from '../types/attributes/Dimension.type';
     import {type Labels, defaultLabel} from '../types/attributes/Labels.type';
+    import type { PieSeries } from '../types/series/PieSeries.Type';
 
     export let labels: Labels = defaultLabel;
     export let chartInfo: ChartInfo = {
@@ -45,11 +46,11 @@
     }
 
     function calculateBarGroupSize(): number{
-      
+
       if(!isSeriesEmpty(series)){
         return (parseInt(dimension.width)*0.75/series.category.length) - barGap*2;
       }
-      
+
       return 0;
     }
 
@@ -83,8 +84,8 @@
 
           bars[numberOfBar].classList.replace('show_bar','hide_bar');
         }
-      
-      }     
+
+      }
     }
 
     function isSeriesEmpty(series: BarSeries): boolean{
@@ -106,11 +107,11 @@
             {chartInfo.desc}
         </div>
         <div class="svg_wrap" bind:clientWidth="{svgWidth}" bind:clientHeight="{svgHeight}">
-          <svg 
-          class="chart" 
-          role="graphics-document" 
-          xmlns="http://www.w3.org/2000/svg" 
-          width="{dimension.width}" 
+          <svg
+          class="chart"
+          role="graphics-document"
+          xmlns="http://www.w3.org/2000/svg"
+          width="{dimension.width}"
           height="{dimension.height}">
             <title id="{idChart}_title_chart">{chartInfo.title}</title>
             <desc id="{idChart}_desc_chart">{chartInfo.desc}</desc>
@@ -122,19 +123,19 @@
             <defs>
               {#if !isSeriesEmpty(series) && hatchPatterns}
                 {#each theme.hatches as hatch, hatchIndex}
-                <Hatch 
-                  pattern="{hatch}" 
+                <Hatch
+                  pattern="{hatch}"
                   color="{theme.colors[hatchIndex]}"
                   idPattern="{
-                    series.series[hatchIndex] === undefined ? 
-                    '' : idChart + '_pattern_' + series.series[hatchIndex].name 
-                    }" 
+                    series.series[hatchIndex] === undefined ?
+                    '' : idChart + '_pattern_' + series.series[hatchIndex].name
+                    }"
                 />
                 {/each}
               {/if}
             </defs>
             <g role="none" aria-hidden="true">
-              <rect width="90%" class="background-chart"></rect> 
+              <rect width="90%" class="background-chart"></rect>
             </g>
             {#if !isSeriesEmpty(series)}
               <g class="grid" transform='translate({svgWidth*0.1},{svgHeight*0.1})'>
@@ -160,10 +161,10 @@
             <g class="y_grid_label" transform="translate(1, {svgHeight*0.1})" >
               {#if !isSeriesEmpty(series)}
                 {#each Array(Math.floor((svgHeight*0.7)/gridGap)) as _, i}
-                  <text 
-                    text-anchor="end" 
-                    alignment-baseline="central"  
-                    x="5%" 
+                  <text
+                    text-anchor="end"
+                    alignment-baseline="central"
+                    x="5%"
                     y="{(gridGap*i*-1)}">
                     {gridGap*i}
                   </text>
@@ -173,10 +174,10 @@
             <g class="second_y_grid_label" transform="translate(1, {svgHeight*0.1})" >
               {#each Array(Math.floor((svgHeight*0.7)/gridGap)) as _, i}
                 {#if i !== 0 && labels.secondY !== ''}
-                  <text 
-                    text-anchor="end" 
-                    alignment-baseline="central"  
-                    x="90%" 
+                  <text
+                    text-anchor="end"
+                    alignment-baseline="central"
+                    x="90%"
                     y="{((gridGap)*i*-1)}">
                     {10*i}
                   </text>
@@ -188,22 +189,22 @@
                 {#each series.category as category, c}
                   <g transform='translate({barGap*2*c},0)'>
                     {#each series.series as bar, barIndex}
-                      <rect 
+                      <rect
                         stroke="{theme.colors[barIndex]}"
                         style="stroke-width:4;"
                         role="graphics-object"
                         class="{bar.name}_bar show_bar"
-                        fill="{hatchPatterns ? 'url(#' + idChart + '_pattern_' + bar.name +')' : theme.colors[barIndex]}" 
+                        fill="{hatchPatterns ? 'url(#' + idChart + '_pattern_' + bar.name +')' : theme.colors[barIndex]}"
                         tabindex="0"
-                        aria-label="{bar.barValues[c].ariaLabel + ' ' + bar.barValues[c].value}" 
-                        x="{(c*barGroupSize)+(calculateBarSize()*barIndex)}" 
-                        width="{calculateBarSize()}" 
+                        aria-label="{bar.barValues[c].ariaLabel + ' ' + bar.barValues[c].value}"
+                        x="{(c*barGroupSize)+(calculateBarSize()*barIndex)}"
+                        width="{calculateBarSize()}"
                         height="{bar.barValues[c].value}">
                       </rect>
                       {/each}
                       <g transform="translate({(c*barGroupSize)+(calculateBarSize())-(barGroupSize*0.1)},{svgHeight*0.05*(-1)})">
-                        <text 
-                        text-anchor="start" 
+                        <text
+                        text-anchor="start"
                         class="x_grid_text_label">
                         {category}
                         </text>
@@ -211,11 +212,11 @@
                   </g>
                 {/each}
               {:else}
-                  <text 
+                  <text
                     x="30%"
                     y="-30%"
                     role="note"
-                    tabindex="0" 
+                    tabindex="0"
                     class="no_series_label"
                     aria-label="No series available">
                     No series available
@@ -227,16 +228,16 @@
         <div class="captions" style="padding: 0 {svgWidth*0.1}px;">
           {#if !isSeriesEmpty(series)}
             {#each series.series as barSeries, l}
-              <button 
-                tabindex="0" 
-                value="{barSeries.name}" 
-                id="{idChart}_{cleanIdName(barSeries.name)}" 
-                aria-label="{barSeries.name}" 
+              <button
+                tabindex="0"
+                value="{barSeries.name}"
+                id="{idChart}_{cleanIdName(barSeries.name)}"
+                aria-label="{barSeries.name}"
                 class="caption" on:click="{
                   (event) => toggleBars(event)
                   }"
               >
-                <span class="dot" style="background-color: {theme ? theme.colors[l]:'#ccc'};"></span>   
+                <span class="dot" style="background-color: {theme ? theme.colors[l]:'#ccc'};"></span>
                   {barSeries.name}
               </button>
             {/each}
@@ -244,16 +245,16 @@
         </div>
         {#if chartInfo.source !== ''}
           <div class="source">
-            <a 
+            <a
               tabindex="0"
-               aria-label="Read more about the source of the diagram and visit the website {chartInfo.source}" 
+               aria-label="Read more about the source of the diagram and visit the website {chartInfo.source}"
                href="{chartInfo.source}">Source: {chartInfo.source}
             </a>
           </div>
         {/if}
     </div>
 </ThemeContext>
-    
+
 <style>
 
   .no_series_label{
@@ -380,7 +381,7 @@
     border-radius: 50%;
     display: inline-block;
     pointer-events: none;
-  }  
+  }
 
   .source{
     font-size: 9px;
