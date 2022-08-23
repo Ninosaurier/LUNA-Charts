@@ -18,9 +18,9 @@ cd accessible-charts
 ```
 npm install 
 ```
-4. Start project with: 
+4. Start Storybook: 
 ``` 
-npm run dev
+npm run storybook
 ```
 5. Open Chrome and call:
 ``` 
