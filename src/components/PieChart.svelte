@@ -123,7 +123,7 @@
                         class="slice"
                         transform="rotate(-90)"
                         role="graphics-symbol"
-                        aria-label="This slice of pie chart has {slice.percent}%. The name of the slice is {slice.name}. This is slice {index+1} of {series.slices.length}"
+                        aria-label="This slice of pie chart has {slice.percent*100}%. The name of the slice is {slice.name}. This is slice {index+1} of {series.slices.length}"
                         tabindex="0"
                         on:blur="{(event) => {removeAllChildNodes(); unmaskLegend(event);}}"
                         on:focus="{event => {moveSliceForward(event); markLowLegend(event);}}"
@@ -156,7 +156,7 @@
                           (cumulativePercents[index+1] - (slice.percent/2)) + 0.75)*(dimension.resolution/2)*1.1
                           }"
                         >
-                          {slice.name + " " + slice.percent + "%"}
+                          {slice.name + " " + (slice.percent*100) + "%"}
                         </text>
                       {/if}
                     {/each}
@@ -173,7 +173,7 @@
                           id="{idChart}_{slice.name}_slice_low_legend"
                           class="pie_chart_text" x="{-(dimension.resolution*dimension.zoom*1.2)}"
                           y="{(-(dimension.resolution*dimension.zoom*1.1)/2)*(1-(index*0.15))}">
-                          {slice.name + " " + slice.percent + "%"}
+                          {slice.name + " " + (slice.percent*100) + "%"}
                         </text>
                       {/if}
                     {/each}
