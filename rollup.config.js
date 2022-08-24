@@ -8,25 +8,26 @@ import typescript from '@rollup/plugin-typescript';
 import nodeResolve from '@rollup/plugin-node-resolve';
 import { terser } from 'rollup-plugin-terser';
 
-const packageJson = require("./package.json");
-const name = packageJson.name;
+const packageJson = require('./package.json');
+
+const { name } = packageJson;
 
 export default {
-  input: "src/index.tsx",
+  input: 'src/index.tsx',
   output: [
     {
       file: packageJson.main,
-      format: "cjs",
+      format: 'cjs',
       sourcemap: false,
     },
     {
       file: packageJson.module,
-      format: "esm",
+      format: 'esm',
       sourcemap: false,
     },
     {
-      file: packageJson.main.replace(".js", ".min.js"),
-      format: "iife",
+      file: packageJson.main.replace('.js', '.min.js'),
+      format: 'iife',
       name,
       plugins: [terser()],
     },
@@ -39,9 +40,9 @@ export default {
     resolve(),
     peerDepsExternal(),
     nodeResolve(),
-    typescript({ sourceMap: true, rootDir: "./src" }),
+    typescript({ sourceMap: true, rootDir: './src' }),
     postcss({
-      extensions: [".css"],
+      extensions: ['.css'],
     }),
   ],
 };
