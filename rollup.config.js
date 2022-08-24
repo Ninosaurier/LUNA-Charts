@@ -6,21 +6,29 @@ import json from '@rollup/plugin-json';
 import autoPreprocess from 'svelte-preprocess';
 import typescript from '@rollup/plugin-typescript';
 import nodeResolve from '@rollup/plugin-node-resolve';
+import { terser } from 'rollup-plugin-terser';
 
-const pkg = require('./package.json');
+const packageJson = require("./package.json");
+const name = packageJson.name;
 
 export default {
-  input: 'src/index.tsx',
+  input: "src/index.tsx",
   output: [
     {
-      file: pkg.main,
-      format: 'cjs',
+      file: packageJson.main,
+      format: "cjs",
       sourcemap: false,
     },
     {
-      file: pkg.module,
-      format: 'esm',
+      file: packageJson.module,
+      format: "esm",
       sourcemap: false,
+    },
+    {
+      file: packageJson.main.replace(".js", ".min.js"),
+      format: "iife",
+      name,
+      plugins: [terser()],
     },
   ],
   plugins: [
@@ -29,11 +37,11 @@ export default {
       preprocess: autoPreprocess(),
     }),
     resolve(),
-    nodeResolve(),
-    typescript({ sourceMap: true, rootDir: './src' }),
     peerDepsExternal(),
+    nodeResolve(),
+    typescript({ sourceMap: true, rootDir: "./src" }),
     postcss({
-      extensions: ['.css'],
+      extensions: [".css"],
     }),
   ],
 };

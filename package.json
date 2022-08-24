@@ -1,6 +1,6 @@
 {
-  "name": "accessible-charts",
-  "version": "1.0.5",
+  "name": "luna_charts",
+  "version": "1.0.6",
   "description": "",
   "main": "dist/index.js",
   "module": "dist/index.mjs",
@@ -12,9 +12,17 @@
     "storybook": "start-storybook -p 6006",
     "build-storybook": "build-storybook"
   },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
+  "keywords": [
+    "svelte",
+    "component-library",
+    "accessible charts"
+  ],
+  "author": "Antonino Provenzano",
+  "license": "MIT",
+  "files": [
+    "src",
+    "dist"
+  ],
   "devDependencies": {
     "@babel/core": "^7.18.10",
     "@rollup/plugin-json": "^4.1.0",
@@ -55,7 +63,8 @@
     "@sinclair/typebox": "^0.24.20",
     "@storybook/addon-a11y": "^6.5.10",
     "chromatic": "^6.7.4",
-    "rollup-plugin-peer-deps-external": "^2.2.4"
+    "rollup-plugin-peer-deps-external": "^2.2.4",
+    "rollup-plugin-terser": "^7.0.2"
   },
   "peerDependencies": {
     "@sinclair/typebox": "^0.24.20"
