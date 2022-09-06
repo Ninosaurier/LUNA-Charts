@@ -1,5 +1,3 @@
-
-
 <script lang="ts">
 
     import { onMount } from 'svelte';
@@ -13,7 +11,6 @@
     import type {ChartInfo} from '../types/attributes/ChartInfo.type';
     import type {Dimension} from '../types/attributes/Dimension.type';
     import {type Labels, defaultLabel} from '../types/attributes/Labels.type';
-    import type { PieSeries } from '../types/series/PieSeries.Type';
 
     export let labels: Labels = defaultLabel;
     export let chartInfo: ChartInfo = {
