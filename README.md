@@ -1,28 +1,24 @@
-# Accessible Charts 
-
-## Is under development
+# LUNA Charts
 
 ## Table of contents
+- [Description](#description)
 - [How to install](#how-to-install)
+- [How to use](#how-to-use)
+- [Known bugs](#known-problems)
 
+## Description
+Luna was my family dog. LUNA Charts is an acronym and stands for **Library for Userfriendly 'N Accessible** Charts. It is a component library for creating accessible charts. The package has three built-in charts:
+- LineChart
+- BarChart
+- PieChart
 ## How to install
-1. First clone the repo: 
 ```
-git clone https://github.com/One-Type-Man/accessible-charts.git
+npm i luna_charts
 ```
-2. Open the terminal and switch in the project folder: 
-``` 
-cd accessible-charts
+## How to use
 ```
-3. Install the packages: 
+import PieChart from 'luna_charts/src/components/PieChart.svelte';
+
+<PieChart \>
 ```
-npm install 
-```
-4. Start Storybook: 
-``` 
-npm run storybook
-```
-5. Open Chrome and call:
-``` 
-localhost:8080
-```
+## Known problems
