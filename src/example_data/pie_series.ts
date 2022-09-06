@@ -1,7 +1,7 @@
-import type { PieSeries, PieSlice } from '../types/series/PieSeries.Type';
+import type { PieSeries, PieSlices } from '../types/series/PieSeries.Type';
 import { CONTRAST_COLORS } from '../types/theme/Theme.type';
 
-const pieSlices: PieSlice[] = [
+const pieSlices: PieSlices[] = [
   {
     name: 'Firefox',
     percent: 0.33,

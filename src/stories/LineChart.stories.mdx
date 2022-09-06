@@ -77,13 +77,13 @@ export let labels: Labels = {x: "X-Value", y: "Y-Value", secondY: ''} as Labels;
 
 To visualize the lines, we still need to give the Series to the diagram. For each diagram there is a suitable
 data type. For a line chart we use **LineSeries[]**. Furthermore we need 
-the data type **Point**.
+the data type **Points**.
 
 ```ts
-import type { Point } from '../types/series/Point.type';
+import type { Points } from '../types/series/Point.type';
 import type { LineSeries } from '../types/series/LineSeries.type';
 
-const aLotOfPoints: Point[] = [
+const aLotOfPoints: Points[] = [
   {
     x: 100,
     y: 10,

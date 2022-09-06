@@ -8,9 +8,9 @@ export type { Dimension } from './types/attributes/Dimension.type';
 export type { PieDimension } from './types/attributes/PieDimension.type';
 export type { Labels } from './types/attributes/Labels.type';
 
-export type { BarSeries, Bar, BarValue } from './types/series/BarSeries.type';
-export type { LineSeries } from './types/series/LineSeries.type';
-export type { PieSeries, PieSlice } from './types/series/PieSeries.Type';
+export type { BarSeries, Bar, BarValues } from './types/series/BarSeries.type';
+export type { LineSeries, Points } from './types/series/LineSeries.type';
+export type { PieSeries, PieSlices } from './types/series/PieSeries.Type';
 
 export type { HatchPattern } from './types/theme/Hatch.type';
 export type { PieTheme, BarTheme, LineTheme } from './types/theme/Theme.type';

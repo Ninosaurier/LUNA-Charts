@@ -3,7 +3,7 @@
     import { onMount } from 'svelte';
     import {generateId} from '../utils/common';
     import ThemeContext from '../core/ThemeContext.svelte';
-    import type {PieSeries, PieSlice} from './../types/series/PieSeries.Type';
+    import type {PieSeries, PieSlices} from './../types/series/PieSeries.Type';
     import type {PieTheme} from '../types/theme/Theme.type';
     import {defaultPieTheme} from '../theme/defaultTheme';
     import {createHeaderTagForElement} from '../utils/accessibles';
@@ -30,7 +30,7 @@
     let cumulativePercents:number[] = partialSum(series.slices);
     let displayFront:SVGElement;
 
-    function partialSum(slices:PieSlice[], unshiftZero:boolean = true){
+    function partialSum(slices:PieSlices[], unshiftZero:boolean = true){
 
       if(slices === undefined){
         return [] as number[];

@@ -1,6 +1,6 @@
-import type { BarSeries, BarValue, Bar } from '../types/series/BarSeries.type';
+import type { BarSeries, BarValues, Bar } from '../types/series/BarSeries.type';
 
-const appleBarValues: BarValue[] = [
+const appleBarValues: BarValues[] = [
   {
     value: 10,
     ariaLabel: 'The revenue in spring for Apple is: ',
@@ -19,7 +19,7 @@ const appleBarValues: BarValue[] = [
   },
 ];
 
-const microsoftBarValues: BarValue[] = [
+const microsoftBarValues: BarValues[] = [
   {
     value: 33,
     ariaLabel: 'The revenue in spring for microsoft is: ',
@@ -38,7 +38,7 @@ const microsoftBarValues: BarValue[] = [
   },
 ];
 
-const googleBarValues: BarValue[] = [
+const googleBarValues: BarValues[] = [
   {
     value: 100,
     ariaLabel: 'The revenue in spring for Google is: ',

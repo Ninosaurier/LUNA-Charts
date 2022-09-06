@@ -120,12 +120,12 @@ export let labels: Labels = {x: "Seasons", y: "Euro in million", secondY: ''} as
 
 To visualize numbers, we still need to give the Series to the diagram. For each diagram there is a suitable
 data type. For a bar chart we use **BarSeries**. Furthermore we need 
-the data types **Bar** and **BarValue**.
+the data types **Bar** and **BarValues**.
 
 ```ts
-import type { BarSeries, BarValue, Bar } from '../types/series/BarSeries.type';
+import type { BarSeries, BarValues, Bar } from '../types/series/BarSeries.type';
 
-const appleBarValues: BarValue[] = [
+const appleBarValues: BarValues[] = [
   {
     value: 10,
     ariaLabel: 'The revenue in spring for Apple is: ',
@@ -142,7 +142,7 @@ export const testBarSeries: BarSeries = {
   category: ['Spring', 'Summer', 'Autumn', 'Winter'],
 };
 ```
-With **BarValue** we create an array with the individual values and the appropriate Aria label text. 
+With **BarValues** we create an array with the individual values and the appropriate Aria label text. 
 **Bar** groups the individual values and gives them a name. **BarSeries** groups them together and
 category determines the content of the X-axis.
 

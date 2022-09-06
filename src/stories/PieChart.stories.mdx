@@ -61,12 +61,12 @@ export let chartInfo: ChartInfo = {
 
 To visualize the lines, we still need to give the Series to the diagram. For each diagram there is a suitable
 data type. For a pie chart we use **PieSeries**. Furthermore we need 
-the data type **PieSlice**.
+the data type **PieSlices**.
 
 ```ts
-import type { PieSeries, PieSlice } from '../types/series/PieSeries.Type';
+import type { PieSeries, PieSlices } from '../types/series/PieSeries.Type';
 
-const pieSlices: PieSlice[] = [
+const pieSlices: PieSlices[] = [
   {
     name: 'Firefox',
     percent: 0.35,
