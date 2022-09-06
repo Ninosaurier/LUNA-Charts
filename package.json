@@ -1,7 +1,7 @@
 {
   "name": "luna_charts",
   "version": "1.0.6",
-  "description": "",
+  "description": "LUNA Charts is an acronym and stands for Library for Userfriendly 'N Accessible Charts. It is a component library for creating accessible charts.",
   "main": "dist/index.js",
   "module": "dist/index.mjs",
   "svelte": "src/index.tsx",
@@ -18,7 +18,7 @@
     "accessible charts"
   ],
   "author": "Antonino Provenzano",
-  "license": "MIT",
+  "license": "GPL",
   "files": [
     "src",
     "dist"

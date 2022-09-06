@@ -71,7 +71,7 @@
     removeAllChildNodes(showedInfoBox);
   }
 
-  function toogleCaption(event: Event){
+  function toogleLine(event: Event){
 
     if(verticalInterceptionGroup.firstChild){verticalInterceptionGroup.removeChild(verticalInterceptionGroup.firstChild); }
     let button = event.target as HTMLElement;
@@ -79,9 +79,16 @@
     let targetId: string = button.id.replace(/\s/g, "").replace('-caption', '');
     let line: HTMLElement =  document.getElementById(targetId) as HTMLElement;
 
-
-    line.classList.contains('show_line') ? line.classList.replace('show_line','hide_line') : line.classList.replace('hide_line','show_line');
-    button.classList.contains('inactive') ? button.classList.remove('inactive') : button.classList.add('inactive');
+    if(line.classList.contains('show_line')){
+      line.classList.replace('show_line','hide_line');
+      button.classList.replace('active','inactive');
+      button.setAttribute('aria-expanded', 'false');
+    }
+    else{
+      line.classList.replace('hide_line','show_line');
+      button.classList.replace('inactive','active');
+      button.setAttribute('aria-expanded', 'true');
+    }
   }
 
   function showVerticalInterception(event: Event){
@@ -198,11 +205,15 @@
         <g id="vertical_intercept" bind:this="{verticalInterceptionGroup}" transform='translate({svgWidth*0.1},0)'>
 
         </g>
-        <g role="graphics-object" transform='translate({svgWidth*0.1},{svgHeight*0.1})' class="functions">
+        <g role="graphics-object" transform='translate({svgWidth*0.1},{svgHeight*0.1})' class="functions" aria-live="polite">
           {#if series.length !== 0}
             {#each series as lines, l}
-              <g id="{idChart}_{cleanIdName(lines.name)}" class="show_line">
-                <polyline points="{getPoints(lines.points)}" fill="none" stroke='{theme ? theme.colors[l]:'black'}'/>
+              <g id="{idChart}_{cleanIdName(lines.name)}" role="graphics-object" class="show_line">
+                <polyline 
+                  points="{getPoints(lines.points)}" 
+                  fill="none" 
+                  stroke='{theme ? theme.colors[l]:'black'}'
+                  />
                 {#each lines.points as point, p}
                   <circle
                   on:focus="{(event) => {showInfoBox(event); showVerticalInterception(event);}}"
@@ -210,7 +221,7 @@
                   tabindex="0"
                   class="point"
                   role="graphics-symbol"
-                  aria-label="{point.ariaLabel}. This is point {p+1} of {lines.points.length} from {lines.name}."
+                  aria-label="{point.ariaLabel}. Values are: {point.x},{point.y}. This is point {p+1} of {lines.points.length} from {lines.name}."
                   stroke="{theme ? theme.colors[l]:'black'}"
                   fill="{theme ? theme.colors[l]:'black'}"
                   cx="{point.x}"
@@ -240,7 +251,13 @@
     <div class="captions" style="padding: 0 {svgWidth*0.1}px;">
       {#if series.length !== 0}
         {#each series as line, l}
-          <button tabindex="0" id="{idChart}_{cleanIdName(line.name) + '-caption'}" aria-label="{line.name}" class="caption" on:click="{(event) => toogleCaption(event)}">
+          <button 
+            tabindex="0"
+            aria-expanded="true" 
+            id="{idChart}_{cleanIdName(line.name) + '-caption'}" 
+            aria-label="{line.name}. Toggles the {line.name} lines." 
+            class="caption active" 
+            on:click="{(event) => toogleLine(event)}">
             <span class="dot" style="background-color: {theme ? theme.colors[l]:'#ccc'};"></span>
               {line.name}
           </button>
@@ -334,6 +351,7 @@
   .caption{
     flex-wrap: nowrap;
     margin: 5px;
+    border: none;
     padding: 0 10px;
     background-color: #fff;
     box-shadow:  0px 0px 1px 1px lightgray;

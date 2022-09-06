@@ -69,6 +69,7 @@
       if(button.classList.contains('inactive')){
 
         button.classList.remove('inactive');
+        button.setAttribute("aria-expanded", "true");
         for(let numberOfBar = 0; numberOfBar < bars.length; numberOfBar++){
 
           bars[numberOfBar].classList.replace('hide_bar','show_bar');
@@ -77,6 +78,7 @@
       else{
 
         button.classList.add('inactive');
+        button.setAttribute("aria-expanded", "false");
         for(let numberOfBar = 0; numberOfBar < bars.length; numberOfBar++){
 
           bars[numberOfBar].classList.replace('show_bar','hide_bar');
@@ -184,16 +186,16 @@
             <g role="graphics-object" transform='translate({svgWidth*0.1},{svgHeight*0.1})' class="functions">
               {#if !isSeriesEmpty(series)}
                 {#each series.category as category, c}
-                  <g transform='translate({barGap*2*c},0)'>
+                  <g transform='translate({barGap*2*c},0)' role="graphics-object" aria-live="polite">
                     {#each series.series as bar, barIndex}
                       <rect
                         stroke="{theme.colors[barIndex]}"
-                        style="stroke-width:4;"
-                        role="graphics-object"
+                        style="stroke-width:4;"                     
+                        role="graphics-symbol"
                         class="{bar.name}_bar show_bar"
                         fill="{hatchPatterns ? 'url(#' + idChart + '_pattern_' + bar.name +')' : theme.colors[barIndex]}"
                         tabindex="0"
-                        aria-label="{bar.barValues[c].ariaLabel + ' ' + bar.barValues[c].value}"
+                        aria-label="{bar.barValues[c].ariaLabel + ' ' + bar.barValues[c].value}. This is bar {c+1} of {bar.barValues.length} of {bar.name}."
                         x="{(c*barGroupSize)+(calculateBarSize()*barIndex)}"
                         width="{calculateBarSize()}"
                         height="{bar.barValues[c].value}">
@@ -227,9 +229,10 @@
             {#each series.series as barSeries, l}
               <button
                 tabindex="0"
+                aria-expanded="true"
                 value="{barSeries.name}"
                 id="{idChart}_{cleanIdName(barSeries.name)}"
-                aria-label="{barSeries.name}"
+                aria-label="{barSeries.name}. Toggles the {barSeries.name} bars."
                 class="caption" on:click="{
                   (event) => toggleBars(event)
                   }"
@@ -321,6 +324,7 @@
     gap:5px;
   }
   .caption{
+    border: none;
     flex-wrap: nowrap;
     margin: 5px;
     padding: 0 10px;
