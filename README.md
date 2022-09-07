@@ -9,6 +9,7 @@
   - [How to edit a chart](#how-to-edit-a-chart)
   - [Use themes](#use-themes)
   - [Doc](#doc)
+  - [Examples](#examples)
   - [Known problems](#known-problems)
 
 ## Description
@@ -152,6 +153,9 @@ We document our charts in Storybook. For more detailed information run:
 ```
 npm run storybook
 ```
+
+## Examples
+You want to see, how the charts look likes? [Click here](https://www.chromatic.com/library?appId=62ffa7843853f7f93bf0ebcc)
 
 ## Known problems
 If you install the package in a svelte project, add the following line in your tsconfig.json:
