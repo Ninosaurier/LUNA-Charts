@@ -1,84 +1,84 @@
-import type { BarSeries, BarValue, Bar } from '../types/series/BarSeries.type';
+import type { BarSeries, BarValues, Bar } from '../types/series/BarSeries.type';
 
-const milanBarValues: BarValue[] = [
+const appleBarValues: BarValues[] = [
   {
     value: 10,
-    ariaLabel: 'The Rainfall for spring is: ',
+    ariaLabel: 'The revenue in spring for Apple is: ',
   },
   {
     value: 20,
-    ariaLabel: 'The Rainfall for summer is: ',
+    ariaLabel: 'The revenue in summer for Apple is: ',
   },
   {
     value: 40,
-    ariaLabel: 'The Rainfall for autumn is: ',
+    ariaLabel: 'The revenue in autumn for Apple is: ',
   },
   {
     value: 50,
-    ariaLabel: 'The Rainfall for winter is: ',
+    ariaLabel: 'The revenue in winter for Apple is: ',
   },
 ];
 
-const londonBarValues: BarValue[] = [
+const microsoftBarValues: BarValues[] = [
   {
     value: 33,
-    ariaLabel: 'The Rainfall for spring is: ',
+    ariaLabel: 'The revenue in spring for microsoft is: ',
   },
   {
     value: 100,
-    ariaLabel: 'The Rainfall for summer is: ',
+    ariaLabel: 'The revenue in summer for microsoft is: ',
   },
   {
     value: 60,
-    ariaLabel: 'The Rainfall for autumn is: ',
+    ariaLabel: 'The revenue in autumn for microsoft is: ',
   },
   {
     value: 74,
-    ariaLabel: 'The Rainfall for winter is: ',
+    ariaLabel: 'The revenue in winter for microsoft is: ',
   },
 ];
 
-const berlinBarValues: BarValue[] = [
+const googleBarValues: BarValues[] = [
   {
     value: 100,
-    ariaLabel: 'The Rainfall for spring is: ',
+    ariaLabel: 'The revenue in spring for Google is: ',
   },
   {
     value: 33,
-    ariaLabel: 'The Rainfall for summer is: ',
+    ariaLabel: 'The revenue in summer for Google is: ',
   },
   {
     value: 93,
-    ariaLabel: 'The Rainfall for autumn is: ',
+    ariaLabel: 'The revenue in autumn for Google is: ',
   },
   {
     value: 65,
-    ariaLabel: 'The Rainfall for winter is: ',
+    ariaLabel: 'The revenue in winter for Google is: ',
   },
 ];
 
-const milanRainFall: Bar = {
-  name: 'Milan',
-  barValues: milanBarValues,
+const appleRevenue: Bar = {
+  name: 'Apple',
+  barValues: appleBarValues,
 };
 
-const londonRainFall: Bar = {
-  name: 'London',
-  barValues: londonBarValues,
+const microsoftRevenue: Bar = {
+  name: 'Microsoft',
+  barValues: microsoftBarValues,
 };
 
-const berlinRainFall: Bar = {
-  name: 'Berlin',
-  barValues: berlinBarValues,
+const googleRevenue: Bar = {
+  name: 'Google',
+  barValues: googleBarValues,
 };
 
 // eslint-disable-next-line import/prefer-default-export
 export const testBarSeries: BarSeries = {
-  series: [milanRainFall, londonRainFall],
+  series: [appleRevenue, microsoftRevenue],
   category: ['Spring', 'Summer', 'Autumn', 'Winter'],
 };
 
 export const testTwoBarSeries: BarSeries = {
-  series: [milanRainFall, londonRainFall, berlinRainFall],
+  series: [appleRevenue, microsoftRevenue, googleRevenue],
   category: ['Spring', 'Summer', 'Autumn', 'Winter'],
 };

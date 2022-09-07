@@ -1,0 +1,157 @@
+import { Canvas, Meta, Story, ArgsTable  } from '@storybook/addon-docs';
+import { testLineSeries } from '../example_data/line_series.ts';
+import {defaultLabel} from '../types/attributes/Labels.type';
+
+import LineChart from '../components/LineChart.svelte';
+
+<Meta title="MDX/LineChart" component={LineChart} />
+
+# LineChart - Component
+
+## What is a line chart needed for?
+
+Line charts illustrate quantitative information as a series of data points connected by a line. 
+These charts are often used to visualize data that changes over time
+
+## Basic example
+
+Below you can see an accessible diagram, with all its functions. Feel free to navigate with the 
+tab key to navigate over the diagram. The screen reader will recognize 
+the necessary text areas and read them for you.
+
+
+export const Template = (args) => ({
+  Component: LineChart,
+  props: args,
+});
+
+<Canvas>
+  <Story 
+    name="Basic example"
+    args={{
+      chartInfo: {
+        title: "A typical line chart",
+        desc: "This is a accessible description. Your screenreader will read it for you.",
+        source: "https://www.w3.org"
+      },
+      labels: {x: "Seasons", y: "Euro in million", secondY: ''},
+      series: testLineSeries,
+    }}>
+    {Template.bind({})}
+  </Story>
+</Canvas>
+
+### Adding Information
+
+In order to understand what the chart should represent, we will add some information to the chart. 
+For this we use the data type **ChartInfo**. With **ChartInfo** you can give the chart a title, 
+a description and a source. The special thing about the title is that the chart automatically generates the correct header tag.
+Should there be a **h1**-tag on the web page, 
+the title will automatically adapt and create a **h2**-tag.
+
+```ts
+import type {ChartInfo} from '../types/attributes/ChartInfo.types';
+
+export let chartInfo: ChartInfo = {
+  title: "A typical line chart",
+  desc: "This is a accessible description. Your screenreader will read it for you.",
+  source: "https://www.w3.org"
+} as ChartInfo
+```
+
+### Modification of Labels
+
+To give the reader more information and to explain the lines and points in more detail, you can use **Labels**.
+Labels is a data type that allows you to add axis labels to the chart. 
+**Labels** takes three parameters:
+- x: Defines the label of the x-axis
+- y: Defines the label of the Y-axis 
+- secondY: Defines the label of the second Y-axis
+
+```ts
+import {type Labels} from '../types/attributes/Labels.type';
+
+export let labels: Labels = {x: "X-Value", y: "Y-Value", secondY: ''} as Labels;
+```
+### Adding series
+
+To visualize the lines, we still need to give the Series to the diagram. For each diagram there is a suitable
+data type. For a line chart we use **LineSeries[]**. Furthermore we need 
+the data type **Points**.
+
+```ts
+import type { Points } from '../types/series/Point.type';
+import type { LineSeries } from '../types/series/LineSeries.type';
+
+const aLotOfPoints: Points[] = [
+  {
+    x: 100,
+    y: 10,
+    ariaLabel: 'Point 1',
+  },
+  {
+    x: 120,
+    y: 50,
+    ariaLabel: 'Point 2',
+  },
+];
+
+export const testLineSeries: LineSeries[] = [
+  {
+    name: 'Line 1',
+    points: aLotOfPoints,
+    color: '',
+  },
+];
+
+```
+### Theming
+
+You can add colors to the diagram. But you don't have to. The library provides automatically defined colors.
+You can find them in "src/theme/defaultTheme.ts". Here is an example:
+
+```ts
+
+import { HATCH_PATTERNS } from '../types/theme/Hatch.type.ts';
+import { CONTRAST_COLORS } from '../types/theme/Theme.type.ts';
+import type { LineTheme } from '../types/theme/Theme.type';
+
+export const defaultLineTheme: LineTheme = {
+  name: 'defaultLineTheme',
+  colors: CONTRAST_COLORS,
+  circles: {
+    radius: '3px',
+    focusColor: '#000000',
+    focusRadius: '50px',
+  },
+  wrapperStyles: {
+    backgroundColor: '#F7F7F7',
+  },
+  grid: {
+    gridColor: '',
+    gridSize: '',
+  },
+};
+```
+At this point, there is one more small feature. The library creates a CSS variable from each attribute.
+Except **colors**. For example, if you want to use the color of the wrapper in the style, 
+you can write the following:
+
+```css
+.an_element{
+  background-color: var(--wrapperStyles-backgroundColor);
+}
+```
+
+### Dimension
+
+With **Dimension** you can give the diagram a fixed width and size:
+```ts
+import type {Dimension} from '../types/attributes/Dimension.type';
+
+export let dimension: Dimension = {width: "800", height: "300"} as Dimension;
+```
+
+# Arguments
+
+<ArgsTable of={LineChart} />

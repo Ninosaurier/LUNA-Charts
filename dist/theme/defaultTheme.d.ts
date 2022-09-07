@@ -1,20 +1,4 @@
-export declare const defaultTheme: {
-    name: string;
-    color: {
-        primary: string;
-        secondary: string;
-        tertiary: string;
-        quaternary: string;
-    };
-    circles: {
-        radius: string;
-        "focus-color": string;
-        "focus-radius": string;
-    };
-    chart: {
-        "background-color": string;
-    };
-    grid: {
-        color: string;
-    };
-}[];
+import type { LineTheme, PieTheme, BarTheme } from '../types/theme/Theme.type';
+export declare const defaultLineTheme: LineTheme;
+export declare const defaultPieTheme: PieTheme;
+export declare const defaultBarTheme: BarTheme;

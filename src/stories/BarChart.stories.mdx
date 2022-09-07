@@ -1,0 +1,233 @@
+import { Canvas, Meta, Story, ArgsTable  } from '@storybook/addon-docs';
+import { testBarSeries, testTwoBarSeries } from '../example_data/bar_series.ts';
+import {defaultLabel} from '../types/attributes/Labels.type';
+
+import BarChart from '../components/BarChart.svelte';
+
+<Meta title="MDX/BarChart" component={BarChart} />
+
+# BarChart - Component
+
+## What is a bar chart needed for?
+
+A bar chart is very suitable if you want to compare many different data series with each other. 
+Mostly in a certain period of time.
+
+## Basic example
+
+Below you can see an accessible diagram, with all its functions. Feel free to navigate with the 
+tab key to navigate over the diagram. The screen reader will recognize 
+the necessary text areas and read them to you.
+
+
+export const Template = (args) => ({
+  Component: BarChart,
+  props: args,
+});
+
+<Canvas>
+  <Story 
+    name="Basic example"
+    args={{
+      chartInfo: {
+        title: "Revenue of three big companies",
+        desc: "The bar chart shows the revenue for Apple, Google and Microsoft divided in the seasons.",
+        source: "https://www.w3.org"
+      },
+      labels: {x: "Seasons", y: "Euro in million", secondY: ''},
+      series: testTwoBarSeries,
+      hatchPatterns: true,
+    }}>
+    {Template.bind({})}
+  </Story>
+</Canvas>
+
+## Step by Step
+
+So you understand what's happening. Let's create the previous diagram step by step. 
+The following command, creates an empty diagram:
+```
+<BarChart />
+```
+<Canvas>
+  <Story name="Empty Chart">
+    {Template.bind({})}
+  </Story>
+</Canvas>
+
+### Adding Information
+
+In order to understand what the chart should represent, we will add some information to the chart. 
+For this we use the data type **ChartInfo**. With **ChartInfo** you can give the chart a title, 
+a description and a source. The special thing about the title is that the chart automatically generates the correct header tag.
+Should there be a **h1**-tag on the web page, 
+the title will automatically adapt and create a **h2**-tag.
+
+```ts
+import type {ChartInfo} from '../types/attributes/ChartInfo.types';
+
+export let chartInfo: ChartInfo = {
+  title: "Revenue of three big companies",
+  desc: "The bar chart shows the revenue for Apple, Google and Microsoft divided in the seasons.",
+  source: "https://www.w3.org"
+} as ChartInfo
+```
+
+<Canvas>
+  <Story 
+    name="Adding Information"
+    args={{
+        chartInfo: {
+        title: "Revenue of three big companies",
+        desc: "The bar chart shows the revenue for Apple, Google and Microsoft divided in the seasons.",
+        source: "https://www.w3.org"
+      },
+    }}>
+    {Template.bind({})}
+  </Story>
+</Canvas>
+
+### Modification of Labels
+
+To give the reader more information and to explain the bars in more detail, you can use **Labels**.
+Labels is a data type that allows you to add axis labels to the chart. 
+**Labels** takes three parameters:
+- x: Defines the label of the x-axis
+- y: Defines the label of the Y-axis 
+- secondY: Defines the label of the second Y-axis
+
+```ts
+import {type Labels} from '../types/attributes/Labels.type';
+
+export let labels: Labels = {x: "Seasons", y: "Euro in million", secondY: ''} as Labels;
+```
+<Canvas>
+  <Story 
+    name="Modifying labels"
+    args={{
+        chartInfo: {
+        title: "Revenue of three big companies",
+        desc: "The bar chart shows the revenue for Apple, Google and Microsoft divided in the seasons.",
+        source: "https://www.w3.org"
+      },
+      labels: {x: "Seasons", y: "Euro in million", secondY: ''},
+    }}>
+    {Template.bind({})}
+  </Story>
+</Canvas>
+
+### Adding series
+
+To visualize numbers, we still need to give the Series to the diagram. For each diagram there is a suitable
+data type. For a bar chart we use **BarSeries**. Furthermore we need 
+the data types **Bar** and **BarValues**.
+
+```ts
+import type { BarSeries, BarValues, Bar } from '../types/series/BarSeries.type';
+
+const appleBarValues: BarValues[] = [
+  {
+    value: 10,
+    ariaLabel: 'The revenue in spring for Apple is: ',
+  },
+];
+
+const appleRevenue: Bar = {
+  name: 'Apple',
+  barValues: appleBarValues,
+};
+
+export const testBarSeries: BarSeries = {
+  series: [appleRevenue],
+  category: ['Spring', 'Summer', 'Autumn', 'Winter'],
+};
+```
+With **BarValues** we create an array with the individual values and the appropriate Aria label text. 
+**Bar** groups the individual values and gives them a name. **BarSeries** groups them together and
+category determines the content of the X-axis.
+
+<Canvas>
+  <Story 
+    name="Adding series"
+    args={{
+        chartInfo: {
+        title: "Revenue of three big companies",
+        desc: "The bar chart shows the revenue for Apple, Google and Microsoft divided in the seasons.",
+        source: "https://www.w3.org"
+      },
+      labels: {x: "Seasons", y: "Euro in million", secondY: ''},
+      series: testTwoBarSeries,
+    }}>
+    {Template.bind({})}
+  </Story>
+</Canvas>
+
+### Theming
+
+You can add colors to the diagram. But you don't have to. The library provides automatically defined colors.
+You can find them in "src/theme/defaultTheme.ts". Here is an example:
+
+```ts
+
+import { HATCH_PATTERNS } from '../types/theme/Hatch.type.ts';
+import { CONTRAST_COLORS } from '../types/theme/Theme.type.ts';
+import type { BarTheme } from '../types/theme/Theme.type';
+
+export const defaultBarTheme: BarTheme = {
+  name: 'barDefaultTheme',
+  colors: CONTRAST_COLORS,
+  focusColor: '#66ff99',
+  wrapperStyles: {
+    backgroundColor: '#F7F7F7',
+  },
+  grid: {
+    gridColor: '',
+    gridSize: '',
+  },
+  hatches: [HATCH_PATTERNS.CIRCLES, HATCH_PATTERNS.DIAGONAL, HATCH_PATTERNS.H_LINE],
+};
+```
+At this point, there is one more small feature. The library creates a CSS variable from each attribute.
+Except **colors**. For example, if you want to use the color of the wrapper in the style, 
+you can write the following:
+
+```css
+.an_element{
+  background-color: var(--wrapperStyles-backgroundColor);
+}
+```
+
+### Dimension
+
+With **Dimension** you can give the diagram a fixed width and size:
+```ts
+import type {Dimension} from '../types/attributes/Dimension.type';
+
+export let dimension: Dimension = {width: "800", height: "300"} as Dimension;
+```
+
+### Adding hatches
+
+To be able to distinguish the individual bars even better, you can give them hatch patterns.
+To do this, you only have to set **hatchPatterns** to **true**.
+
+<Canvas>
+  <Story 
+    name="Adding hatches"
+    args={{
+        chartInfo: {
+        title: "Revenue of three big companies",
+        desc: "The bar chart shows the revenue for Apple, Google and Microsoft divided in the seasons.",
+        source: "https://www.w3.org"
+      },
+      labels: {x: "Seasons", y: "Euro in million", secondY: ''},
+      series: testTwoBarSeries,
+      hatchPatterns: true,
+    }}>
+    {Template.bind({})}
+  </Story>
+</Canvas>
+
+# Arguments
+
+<ArgsTable of={BarChart} />

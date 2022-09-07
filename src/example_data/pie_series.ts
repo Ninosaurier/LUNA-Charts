@@ -1,52 +1,40 @@
-import type { PieSeries, PieSlice } from '../types/series/PieSeries.Type';
+import type { PieSeries, PieSlices } from '../types/series/PieSeries.Type';
+import { CONTRAST_COLORS } from '../types/theme/Theme.type';
 
-const pieSlices: PieSlice[] = [
+const pieSlices: PieSlices[] = [
   {
     name: 'Firefox',
-    percent: 0.35,
+    percent: 0.33,
+    color: CONTRAST_COLORS[0],
   },
   {
     name: 'Chrome',
     percent: 0.35,
+    color: CONTRAST_COLORS[1],
   },
   {
     name: 'Safari',
     percent: 0.2,
+    color: CONTRAST_COLORS[2],
   },
   {
     name: 'IE',
     percent: 0.1,
-  },
-];
-
-const problemSlices: PieSlice[] = [
-  {
-    name: 'Inter Milan',
-    percent: 0.50,
+    color: CONTRAST_COLORS[3],
   },
   {
-    name: 'Bayern',
-    percent: 0.02,
-  },
-  {
-    name: 'Real Madrid',
-    percent: 0.02,
-  },
-  {
-    name: 'Liverpool',
+    name: 'Opera',
     percent: 0.01,
+    color: CONTRAST_COLORS[4],
   },
   {
-    name: 'Rot Weiss Essen',
-    percent: 0.45,
+    name: 'Vivaldi',
+    percent: 0.01,
+    color: CONTRAST_COLORS[5],
   },
 ];
 
 // eslint-disable-next-line import/prefer-default-export
 export const testPieSeries: PieSeries = {
   slices: pieSlices,
-};
-
-export const problemPieSeries: PieSeries = {
-  slices: problemSlices,
 };

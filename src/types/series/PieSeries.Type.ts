@@ -1,14 +1,15 @@
 import { Type } from '@sinclair/typebox';
 import type { Static } from '@sinclair/typebox';
 
-export const PieSliceSchema = Type.Object({
+export const PieSlicesSchema = Type.Object({
   name: Type.String(),
   percent: Type.Number(),
+  color: Type.String(),
 });
 
 export const PieSeriesSchema = Type.Object({
-  slices: Type.Array(PieSliceSchema),
+  slices: Type.Array(PieSlicesSchema),
 });
 
-export type PieSlice = Static<typeof PieSliceSchema>;
+export type PieSlices = Static<typeof PieSlicesSchema>;
 export type PieSeries = Static<typeof PieSeriesSchema>;

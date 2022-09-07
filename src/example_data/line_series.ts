@@ -1,8 +1,7 @@
 /* eslint-disable import/prefer-default-export */
-import type { LineSeries } from '../types/series/LineSeries.type';
-import type { Point } from '../types/series/Point.type';
+import type { LineSeries, Points } from '../types/series/LineSeries.type';
 
-const testLineOne: Point[] = [
+const testLineOne: Points[] = [
   {
     x: 0,
     y: 0,
@@ -45,7 +44,7 @@ const testLineOne: Point[] = [
   },
 ];
 
-const testLineTwo: Point[] = [
+const testLineTwo: Points[] = [
   {
     x: 10,
     y: 10,
@@ -68,7 +67,7 @@ const testLineTwo: Point[] = [
   },
 ];
 
-const testLineThree: Point[] = [
+const testLineThree: Points[] = [
   {
     x: 100,
     y: 10,
