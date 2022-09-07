@@ -3,8 +3,7 @@
   import { onMount } from 'svelte';
   import ThemeContext from '../core/ThemeContext.svelte';
   import {defaultLineTheme} from '../theme/defaultTheme';
-  import type { Point } from '../types/series/Point.type';
-  import type { LineSeries } from '../types/series/LineSeries.type';
+  import type { LineSeries, Points } from '../types/series/LineSeries.type';
   import type {LineTheme} from '../types/theme/Theme.type';
   import {createHeaderTagForElement} from '../utils/accessibles';
   import {generateId} from '../utils/common';
@@ -32,7 +31,7 @@
   let gridGap: number = 20;
 
 
-  var getPoints = (points: Point[]) : string => {
+  var getPoints = (points: Points[]) : string => {
 
     let polyPoints: string = '';
 
@@ -205,10 +204,10 @@
         <g id="vertical_intercept" bind:this="{verticalInterceptionGroup}" transform='translate({svgWidth*0.1},0)'>
 
         </g>
-        <g role="graphics-object" transform='translate({svgWidth*0.1},{svgHeight*0.1})' class="functions" aria-live="polite">
+        <g transform='translate({svgWidth*0.1},{svgHeight*0.1})' class="functions" aria-live="polite">
           {#if series.length !== 0}
             {#each series as lines, l}
-              <g id="{idChart}_{cleanIdName(lines.name)}" role="graphics-object" class="show_line">
+              <g id="{idChart}_{cleanIdName(lines.name)}" class="show_line">
                 <polyline 
                   points="{getPoints(lines.points)}" 
                   fill="none" 
@@ -245,7 +244,7 @@
             </text>
           {/if}
         </g>
-        <g bind:this="{showedInfoBox}" role="graphics-object" transform='translate({svgWidth*0.1},{svgHeight*0.1}) scale(1, -1)' id="actually_focus"></g>
+        <g bind:this="{showedInfoBox}" transform='translate({svgWidth*0.1},{svgHeight*0.1}) scale(1, -1)' id="actually_focus"></g>
       </svg>
     </div>
     <div class="captions" style="padding: 0 {svgWidth*0.1}px;">

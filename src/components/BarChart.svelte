@@ -183,10 +183,10 @@
                 {/if}
               {/each}
             </g>
-            <g role="graphics-object" transform='translate({svgWidth*0.1},{svgHeight*0.1})' class="functions">
+            <g transform='translate({svgWidth*0.1},{svgHeight*0.1})' class="functions">
               {#if !isSeriesEmpty(series)}
                 {#each series.category as category, c}
-                  <g transform='translate({barGap*2*c},0)' role="graphics-object" aria-live="polite">
+                  <g transform='translate({barGap*2*c},0)' aria-live="polite">
                     {#each series.series as bar, barIndex}
                       <rect
                         stroke="{theme.colors[barIndex]}"
