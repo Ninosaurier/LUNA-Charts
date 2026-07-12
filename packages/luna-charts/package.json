@@ -18,9 +18,9 @@
       "types": "./dist/components/my-component.d.ts"
     },
     "./loader": {
+      "types": "./loader/index.d.ts",
       "import": "./loader/index.js",
-      "require": "./loader/index.cjs",
-      "types": "./loader/index.d.ts"
+      "require": "./loader/index.cjs"
     }
   },
   "repository": {
@@ -36,15 +36,21 @@
     "start": "stencil build --dev --watch --serve",
     "test": "stencil-test --prod",
     "test:watch": "stencil-test --prod --watch",
-    "generate": "stencil generate"
+    "generate": "stencil generate",
+    "storybook": "storybook dev -p 6006 --no-open"
   },
   "devDependencies": {
-    "@stencil/core": "^4.27.1 || ^5.0.0-0",
+    "@stencil/core": "^4.43.5",
+    "@stencil/storybook-plugin": "^0.7.0",
     "@stencil/vitest": "^1.8.3",
+    "@storybook/addon-links": "^10.5.0",
     "@types/node": "^22.13.5",
     "@vitest/browser-playwright": "^4.0.0",
     "playwright": "^1.52.0",
-    "vitest": "^4.0.0"
+    "storybook": "^10.5.0",
+    "vitest": "^4.0.0",
+    "eslint-plugin-storybook": "10.5.0",
+    "@storybook/addon-docs": "^10.5.0"
   },
   "license": "MIT"
 }
