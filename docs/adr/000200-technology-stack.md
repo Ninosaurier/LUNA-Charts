@@ -1,0 +1,211 @@
+# ADR-0002: Technology Stack
+
+* **Status:** Accepted
+* **Date:** 2026-07-12
+* **Decision Makers:** LUNA Charts Maintainers
+
+---
+
+## Context
+
+LUNA Charts is an open-source charting library designed to provide accessible, framework-agnostic, and strongly typed chart components.
+
+The selected technology stack must support the architectural principles defined during the TOGAF Architecture Development Method (ADM), including:
+
+* Accessibility by Design
+* Framework Agnosticism
+* Strong Type Safety
+* Component-Based Architecture
+* High Developer Experience
+* Open Source Collaboration
+* Long-Term Maintainability
+
+Rather than selecting technologies based on popularity, each technology is evaluated according to its ability to support these architectural goals.
+
+---
+
+## Decision Drivers
+
+The following factors influenced the decision:
+
+* Accessibility
+* Framework Agnosticism
+* Type Safety
+* Developer Experience
+* Maintainability
+* Testability
+* Documentation
+* Open Source Collaboration
+* Long-Term Evolution
+
+---
+
+## Considered Alternatives
+
+| Technology Area         | Considered Alternatives                         | Selected           |
+| ----------------------- | ----------------------------------------------- | ------------------ |
+| Component Framework     | React, Vue, Angular, Lit, StencilJS             | **StencilJS**      |
+| Component Documentation | Storybook, Styleguidist                         | **Storybook**      |
+| Project Documentation   | Docusaurus, VitePress, Starlight                | **Starlight**      |
+| Package Manager         | npm, Yarn, pnpm                                 | **pnpm**           |
+| Unit Testing            | Vitest, Jest                                    | **Jest**           |
+| Browser Testing         | Cypress, Playwright                             | **Playwright**     |
+| Accessibility Testing   | Manual Testing Only, axe-core                   | **axe-core**       |
+| Code Formatting         | Manual Formatting, Prettier                     | **Prettier**       |
+| Static Analysis         | TSLint, ESLint                                  | **ESLint**         |
+| Versioning              | Manual Versioning, Semantic Release, Changesets | **Changesets**     |
+| Continuous Integration  | GitLab CI, Azure Pipelines, GitHub Actions      | **GitHub Actions** |
+
+The selected technologies best support the project's architectural goals while remaining broadly adopted and well documented.
+
+---
+
+## Decision
+
+The following technology stack is adopted for the implementation of LUNA Charts.
+
+| Technology         | Purpose                                             |
+| ------------------ | --------------------------------------------------- |
+| **StencilJS**      | Web Component development                           |
+| **Storybook**      | Interactive component documentation and development |
+| **Starlight**      | Project and architecture documentation              |
+| **TypeScript**     | Strong typing and developer tooling                 |
+| **pnpm**           | Package management and workspace support            |
+| **Jest**           | Unit testing                                        |
+| **Playwright**     | Browser and interaction testing                     |
+| **axe-core**       | Accessibility validation                            |
+| **ESLint**         | Static code analysis                                |
+| **Prettier**       | Consistent code formatting                          |
+| **Changesets**     | Versioning and release management                   |
+| **GitHub Actions** | Continuous Integration                              |
+
+The technology stack is considered part of the project's architecture and may only be changed through a new Architecture Decision Record.
+
+---
+
+## Rationale
+
+Each technology has been selected because it directly supports one or more architectural principles.
+
+### StencilJS
+
+StencilJS enables the development of standards-based Web Components.
+
+This aligns with the project's goal of remaining framework agnostic while allowing framework-specific wrappers to be generated automatically during the build process.
+
+---
+
+### Storybook
+
+Storybook provides an isolated environment for component development.
+
+It supports rapid development, interactive examples, accessibility validation, and visual review of chart components.
+
+---
+
+### Starlight
+
+Starlight serves as the central documentation platform.
+
+It separates architectural documentation from component documentation and supports long-term maintainability of the project's knowledge base.
+
+---
+
+### TypeScript
+
+TypeScript enables strong compile-time validation.
+
+It improves the developer experience by detecting integration errors early and providing comprehensive IDE support.
+
+---
+
+### pnpm
+
+pnpm Workspaces enable a modular repository structure while maintaining a single source of truth for dependencies and tooling.
+
+---
+
+### Jest
+
+Jest provides fast unit testing for business logic, utility functions, configuration handling, validation, and other non-browser-specific functionality.
+
+---
+
+### Playwright
+
+Playwright validates component behavior inside real browsers.
+
+It is used to verify keyboard interaction, focus management, SVG rendering, and other browser-dependent accessibility features.
+
+---
+
+### axe-core
+
+axe-core automatically validates accessibility requirements and complements manual accessibility reviews.
+
+---
+
+### ESLint and Prettier
+
+Both tools ensure consistent coding standards across the project and reduce friction during code reviews.
+
+---
+
+### Changesets
+
+Changesets manages package versioning and release notes while keeping release decisions under maintainer control.
+
+---
+
+### GitHub Actions
+
+GitHub Actions automates testing, validation, and release workflows to ensure consistent software quality.
+
+---
+
+## Consequences
+
+### Positive
+
+* Technology stack directly supports architectural principles.
+* Strong accessibility support throughout development.
+* Framework-independent component model.
+* Excellent developer experience.
+* Consistent documentation workflow.
+* High maintainability.
+* Modern testing strategy.
+* Simplified contributor onboarding.
+* Automated quality assurance.
+* Scalable project foundation.
+
+### Negative
+
+* Initial project setup is more complex.
+* Contributors must become familiar with multiple development tools.
+* Toolchain maintenance requires periodic updates.
+* CI configuration is more comprehensive than for smaller projects.
+
+---
+
+## Related TOGAF Phases
+
+* Architecture Vision (Phase A)
+* Information Systems Architecture (Phase C)
+* Technology Architecture (Phase D)
+* Opportunities & Solutions (Phase E)
+* Migration Planning (Phase F)
+* Implementation Governance (Phase G)
+
+---
+
+## References
+
+* LUNA Charts Architecture Wiki
+* ADR-0001: Repository Structure
+* ADR-0003: Web Components as Public API
+* StencilJS Documentation
+* Storybook Documentation
+* Starlight Documentation
+* Playwright Documentation
+* Jest Documentation
+* pnpm Documentation
