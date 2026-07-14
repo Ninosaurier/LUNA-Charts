@@ -1,0 +1,88 @@
+---
+title: Project Structure
+description: Overview of the LUNA Charts repository and its organization.
+sidebar:
+  order: 1
+---
+
+LUNA Charts follows a modular repository structure that separates the chart library from its documentation while keeping all project artifacts within a single repository.
+
+```text
+luna-charts/
+│
+├── packages/
+│   └── luna-charts/
+│
+├── docs/
+│
+├── examples/
+│
+├── .github/
+│
+├── package.json
+└── pnpm-workspace.yaml
+```
+
+## packages/
+
+The `packages` directory contains the actual LUNA Charts library.
+
+This package is responsible for:
+
+- Chart components
+- Rendering
+- Public API
+- Build process
+- Testing
+
+As the project evolves, all chart implementations will live here.
+
+---
+
+## docs/
+
+The `docs` directory contains the complete project documentation.
+
+It serves as the **Single Point of Truth (SPOT)** for:
+
+- Architecture documentation
+- Architecture Decision Records (ADRs)
+- Developer guides
+- Project governance
+- User documentation
+
+The documentation is rendered using **Starlight**, but the Markdown content remains the authoritative source.
+
+---
+
+## examples/
+
+Example applications demonstrating how to integrate LUNA Charts with supported frontend frameworks will be added here in future iterations.
+
+Examples may include:
+
+- Vanilla JavaScript
+- React
+- Angular
+- Vue
+
+---
+
+## .github/
+
+Contains project automation such as:
+
+- GitHub Actions
+- Issue templates
+- Pull request templates
+- Community workflows
+
+---
+
+## Monorepo
+
+LUNA Charts is maintained as a **pnpm workspace**.
+
+This structure allows multiple packages and supporting projects to evolve together while sharing a consistent toolchain and development workflow.
+
+As the project grows, additional packages or tooling may be introduced without changing the overall repository organization.
