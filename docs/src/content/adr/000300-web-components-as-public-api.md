@@ -1,0 +1,110 @@
+# ADR-0003: Web Components as Public API
+
+* **Status:** Accepted
+* **Date:** 2026-07-12
+* **Decision Makers:** LUNA Charts Maintainers
+
+---
+
+## Context
+
+LUNA Charts is intended to be an open-source charting library that can be integrated into applications regardless of the frontend framework used.
+
+A primary architectural objective defined during the Architecture Vision and Technology Architecture phases is **framework agnosticism**. Consumers should be able to use LUNA Charts in React, Angular, Vue, Svelte, or plain HTML applications without requiring framework-specific implementations of the chart components.
+
+The public API therefore had to be based on a stable and widely adopted web standard rather than a framework-specific component model.
+
+---
+
+## Decision Drivers
+
+The following factors influenced this decision:
+
+* Framework Agnosticism
+* Standards Compliance
+* Long-Term Maintainability
+* Accessibility
+* Developer Experience
+* Component Reusability
+* Open Web Platform
+* Future Compatibility
+
+---
+
+## Considered Alternatives
+
+| Alternative                            | Description                                                       |
+| -------------------------------------- | ----------------------------------------------------------------- |
+| React Components                       | Components implemented exclusively for React.                     |
+| Vue Components                         | Components implemented exclusively for Vue.                       |
+| Angular Components                     | Components implemented exclusively for Angular.                   |
+| Separate implementations per framework | Independent implementations for each supported framework.         |
+| **Web Components**                     | Standards-based custom elements implemented using Web Components. |
+
+Framework-specific implementations were rejected because they increase maintenance effort, duplicate functionality, and couple the architecture to individual frontend ecosystems.
+
+Maintaining multiple implementations would also increase the likelihood of inconsistent behavior across frameworks.
+
+---
+
+## Decision
+
+LUNA Charts exposes its public API exclusively through **Web Components**.
+
+The project uses **StencilJS** to implement these components according to the Web Components standard.
+
+Framework integrations (e.g., React, Angular, Vue) are generated automatically during the build process and are considered **integration adapters**, not independent implementations.
+
+The architecture therefore consists of a single component model with multiple consumption options.
+
+---
+
+## Rationale
+
+Web Components are an open web standard supported by all modern browsers.
+
+By building directly upon this standard, LUNA Charts remains independent of any frontend framework while still supporting popular ecosystems through automatically generated wrappers.
+
+This approach minimizes duplicated implementation effort and guarantees consistent functionality across all supported platforms.
+
+Using a single implementation also simplifies testing, documentation, maintenance, and accessibility validation.
+
+Framework wrappers remain lightweight integration layers and do not introduce architectural differences.
+
+---
+
+## Consequences
+
+### Positive
+
+* Framework-independent public API.
+* Single implementation for all supported platforms.
+* Reduced maintenance effort.
+* Consistent behavior across frameworks.
+* Simplified testing and documentation.
+* Better long-term stability.
+* Supports future frontend frameworks without redesigning the library.
+
+### Negative
+
+* Developers unfamiliar with Web Components may require additional documentation.
+* Framework wrappers depend on the capabilities provided by StencilJS.
+* Some framework-specific features cannot be exposed without breaking framework independence.
+
+---
+
+## Related TOGAF Phases
+
+* Architecture Vision (Phase A)
+* Information Systems Architecture (Phase C)
+* Technology Architecture (Phase D)
+* Opportunities & Solutions (Phase E)
+
+---
+
+## References
+
+* LUNA Charts Architecture Wiki
+* ADR-0002: Technology Stack
+* StencilJS Documentation
+* Web Components Specification
