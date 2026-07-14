@@ -2,25 +2,38 @@
 import { defineConfig } from 'astro/config';
 import starlight from '@astrojs/starlight';
 
+
 // https://astro.build/config
 export default defineConfig({
-	integrations: [
-		starlight({
-			title: 'My Docs',
-			social: [{ icon: 'github', label: 'GitHub', href: 'https://github.com/withastro/starlight' }],
-			sidebar: [
-				{
-					label: 'Guides',
-					items: [
-						// Each item here is one entry in the navigation menu.
-						{ label: 'Example Guide', slug: 'guides/example' },
-					],
-				},
-				{
-					label: 'Reference',
-					items: [{ autogenerate: { directory: 'reference' } }],
-				},
-			],
-		}),
-	],
+  integrations: [
+    starlight({
+      title: 'LUNA-Charts',
+      social: [
+        {
+          icon: 'github',
+          label: 'GitHub',
+          href: 'https://git.byting-pandas.ninja/Ninosaurier/LUNA-Charts',
+        },
+      ],
+      sidebar: [
+        {
+          label: 'Start Here',
+          items: [{ label: 'Getting Started', slug: 'getting-started' }],
+        },
+        {
+          label: 'Architecture',
+          items: [
+            {
+              label: 'ADM',
+              items: [{ autogenerate: { "directory": "architecture/adm" } }],
+            },
+            {
+              label: 'ADRs',
+              items: [{ autogenerate: { "directory": "architecture/adr" } }],
+            },
+          ],
+        },
+      ],
+    }),
+  ],
 });
