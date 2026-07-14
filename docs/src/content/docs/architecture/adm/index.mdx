@@ -1,0 +1,74 @@
+---
+title: What is the Architecture Development Method (ADM)
+description: Overview of the TOGAF Architecture Development Method (ADM) used in LUNA-Charts.
+sidebar:
+  order: 1
+---
+
+import { Aside, Steps, Card, CardGrid } from '@astrojs/starlight/components';
+
+The **Architecture Development Method (ADM)** is the core process at the heart of [TOGAF](https://www.opengroup.org/togaf) (The Open Group Architecture Framework), one of the most widely used enterprise architecture frameworks. It provides a step-by-step, iterative approach for developing, implementing, and governing enterprise architecture.
+
+## Purpose
+
+ADM gives organizations a repeatable, structured way to design architecture that aligns business goals with IT systems, rather than approaching architecture work ad hoc.
+
+<Aside type="note">
+  ADM is typically visualized as a wheel/cycle, since architecture work is iterative rather than strictly linear.
+</Aside>
+
+## The Phases
+
+<Steps>
+
+1. **Preliminary Phase**
+   Define the architecture framework, principles, and scope for the organization.
+
+2. **Phase A: Architecture Vision**
+   Establish the scope, stakeholders, constraints, and high-level vision of the project.
+
+3. **Phase B: Business Architecture**
+   Model current and target business processes, organization, and capabilities.
+
+4. **Phase C: Information Systems Architectures**
+   Split into Data Architecture and Application Architecture.
+
+5. **Phase D: Technology Architecture**
+   Define hardware, software, and network infrastructure needed to support the architecture.
+
+6. **Phase E: Opportunities & Solutions**
+   Identify major implementation projects and delivery vehicles.
+
+7. **Phase F: Migration Planning**
+   Prioritize projects and develop a detailed roadmap.
+
+8. **Phase G: Implementation Governance**
+   Ensure implementation projects conform to the architecture.
+
+9. **Phase H: Architecture Change Management**
+   Monitor and manage changes to the architecture over time.
+
+</Steps>
+
+<Aside type="tip">
+  **Requirements Management** runs through the center of the ADM cycle, since requirements can emerge and need to be addressed at any phase.
+</Aside>
+
+## Phase C in Detail
+
+<CardGrid>
+  <Card title="Data Architecture">
+    Structure of an organization's logical and physical data assets.
+  </Card>
+  <Card title="Application Architecture">
+    Blueprint for individual application systems, their interactions, and their relationships to core business processes.
+  </Card>
+</CardGrid>
+
+## Key Characteristics
+
+- **Iterative** — Organizations often cycle through the phases multiple times, refining architecture at increasing levels of detail.
+- **Adaptable** — Phases can be tailored, skipped, or reordered depending on the organization's needs and maturity.
+- **Governance-focused** — Strong emphasis on ensuring architecture decisions are actually implemented and maintained correctly.
+
+---

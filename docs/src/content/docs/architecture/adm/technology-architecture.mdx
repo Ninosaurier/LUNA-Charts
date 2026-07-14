@@ -1,0 +1,226 @@
+---
+title: 4. Technology Architecture
+description: Technology choices underlying LUNA Charts and how they are structured together.
+sidebar:
+  order: 5
+---
+
+import { Aside } from '@astrojs/starlight/components';
+
+## 1. Overview
+
+This Technology Architecture defines the underlying technology decisions for LUNA Charts. It describes the runtime environment, rendering technology, programming language, distribution model, testing strategy, and release pipeline.
+
+LUNA Charts is designed as a modern, accessibility-first charting library optimized for web environments, focusing on performance, consistency, and WCAG-oriented rendering behavior.
+
+## 2. Rendering Technology
+
+### SVG-based Rendering Model
+
+LUNA Charts uses **SVG (Scalable Vector Graphics)** as its primary rendering technology.
+
+#### Rationale
+
+- Enables element-level accessibility (focusable nodes)
+- Supports ARIA attributes per visual element
+- Allows keyboard navigation across chart components
+- Provides native DOM structure for assistive technologies
+- Ensures compatibility with WCAG 2.2 requirements
+
+#### Exclusion of Canvas
+
+Canvas-based rendering is explicitly excluded because:
+
+- It produces pixel-based output without semantic structure
+- Individual chart elements cannot be addressed or focused
+- Accessibility must be simulated externally (insufficient for WCAG goals)
+- It conflicts with the "Accessibility by Design" principle
+
+## 3. Programming Language
+
+### TypeScript
+
+LUNA Charts is implemented in TypeScript.
+
+#### Rationale
+
+- Strong typing for chart-specific data models
+- Early error detection at compile time
+- Improved developer experience (DX) via IntelliSense
+- Explicit API contracts for all chart components
+- Supports structured accessibility-related metadata
+
+#### Architectural Impact
+
+- Each chart type has a dedicated strongly typed data model
+- Invalid configurations can be detected before runtime
+- Improves reliability of accessibility-related constraints
+
+## 4. Framework Integration Strategy
+
+### Framework-Neutral Core with Adapter Layer
+
+LUNA Charts is designed as a framework-agnostic system.
+
+#### Architecture Model
+
+- Core rendering and logic are framework-independent
+- Framework-specific adapters provide integration layers
+
+#### Supported Environments
+
+- React
+- Vue
+- Angular
+- Web Components
+
+#### Rationale
+
+- Prevents vendor lock-in
+- Ensures consistent behavior across frameworks
+- Aligns with "Framework Agnosticism" principle (P02)
+- Maximizes adoption across ecosystems
+
+## 5. Distribution Strategy
+
+### Single-Package Consumption Model
+
+LUNA Charts is distributed as a single unified package.
+
+#### Characteristics
+
+- No plugin system
+- No external extensions by consumers
+- All functionality is included in the core distribution
+
+#### Example Usage
+
+```bash
+npm install luna-charts
+```
+
+```jsx
+<BarChart data={...} />
+```
+
+#### Rationale
+
+- Simplifies developer experience
+- Ensures consistent API behavior
+- Maintains strict control over accessibility compliance
+- Avoids fragmentation of implementation quality
+
+## 6. Testing & Quality Strategy
+
+LUNA Charts follows a multi-layer quality assurance model.
+
+### 6.1 Functional Testing
+
+- Unit Tests for core logic
+- Ensures correctness of rendering pipeline
+
+### 6.2 Accessibility Testing
+
+- Automated accessibility validation tools
+- Checks WCAG-related constraints where machine-verifiable
+- Ensures ARIA structure correctness
+
+### 6.3 Code Quality (Linting)
+
+- Enforces architectural consistency
+- Prevents API misuse patterns
+- Ensures maintainable code structure
+
+### 6.4 Visual Regression Testing
+
+- Ensures SVG rendering stability
+- Detects unintended layout or structural changes
+- Validates accessibility-relevant DOM consistency
+
+### 6.5 Usability Testing
+
+- Manual or moderated usability sessions with representative developers/end users
+- Validates real-world developer experience and end-user comprehension of charts
+- Required for **minor and major releases** (new chart types, API changes, significant UX changes)
+- **Not required for patch releases** (bug fixes, internal refactors with no user-facing change)
+
+<Aside type="caution" title="Release Gate Policy">
+  Automated testing (unit, accessibility, linting, visual regression) is a **blocking condition for every release**. Usability testing is a **blocking condition for minor and major releases**, but is skipped for patch releases to avoid delaying critical fixes.
+</Aside>
+
+## 7. Release & Distribution Model
+
+### Open Source Release Pipeline
+
+LUNA Charts is developed as an open-source project.
+
+#### Distribution Flow
+
+![Release & Distribution Flow](https://wiki.byting-pandas.ninja/luna-charts/luna_charts_release_distribution_flow_v.svg)
+
+#### Versioning Strategy
+
+Semantic Versioning (SemVer):
+
+- MAJOR: breaking API or chart model changes
+- MINOR: new features or chart types
+- PATCH: bug fixes and accessibility improvements
+
+## 8. Runtime Environment
+
+### Modern Browser & Mobile Support
+
+LUNA Charts targets modern web environments.
+
+#### Constraints
+
+- Modern browsers only (Evergreen browsers)
+- Mobile-first compatibility
+- No legacy browser support
+
+#### Rationale
+
+- Enables SVG-first accessibility design
+- Reduces polyfill and compatibility overhead
+- Improves performance and maintainability
+
+## 9. Key Architectural Decisions
+
+- SVG is the only rendering technology (Canvas excluded)
+- TypeScript is used for strict typing and API contracts
+- Framework-neutral core with adapter layers
+- Single-package distribution model
+- No plugin or extension system
+- Multi-layer testing strategy with release gating
+- Open-source distribution via GitHub and npm
+- Modern browser and mobile-first runtime strategy
+
+## 10. Trade-offs
+
+### Advantages
+
+- Strong accessibility guarantees
+- Predictable and deterministic rendering
+- High developer experience (DX)
+- Consistent cross-framework behavior
+- Simplified integration model
+- High quality assurance via release gates
+
+### Limitations
+
+- Limited extensibility for external developers
+- Reduced customization flexibility
+- Strict architectural constraints
+- No plugin ecosystem
+- Higher responsibility on core maintainers
+
+## 11. Change Log
+
+This document reflects a refined Technology Architecture based on iterative architectural decisions across Phase A (Vision), Phase B (Business Architecture), and Phase C (Application Architecture). Key clarifications introduced in this phase:
+
+- SVG confirmed as the only rendering technology due to accessibility requirements
+- Accessibility is treated as a cross-cutting concern supported by type safety, runtime validation, and internal quality assurance (not a standalone engine)
+- Framework neutrality enforced through adapter-based architecture
+- Distribution model defined as a single-package open-source release via npm and GitHub
+- Testing strategy defined as a multi-layer quality gate system (unit, accessibility, linting, visual regression)
+- Runtime scope restricted to modern browsers and mobile-first environments for performance and accessibility alignment

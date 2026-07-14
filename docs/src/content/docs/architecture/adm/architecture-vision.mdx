@@ -1,0 +1,135 @@
+---
+title: 1. Architecture Vision
+description: Problem statement, objectives, target audience, guiding principles, and success criteria for LUNA Charts.
+sidebar:
+  order: 2
+---
+
+import { Aside } from '@astrojs/starlight/components';
+
+## 1. Problem Statement
+
+Modern web applications are increasingly required to meet accessibility standards such as the European Accessibility Act (EAA) and WCAG 2.2 guidelines.
+
+However, implementing accessible data visualizations remains a complex and underrepresented area in frontend development. Many developers lack specialized knowledge in accessibility design patterns, especially for chart components such as bar, line, or pie charts. As a result, accessibility is often added late, inconsistently, or not at all.
+
+## 2. Objective
+
+LUNA Charts aims to provide a reusable, developer-friendly charting library that enables the creation of accessible, WCAG-oriented data visualizations for web applications.
+
+The primary objective is to reduce the complexity of implementing accessibility in charts while maintaining flexibility for customization and integration into modern frontend stacks.
+
+## 3. Target Audience
+
+The primary stakeholders of LUNA Charts are:
+
+- Frontend developers integrating chart components into web applications
+- Full-stack developers building data-driven products
+- Teams responsible for accessibility compliance in digital products
+
+Secondary stakeholders include:
+
+- UX/UI designers concerned with accessible data representation
+- Accessibility specialists reviewing compliance with WCAG standards
+- End users, including users with visual, cognitive, or motor impairments
+
+## 4. Benefits
+
+LUNA Charts provides the following benefits:
+
+- Simplifies the implementation of accessible data visualizations
+- Reduces the need for deep accessibility expertise in development teams
+- Promotes consistent WCAG-aligned chart behavior across applications
+- Improves development speed by providing reusable, standardized components
+- Enhances end-user accessibility for data-driven interfaces
+- Supports regulatory compliance with accessibility requirements
+
+## 5. Scope
+
+LUNA Charts is a frontend-focused charting library providing reusable components for accessible data visualization.
+
+It is further defined as a **closed system with a strictly controlled input boundary and deterministic internal processing pipeline** (see [Section 8.4](#84-system-boundary-and-extensibility-constraint)).
+
+## 6. Architecture Principles
+
+The following principles guide all architectural decisions in LUNA Charts. They apply across all ADM phases and serve as the basis for evaluating design options, resolving conflicts, and maintaining long-term consistency.
+
+| ID | Principle | Statement | Rationale |
+|----|-----------|-----------|-----------|
+| P01 | Accessibility by Design | Accessibility is a core requirement of every component, not a feature added after the fact. | Aligns with the EAA and WCAG mandate; prevents costly rework in later development stages. |
+| P02 | Framework Agnosticism | LUNA Charts must not introduce tight coupling to any specific frontend framework. | Maximizes adoption potential across React, Vue, Angular, and Web Components ecosystems. |
+| P03 | Developer Experience First | Every API decision is evaluated primarily by the effort it imposes on the integrating developer. | Adoption depends directly on integration speed and ease of use. |
+| P04 | Open Source by Default | LUNA Charts is developed and maintained as an open-source project. | Builds community trust, enables external contributions, and ensures regulatory transparency. |
+| P05 | Standards over Convention | Where open standards exist (WCAG, ARIA, WAI-ARIA), LUNA Charts follows them over proprietary patterns. | Ensures long-term maintainability and compatibility with assistive technologies. |
+| P06 | Lightweight by Design | The library actively minimizes external dependencies and bundle size. | Prevents performance regressions in integrating products. |
+| P07 | Separation of Concerns | Visual rendering, data processing, configuration resolution, and cross-cutting concerns are clearly separated. | Improves testability, predictability, and architectural clarity. |
+
+## 7. Success Criteria
+
+The success of LUNA Charts is primarily measured by:
+
+- Adoption rate among frontend and full-stack developers
+- Integration into production-grade applications
+- Reduction of accessibility-related implementation effort in charting
+- Positive developer experience and ease of integration
+
+## 8. Change Log
+
+<Aside type="note">
+  During subsequent TOGAF ADM phases (Business and Application Architecture), the following refinements were made.
+</Aside>
+
+### 8.1 Accessibility Model Refinement
+
+- Accessibility was reclassified from a conceptual "Accessibility Engine" to a **system-wide cross-cutting concern**
+- Accessibility is enforced across multiple layers:
+  - Default value handling (design-time)
+  - Validation and checks (build-time)
+  - Runtime warnings and safeguards
+
+*(See original Section 1 + Section 6 — refinement of internal architecture interpretation)*
+
+### 8.2 Architectural Structure Shift (Component → Pipeline Model)
+
+- The system architecture was refined from a component-oriented view to a **deterministic processing pipeline model**
+
+![Architectural Structure Shift](https://wiki.byting-pandas.ninja/luna-charts/architecture-vision/luna_charts_architectural_structure_shift.svg)
+
+- Internal processing is now defined as sequential stages:
+  - Input / Interaction
+  - Validation / Resilience
+  - Configuration Resolution
+  - Accessibility Enforcement
+  - Rendering
+
+*(Impacts Section 5 Scope and Section 6 Principles P07)*
+
+### 8.3 Developer Interaction Model Clarification
+
+- The developer interaction model was clarified as a **component-based declarative API**
+- Developers interact via strongly typed chart-specific components such as:
+  - `<BarChart />`
+  - `<LineChart />`
+  - `<PieChart />`
+- Each chart type defines its own strict data model
+
+*(Refines Section 2 Objective and Section 3 Target Audience assumptions)*
+
+### 8.4 System Boundary and Extensibility Constraint
+
+- The architecture was explicitly defined as a **closed system**
+- No plugin system or extension points are provided
+- Internal pipeline stages cannot be modified or extended by external developers
+- Developer interaction is strictly limited to input and configuration at the system boundary
+
+*(Refines Section 5 Scope and Section 6 Principles P07)*
+
+---
+
+## 🔎 Summary of Changes in This Document
+
+The following sections were updated compared to the original version:
+
+- Section 5 (Scope) → clarified system boundary model
+- Section 6 (Principles) → refined separation of concerns wording
+- Section 8 (Evolution Note) → fully introduced and structured architectural evolution

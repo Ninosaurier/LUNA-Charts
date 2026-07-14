@@ -1,0 +1,197 @@
+---
+title: 2. Business Architecture
+description: Stakeholders, business processes, decision-making model, capability map, and business value driving adoption of LUNA Charts.
+sidebar:
+  order: 3
+---
+
+import { Aside } from '@astrojs/starlight/components';
+
+## 1. Overview
+
+This Business Architecture describes how LUNA Charts is used in a real-world context. It focuses on stakeholders, decision processes, business workflows, and value creation rather than technical implementation details.
+
+LUNA Charts is a developer-focused charting library designed to support the creation of accessible, WCAG-compliant data visualizations in web applications.
+
+## 2. Business Context
+
+Modern software products are required to meet accessibility regulations such as the European Accessibility Act (EAA) and WCAG 2.2 guidelines.
+
+Accessible data visualization is a particularly complex area, especially for chart components (e.g., bar, line, pie charts), where accessibility is often inconsistent or added late in development.
+
+LUNA Charts addresses this gap by providing a reusable solution that reduces accessibility complexity for development teams.
+
+## 3. Business Actors (Stakeholders)
+
+### 3.1 Primary Actors
+
+- Development Team responsible for evaluating, integrating, and maintaining LUNA Charts within the application
+- Product Owner responsible for final decision-making based on business value, cost, and priorities
+
+### 3.2 Supporting Actors
+
+- Software Architect provides technical evaluation and ensures long-term architectural consistency
+- Accessibility / Compliance Stakeholders ensure adherence to WCAG and regulatory requirements
+
+### 3.3 End Users
+
+- Users consuming data visualizations
+- Includes users with disabilities relying on assistive technologies
+
+## 4. Business Trigger (Why the process starts)
+
+The process begins when a product requirement emerges that requires accessible data visualizations.
+
+Typical triggers include:
+
+- Need for WCAG-compliant charts in a product
+- Accessibility audit findings requiring improvements
+- Product Owner requesting new data visualization features
+
+## 5. Business Process (LUNA Charts Adoption Lifecycle)
+
+The adoption of LUNA Charts typically follows this sequence:
+
+- A business need for accessible charts is identified
+- The team researches possible solutions
+- Alternative charting libraries are evaluated
+- LUNA Charts is selected as a candidate solution
+- The team validates usability through documentation and examples
+- A proof of concept is created
+- The Product Owner makes the final decision
+- LUNA Charts is integrated into the product
+- Developers implement charts in production features
+- End users interact with accessible visualizations
+
+## 6. Decision-Making Model
+
+The decision to adopt LUNA Charts is typically shared across roles:
+
+- Development Team → provides technical feasibility assessment
+- Software Architect → evaluates architectural fit and long-term sustainability
+- Product Owner → makes the final investment and product decision
+
+### Decision Criteria Include:
+
+- Documentation quality
+- Community / support availability
+- Licensing model (e.g., Open Source)
+- Technological compatibility (web ecosystem fit)
+- Ease of integration and developer experience
+
+## 7. Business Capability Map
+
+The following capability map defines what LUNA Charts must be able to do as a product — organized into three levels:
+
+- Core Capabilities
+- Enabling Capabilities
+- Governance & Sustainability Capabilities
+
+### 7.1 Core Capabilities
+
+| Capability | Description |
+|------------|-------------|
+| Chart Rendering | Creation of standard data visualizations: bar, line, pie, scatter charts via SVG or Canvas output |
+| Interaction Handling | Enables keyboard navigation, focus management, and non-pointer interaction models across all chart types |
+
+<Aside type="caution" title="⚠️ Important Architectural Change">
+  The **Accessibility Engine was removed as a standalone capability**. Accessibility is now defined as a **cross-cutting system-wide concern**, not a separate capability or module. See [Evolution Note Section 12.1](#121-accessibility-model-refinement).
+</Aside>
+
+### 7.2 Enabling Capabilities
+
+| Capability | Description |
+|------------|-------------|
+| Configuration & Theming | Allows customization of chart appearance including colors, contrast, labels, and layout |
+| Framework Integration | Enables embedding into modern web application frameworks: React, Vue, Angular, and Web Components |
+| Data Processing | Handles normalization, scaling, and transformation of input datasets into renderable structures |
+| Documentation & DX | Maintains API documentation, examples, and developer experience consistency |
+
+### 7.3 Governance & Sustainability
+
+| Capability | Description |
+|------------|-------------|
+| Release Management | Governs versioning (Semantic Versioning), changelog discipline, and predictable releases |
+| Compliance Monitoring | Tracks WCAG audit status across releases and prevents regressions |
+
+## 8. Business Value
+
+### 8.1 Value for Development Teams
+
+- Faster implementation of charts
+- No need for deep accessibility expertise
+- Reduced implementation complexity
+- Standardized reusable solution
+
+### 8.2 Value for Product Owners
+
+- Reduced development and maintenance costs
+- Lower risk of accessibility compliance issues
+- Avoidance of repeated evaluation efforts
+- Predictable integration effort
+
+### 8.3 Value for End Users
+
+- Improved accessibility of information
+- Support for assistive technologies
+- More consistent data visualization experience
+
+## 9. Business Risks / Reasons for Rejection
+
+LUNA Charts may be rejected if:
+
+- Lack of commercial support raises operational risk concerns
+- Limited chart types do not meet product requirements
+- Insufficient flexibility for custom visualization needs
+- Concerns about long-term maintenance in open-source context
+
+## 10. Business Constraints
+
+- Must operate in modern web environments
+- Must integrate with existing frontend architectures
+- Must support accessibility requirements (WCAG compliance)
+- Must remain lightweight and developer-friendly
+- Must not introduce excessive framework lock-in
+- **Must operate as a closed system with defined input boundary and no extension mechanisms** *(See [Evolution Note 12.2](#122-system-boundary--extensibility-constraint))*
+
+## 11. Key Outcome of this Phase
+
+The Business Architecture defines:
+
+- How LUNA Charts is evaluated and adopted
+- Which stakeholders influence the decision
+- What value is expected from the solution
+- Which risks can lead to rejection
+- How the solution fits into real-world workflows
+- Which capabilities the product must maintain to remain viable
+
+## 12. Change Log
+
+### 12.1 Accessibility Model Refinement
+
+- The previously defined "Accessibility Engine" was removed as a standalone capability
+- Accessibility is now defined as a **system-wide cross-cutting concern**
+- It is enforced through:
+  - Default configurations
+  - Validation processes
+  - Runtime feedback mechanisms
+
+*(Impacts Section 7.1 Core Capabilities)*
+
+### 12.2 System Boundary & Extensibility Constraint
+
+- LUNA Charts is explicitly defined as a **closed system**
+- No plugin or extension mechanism is provided
+- Developers cannot modify internal processing pipeline behavior
+- Interaction is limited to declarative input and configuration only
+
+*(Impacts Section 10 Business Constraints and Section 6 Decision Criteria indirectly)*
+
+### 12.3 Architectural Model Alignment (Business ↔ Application)
+
+- The Business Architecture now explicitly aligns with the Application Architecture:
+  - Declarative component-based API model
+  - Strict separation of responsibilities
+  - Accessibility as cross-cutting concern
+
+*(Ensures consistency with Phase C decisions)*

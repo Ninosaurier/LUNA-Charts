@@ -1,0 +1,199 @@
+---
+title: 7. Implementation Governance
+description: Roles, review processes, and quality gates that keep LUNA Charts implementation aligned with the documented architecture.
+sidebar:
+  order: 8
+---
+
+## 1. Overview
+
+This phase defines how the implementation of LUNA Charts is governed to ensure long-term architectural consistency, product quality, and maintainability.
+
+Rather than introducing new architectural decisions, Implementation Governance ensures that all implementation activities remain aligned with the architecture defined in previous phases. It establishes responsibilities, review processes, quality gates, and decision-making procedures for both contributors and maintainers.
+
+As an open-source project, LUNA Charts balances community contributions with centralized architectural governance to protect the project's long-term vision.
+
+## 2. Governance Principles
+
+Implementation Governance is guided by the following principles:
+
+- Architecture remains the authoritative source for implementation decisions.
+- Community contributions are encouraged but do not define the architecture.
+- Architectural decisions are reviewed collectively by the Maintainer Team.
+- Quality requirements apply consistently across the entire project.
+- Architectural evolution is documented and traceable through the architecture repository.
+
+## 3. Governance Roles
+
+### Community
+
+The community contributes ideas and implementation proposals.
+
+Responsibilities include:
+- Reporting bugs
+- Suggesting improvements
+- Participating in architectural discussions
+- Creating Pull Requests
+
+The community may influence discussions but does not make architectural decisions.
+
+### Contributors
+
+Contributors actively improve the project.
+
+Responsibilities include:
+- Implementing new features
+- Fixing defects
+- Improving documentation
+- Maintaining existing functionality
+
+All contributions are subject to review before integration.
+
+### Maintainers
+
+The Maintainer Team is responsible for the long-term integrity of the project.
+
+Responsibilities include:
+- Reviewing Pull Requests
+- Protecting architectural consistency
+- Approving architectural changes
+- Ensuring accessibility standards
+- Maintaining API stability
+- Approving public releases
+
+Architectural governance is owned collectively by the Maintainer Team rather than by an individual contributor.
+
+## 4. Governance Layers
+
+Implementation Governance operates across three complementary layers.
+
+### 4.1 Automated Governance
+
+Objective quality checks performed automatically during development.
+
+Examples include:
+- TypeScript validation
+- Linting
+- Unit testing
+- Accessibility testing
+- Build verification
+- Continuous Integration (CI)
+
+These checks ensure that objective quality requirements are consistently enforced.
+
+### 4.2 Architectural Governance
+
+Architectural Governance ensures that implementations remain aligned with the defined architecture.
+
+Maintainers review topics such as:
+- Public API consistency
+- Architectural boundaries
+- Rendering strategy
+- Cross-cutting concerns
+- Long-term maintainability
+
+Architectural compliance cannot be verified solely through automation and therefore requires human review.
+
+### 4.3 Project Governance
+
+Project Governance focuses on overall software quality beyond technical correctness.
+
+Evaluation criteria include:
+- Code readability
+- Maintainability
+- Documentation quality
+- Consistency with project conventions
+- Long-term sustainability
+
+A contribution may therefore be rejected even if all automated quality checks have passed.
+
+## 5. Architectural Compliance
+
+Every contribution is evaluated against the documented architecture.
+
+A Pull Request may be rejected if it:
+- Violates documented architectural decisions
+- Introduces unnecessary API changes
+- Circumvents accessibility mechanisms
+- Ignores cross-cutting concerns
+- Reduces maintainability or consistency
+- Conflicts with established architectural principles
+
+Maintainers are responsible for ensuring compliance before accepting contributions.
+
+## 6. Architectural Change Process
+
+Architectural evolution follows a structured review process.
+
+```text
+Proposal
+    ↓
+Architecture Discussion
+    ↓
+Maintainer Review
+    ↓
+Decision
+    ↓
+Architecture Documentation Update
+    ↓
+Evolution Note
+    ↓
+Implementation
+```
+
+Architectural decisions become official only after the architecture documentation has been updated.
+
+Implementation follows the documented architecture rather than defining it.
+
+## 7. Release Governance
+
+Public releases require successful completion of all mandatory quality gates defined by the Technology Architecture.
+
+These quality gates include, where applicable:
+- Automated testing
+- Accessibility validation
+- Build verification
+- Packaging validation
+- Release-specific usability testing
+
+Implementation Governance ensures that releases cannot be approved until all required validation activities have been successfully completed.
+
+## 8. Continuous Architecture Evolution
+
+The architecture is expected to evolve throughout the lifetime of the project.
+
+Potential triggers include:
+- New WCAG recommendations
+- Browser platform changes
+- TypeScript language evolution
+- SVG specification updates
+- Community feedback
+- Long-term maintainability concerns
+
+All architectural changes follow the same governance process regardless of their origin.
+
+## 9. Key Outcome of this Phase
+
+Implementation Governance defines:
+
+- Governance responsibilities
+- Review and approval processes
+- Automated and manual quality controls
+- Architectural compliance rules
+- Release approval governance
+- Continuous architecture evolution
+
+The result is a governance model that protects the long-term architectural integrity of LUNA Charts while enabling collaborative open-source development.
+
+## 10. Change Log
+
+No structural changes were introduced in this document during this iteration.
+
+This governance model is fully aligned with:
+
+- Architecture Vision (Phase A)
+- Business Architecture (Phase B)
+- Information Systems Architecture (Phase C)
+- Technology Architecture (Phase D)
+- Opportunities & Solutions (Phase E)
+- Migration Planning (Phase F)

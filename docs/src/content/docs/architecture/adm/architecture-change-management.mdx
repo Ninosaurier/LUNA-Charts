@@ -1,0 +1,169 @@
+---
+title: 8. Architecture Change Management
+description: Process for evaluating and managing future architectural change in LUNA Charts, ensuring the system evolves without losing consistency.
+sidebar:
+  order: 9
+---
+
+## 1. Overview
+
+Architecture Change Management defines how LUNA Charts adapts to new requirements, technologies, standards, and stakeholder needs throughout its lifecycle.
+
+Rather than treating the architecture as a static artifact, this phase establishes a controlled evolution process that preserves architectural consistency while enabling continuous improvement.
+
+All architectural changes follow documented governance processes and remain aligned with the project's long-term vision and architectural principles.
+
+## 2. Objectives
+
+Architecture Change Management pursues the following objectives:
+
+- Ensure the long-term sustainability of the architecture
+- Adapt to technological and regulatory changes
+- Preserve architectural consistency across releases
+- Support controlled innovation without compromising existing principles
+- Maintain traceable architectural evolution
+
+## 3. Architecture Change Triggers
+
+Architectural changes may be initiated by various internal and external factors.
+
+Typical triggers include:
+
+### External Triggers
+
+- Updates to WCAG recommendations
+- Changes in accessibility regulations
+- Browser platform evolution
+- SVG specification changes
+- TypeScript language evolution
+- New web platform capabilities
+
+### Internal Triggers
+
+- Architectural improvements
+- Lessons learned during implementation
+- Long-term maintainability concerns
+- Performance improvements
+- Community feedback
+- New functional requirements
+
+The existence of a trigger does not automatically require an architectural change. Every trigger must first be evaluated.
+
+## 4. Change Evaluation
+
+Every proposed architectural change is evaluated before implementation begins.
+
+Evaluation includes questions such as:
+
+- Does the proposal align with the Architecture Vision?
+- Does it respect the established architecture principles?
+- Does it improve long-term maintainability?
+- Does it preserve accessibility objectives?
+- Does it maintain a positive developer experience?
+- Does the expected value justify the architectural impact?
+
+Architectural principles always take precedence over feature demand.
+
+New functionality should strengthen the existing architecture rather than weaken its consistency.
+
+## 5. Architecture Evolution Process
+
+Architectural evolution follows a structured review process.
+
+```text
+Change Trigger
+        ↓
+Architecture Evaluation
+        ↓
+Architecture Discussion
+        ↓
+Maintainer Decision
+        ↓
+Architecture Documentation Update
+        ↓
+Implementation
+        ↓
+Project Documentation Update
+        ↓
+Release
+```
+
+Implementation follows documented architectural decisions rather than defining them.
+
+## 6. Documentation Management
+
+Architecture documentation is the primary source of truth for architectural decisions.
+
+Whenever an architectural change is approved, the following artifacts should be reviewed and updated where applicable:
+
+- Architecture documentation (ADM phases)
+- Developer documentation
+- Usage examples
+- Test suites
+- Public Change Log
+
+Documentation updates should precede or accompany implementation to ensure architectural transparency.
+
+## 7. Continuous Improvement
+
+LUNA Charts is designed to evolve continuously through incremental architectural improvements.
+
+Continuous improvement includes:
+
+- Refining existing architectural decisions
+- Improving accessibility support
+- Simplifying developer experience
+- Enhancing maintainability
+- Responding to technological evolution
+
+Continuous evolution should preserve the project's architectural identity.
+
+## 8. Major Architectural Evolution
+
+Some changes may fundamentally affect the architecture.
+
+Examples include:
+
+- Replacing core rendering technologies
+- Redefining the public API model
+- Introducing a new architectural paradigm
+- Fundamental changes to supported platforms
+
+Such changes should be treated as major architectural revisions and may require a new major software version.
+
+Major architectural evolution should be carefully evaluated before implementation begins.
+
+## 9. Relationship to Previous Phases
+
+Architecture Change Management builds upon all previous ADM phases.
+
+- Architecture Vision defines the long-term direction.
+- Business Architecture defines the expected business value.
+- Information Systems Architecture defines the application structure.
+- Technology Architecture defines the technical implementation.
+- Opportunities & Solutions defines the implementation roadmap.
+- Migration Planning defines delivery planning.
+- Implementation Governance ensures architectural compliance during implementation.
+
+Architecture Change Management ensures that future architectural evolution remains aligned with these foundations.
+
+## 10. Key Outcome of this Phase
+
+Architecture Change Management establishes:
+
+- A structured process for architectural evolution
+- Clear architecture change triggers
+- Evaluation criteria for architectural decisions
+- Documentation-first architecture evolution
+- Continuous architectural improvement
+- Controlled management of major architectural revisions
+
+The result is an architecture that remains stable, maintainable, and adaptable throughout the lifecycle of LUNA Charts.
+
+## 11. Change Log
+
+No structural changes were introduced in this document during this iteration.
+
+This phase concludes the Architecture Development Method (ADM) lifecycle by defining how architectural evolution is managed after implementation.
+
+The Architecture Change Management process complements the governance model established in Implementation Governance (Phase G) and provides the long-term evolution strategy for LUNA Charts.
