@@ -1,0 +1,138 @@
+---
+title: "ADR-0001: Repository Structure"
+description: "Decision to use a pnpm-based monorepo structure for LUNA Charts."
+---
+
+* **Status:** Accepted
+* **Date:** 2026-07-12
+* **Decision Makers:** LUNA Charts Maintainers
+
+---
+
+## Context
+
+LUNA Charts is designed as an open-source charting library with a strong focus on accessibility, maintainability, and long-term evolution.
+The project consists of multiple concerns, including source code, documentation, examples, testing infrastructure, and continuous integration.
+A repository structure was required that supports collaborative development while keeping the project easy to understand for contributors and maintainers.
+The repository should also support future growth without requiring structural changes.
+
+---
+
+## Decision Drivers
+
+The following factors influenced this decision:
+
+* Maintainability
+* Developer Experience
+* Open Source Collaboration
+* Modular Architecture
+* Shared Tooling
+* Consistent Build Process
+* Long-Term Evolution
+
+---
+
+## Considered Alternatives
+
+| Alternative                          | Description                                                                        |
+| ------------------------------------ | ---------------------------------------------------------------------------------- |
+| Multiple repositories                | Separate repositories for documentation, examples, and library packages.           |
+| Single repository without workspaces | One repository containing all files without workspace separation.                  |
+| **Monorepo using pnpm Workspaces**   | One repository containing all project artifacts with logical workspace separation. |
+
+Multiple repositories were rejected because they increase maintenance effort, duplicate tooling, and complicate contribution workflows.
+A single repository without workspaces was rejected because the project is expected to grow over time and benefits from a clear modular organization.
+
+---
+
+## Decision
+
+LUNA Charts is implemented as a **pnpm-based monorepo**.
+
+The repository contains all project artifacts, including:
+
+* Source code
+* Documentation
+* Storybook
+* Examples
+* Architecture documentation
+* Architecture Decision Records (ADRs)
+* CI/CD configuration
+
+The repository is organized into logical workspaces.
+
+```text
+luna-charts/
+│
+├── packages/
+│   └── luna-charts/
+│
+├── apps/
+│   ├── storybook/
+│   └── docs/
+│
+├── docs/
+│   ├── architecture/
+│   └── adr/
+│
+├── examples/
+│
+└── .github/
+```
+
+Internally, the library is organized into architectural modules such as:
+
+* Core
+* Charts
+* Themes
+* Utilities
+
+These modules are implementation details and are **not** exposed as individual npm packages.
+
+---
+
+## Rationale
+
+A monorepo provides a single source of truth for the entire project.
+All contributors work within the same repository using a shared toolchain, coding standards, testing infrastructure, and documentation.
+Using **pnpm Workspaces** enables clear separation of responsibilities while avoiding duplicated dependencies and configuration.
+This structure supports the project's architecture-first approach and simplifies future expansion.
+
+---
+
+## Consequences
+
+### Positive
+
+* Single source of truth
+* Simplified onboarding for contributors
+* Shared tooling and configuration
+* Consistent CI/CD pipeline
+* Easier dependency management
+* Centralized documentation
+* Scalable project organization
+
+### Negative
+
+* Larger repository size
+* Contributors clone the complete repository
+* Workspace configuration introduces a small amount of additional complexity
+
+---
+
+## Related TOGAF Phases
+
+* Architecture Vision (Phase A)
+* Technology Architecture (Phase D)
+* Opportunities & Solutions (Phase E)
+* Migration Planning (Phase F)
+* Implementation Governance (Phase G)
+* Architecture Change Management (Phase H)
+
+---
+
+## References
+
+* LUNA Charts Architecture Wiki
+* ADR-0002: Technology Stack
+* pnpm Workspaces Documentation
