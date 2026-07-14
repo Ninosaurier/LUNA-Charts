@@ -1,0 +1,132 @@
+---
+title: "ADR-000400: SVG as Rendering Technology"
+description: "Entscheidung, SVG als Rendering-Technologie für alle Chart-Visualisierungen in LUNA Charts einzusetzen."
+---
+
+* **Status:** Accepted
+* **Date:** 2026-07-12
+* **Decision Makers:** LUNA Charts Maintainers
+
+---
+
+## Context
+
+One of the primary goals of LUNA Charts is to provide accessible chart components that support modern accessibility standards and assist developers in creating WCAG-compliant data visualizations.
+
+Charts are graphical user interfaces that contain meaningful information. Depending on the chart type, individual graphical elements such as bars, points, labels, legends, and axes may need to be discoverable by assistive technologies, focusable using the keyboard, or interactable by users.
+
+The rendering technology therefore has a direct impact on accessibility, developer experience, testing capabilities, maintainability, and future extensibility.
+
+A rendering technology had to be selected that supports these architectural goals while remaining compatible with modern browsers and Web Components.
+
+---
+
+## Decision Drivers
+
+The following factors influenced this decision:
+
+* Accessibility
+* WCAG Compliance
+* Semantic Structure
+* Keyboard Navigation
+* Focus Management
+* Screen Reader Support
+* Developer Experience
+* Maintainability
+* Browser Compatibility
+* Long-Term Evolution
+
+---
+
+## Considered Alternatives
+
+| Alternative      | Description                                               |
+| ----------------- | ------------------------------------------------------------ |
+| HTML Elements    | Represent charts using standard HTML elements.            |
+| Canvas           | Render graphics using the HTML Canvas API.                |
+| Hybrid Rendering | Combine Canvas and SVG depending on the chart type.        |
+| **SVG**          | Render all chart graphics using Scalable Vector Graphics. |
+
+HTML was rejected because it is not designed to represent complex graphical visualizations.
+
+Canvas was rejected because graphical objects are rendered as pixels rather than DOM elements. This makes individual chart elements difficult to expose to assistive technologies and increases implementation complexity for keyboard interaction and accessibility.
+
+Hybrid rendering was rejected because it would introduce two rendering models, increasing architectural complexity, testing effort, and maintenance costs.
+
+---
+
+## Decision
+
+All chart visualizations within LUNA Charts are rendered using **Scalable Vector Graphics (SVG)**.
+
+Each visual element (e.g., bars, lines, points, labels, legends, and axes) is represented as an individual SVG element within the DOM.
+
+Accessibility information, keyboard navigation, focus management, and interaction are implemented directly on these SVG elements.
+
+Canvas is not used as a rendering technology for chart components.
+
+---
+
+## Rationale
+
+SVG integrates directly into the browser's Document Object Model (DOM), allowing every graphical element to be individually identified, styled, focused, and enriched with accessibility information.
+
+This capability aligns with the project's goal of supporting accessible chart implementations by design.
+
+Using SVG enables the library to:
+
+* associate semantic information with graphical elements,
+* support keyboard navigation,
+* expose meaningful structures to assistive technologies,
+* apply standard web accessibility techniques,
+* simplify automated accessibility testing,
+* integrate naturally with Web Components.
+
+SVG also provides excellent scalability across different display resolutions without requiring additional rendering logic.
+
+Although Canvas may provide better rendering performance for extremely large datasets, accessibility and maintainability are considered higher architectural priorities for LUNA Charts.
+
+---
+
+## Consequences
+
+### Positive
+
+* Native DOM representation of graphical elements.
+* Improved accessibility support.
+* Better compatibility with assistive technologies.
+* Simplified keyboard navigation.
+* Simplified focus management.
+* Easier automated accessibility testing.
+* Resolution-independent rendering.
+* Consistent styling using CSS.
+* Better integration with Web Components.
+* Simplified debugging using browser developer tools.
+
+### Negative
+
+* Rendering performance may decrease for extremely large datasets.
+* SVG documents become larger as chart complexity increases.
+* Very large visualizations may require optimization techniques such as virtualization or data aggregation.
+
+These trade-offs are considered acceptable because accessibility and maintainability have higher architectural priority than maximum rendering performance.
+
+---
+
+## Related TOGAF Phases
+
+* Architecture Vision (Phase A)
+* Business Architecture (Phase B)
+* Information Systems Architecture (Phase C)
+* Technology Architecture (Phase D)
+* Opportunities & Solutions (Phase E)
+
+---
+
+## References
+
+* LUNA Charts Architecture Wiki
+* ADR-000200: Technology Stack
+* ADR-000300: Web Components as Public API
+* Scalable Vector Graphics (SVG) Specification
+* Web Content Accessibility Guidelines (WCAG)
