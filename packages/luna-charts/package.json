@@ -45,14 +45,14 @@
     "@stencil/core": "^4.43.5",
     "@stencil/storybook-plugin": "^0.7.0",
     "@stencil/vitest": "^1.8.3",
+    "@storybook/addon-docs": "^10.5.0",
     "@storybook/addon-links": "^10.5.0",
     "@types/node": "^22.13.5",
     "@vitest/browser-playwright": "^4.0.0",
-    "playwright": "^1.52.0",
-    "storybook": "^10.5.0",
-    "vitest": "^4.0.0",
     "eslint-plugin-storybook": "10.5.0",
-    "@storybook/addon-docs": "^10.5.0"
+    "playwright": "^1.61.1",
+    "storybook": "^10.5.0",
+    "vitest": "^4.0.0"
   },
   "license": "MIT"
 }
