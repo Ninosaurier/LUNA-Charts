@@ -6,10 +6,12 @@
   "scripts": {
     "lint": "eslint .",
     "format": "prettier --write .",
-    "test": "echo \"Error: no test specified\" && exit 1",
     "changeset": "changeset",
     "version": "changeset version",
-    "release": "changeset publish"
+    "release": "changeset publish",
+    "test:unit": "pnpm --filter luna-charts test:unit",
+    "test:component": "docker compose -f docker-compose.test.yaml up --build --abort-on-container-exit --exit-code-from test",
+    "test": "pnpm test:unit && pnpm test:component"
   },
   "keywords": [],
   "author": "",
