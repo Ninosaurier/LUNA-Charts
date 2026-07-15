@@ -1,0 +1,18 @@
+FROM mcr.microsoft.com/playwright:v1.61.1-noble
+
+RUN corepack enable && corepack prepare pnpm@10 --activate
+
+ENV CI=true
+
+WORKDIR /app
+
+COPY pnpm-lock.yaml pnpm-workspace.yaml package.json ./
+COPY packages/luna-charts/package.json ./packages/luna-charts/
+
+RUN pnpm install --frozen-lockfile
+
+COPY . .
+
+WORKDIR /app/packages/luna-charts
+
+CMD ["pnpm", "test:browser"]
