@@ -5,6 +5,7 @@ description: "Selection of the technology stack for LUNA Charts based on the TOG
 
 * **Status:** Accepted
 * **Date:** 2026-07-12
+* **Last Updated:** 2006-07-17
 * **Decision Makers:** LUNA Charts Maintainers
 
 ---
@@ -51,7 +52,7 @@ The following factors influenced the decision:
 | Component Documentation | Storybook, Styleguidist                         | **Storybook**      |
 | Project Documentation   | Docusaurus, VitePress, Starlight                | **Starlight**      |
 | Package Manager         | npm, Yarn, pnpm                                 | **pnpm**           |
-| Unit Testing            | Vitest, Jest                                    | **Jest**           |
+| Unit Testing            | Vitest, Jest                                    | **Vitest**         |
 | Browser Testing         | Cypress, Playwright                             | **Playwright**     |
 | Accessibility Testing   | Manual Testing Only, axe-core                   | **axe-core**       |
 | Code Formatting         | Manual Formatting, Prettier                     | **Prettier**       |
@@ -74,8 +75,8 @@ The following technology stack is adopted for the implementation of LUNA Charts.
 | **Starlight**      | Project and architecture documentation              |
 | **TypeScript**     | Strong typing and developer tooling                 |
 | **pnpm**           | Package management and workspace support            |
-| **Jest**           | Unit testing                                        |
-| **Playwright**     | Browser and interaction testing                     |
+| **Vitest**         | Unit testing and browser/component testing           |
+| **Playwright**     | Browser provider for Vitest browser mode             |
 | **axe-core**       | Accessibility validation                            |
 | **ESLint**         | Static code analysis                                |
 | **Prettier**       | Consistent code formatting                          |
@@ -128,15 +129,17 @@ pnpm Workspaces enable a modular repository structure while maintaining a single
 
 ---
 
-### Jest
+### Vitest
 
-Jest provides fast unit testing for business logic, utility functions, configuration handling, validation, and other non-browser-specific functionality.
+Vitest provides fast unit testing for business logic, utility functions, configuration handling, validation, and other non-browser-specific functionality.
+
+Vitest also serves as the single test runner for browser/component tests, using Playwright as its browser provider (`@vitest/browser-playwright`). This avoids maintaining two separate test runners and keeps unit and component testing under one consistent configuration and reporting workflow.
 
 ---
 
 ### Playwright
 
-Playwright validates component behavior inside real browsers.
+Playwright validates component behavior inside real browsers, running as the browser provider within Vitest's browser mode rather than as a standalone test runner.
 
 It is used to verify keyboard interaction, focus management, SVG rendering, and other browser-dependent accessibility features.
 
@@ -210,5 +213,26 @@ GitHub Actions automates testing, validation, and release workflows to ensure co
 * Storybook Documentation
 * Starlight Documentation
 * Playwright Documentation
-* Jest Documentation
+* Vitest Documentation
 * pnpm Documentation
+
+---
+
+## Change Log
+
+### 2026-07-17 – Unit Testing: Jest replaced with Vitest
+
+**Reason**
+
+During implementation, Jest was replaced with Vitest as the unit testing tool. Stencil's official Vitest integration (`@stencil/vitest`) allows unit tests and browser/component tests to run through a single test runner and configuration file, instead of maintaining Jest for unit tests and a separate Playwright test runner for browser tests. This reduces toolchain complexity and keeps testing configuration consistent across both test types.
+
+**Changes**
+
+* "Considered Alternatives" table: selected Unit Testing technology changed from **Jest** to **Vitest**
+* "Decision" table: **Jest** entry replaced with **Vitest**; **Playwright**'s purpose updated to reflect its role as the browser provider used by Vitest, not a standalone browser test runner
+* "Rationale" section: `Jest` subsection replaced with `Vitest`; `Playwright` subsection clarified to describe it as running inside Vitest's browser mode
+* "References": `Jest Documentation` replaced with `Vitest Documentation`
+
+**Impact**
+
+Playwright remains part of the technology stack, but its architectural role changes from an independent browser test runner to the browser engine used by Vitest. No other decisions in this ADR are affected.
