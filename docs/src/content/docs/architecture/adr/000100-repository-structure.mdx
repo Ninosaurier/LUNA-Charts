@@ -5,6 +5,7 @@ description: "Decision to use a pnpm-based monorepo structure for LUNA Charts."
 
 * **Status:** Accepted
 * **Date:** 2026-07-12
+* **Last Updated:** 2026-07-17
 * **Decision Makers:** LUNA Charts Maintainers
 
 ---
@@ -66,19 +67,22 @@ luna-charts/
 │
 ├── packages/
 │   └── luna-charts/
-│
-├── apps/
-│   ├── storybook/
-│   └── docs/
+│       └── .storybook/
 │
 ├── docs/
-│   ├── architecture/
-│   └── adr/
+│   └── src/content/docs/architecture/
+│       ├── adr/
+│       └── adm/
 │
 ├── examples/
 │
+├── .changeset/
+│
 └── .github/
 ```
+
+Storybook is not maintained as a separate app but lives directly inside the `packages/luna-charts` package, alongside the component source code it documents.
+The `docs/` workspace is not nested under an `apps/` directory; it is a top-level workspace built with Starlight, with architecture documentation (ADR and ADM) organized under `docs/src/content/docs/architecture/`.
 
 Internally, the library is organized into architectural modules such as:
 
@@ -136,3 +140,25 @@ This structure supports the project's architecture-first approach and simplifies
 * LUNA Charts Architecture Wiki
 * ADR-0002: Technology Stack
 * pnpm Workspaces Documentation
+
+---
+
+## Change Log
+
+### 2026-07-17 – Repository structure diagram updated (removal of `apps/`)
+
+**Reason**
+
+The originally planned `apps/` workspace (containing `apps/storybook` and `apps/docs`) was never adopted in this form during implementation. Storybook was instead kept inside `packages/luna-charts` alongside the component source it documents, and the documentation workspace (`docs/`) was placed directly at the repository root rather than nested under `apps/`. The repository structure diagram in this ADR no longer matched the actual repository layout, while the Getting Started documentation (`project-structure.mdx`) already reflected the current structure.
+
+**Changes**
+
+* Removed the `apps/` directory (and its `storybook/` and `docs/` subentries) from the structure diagram
+* Corrected the `docs/` path to reflect the actual Starlight content location (`docs/src/content/docs/architecture/`)
+* Added the `adm/` folder to the diagram, alongside `adr/`, since Architecture Development Method documentation is stored there as well
+* Added `.changeset/` to the diagram, as it is a workspace-level configuration directory used for release management
+* Added a note clarifying that Storybook is maintained as part of the `packages/luna-charts` package rather than as a separate app
+
+**Impact**
+
+The overall decision (pnpm-based monorepo with logical workspace separation) is unaffected. Only the illustrative directory layout was corrected to match the implemented structure. No other ADRs are impacted by this change.
