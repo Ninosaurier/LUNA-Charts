@@ -148,6 +148,22 @@ LUNA Charts follows a multi-layer quality assurance model.
   Automated testing (unit, accessibility, linting, visual regression) is a **blocking condition for every release**. Usability testing is a **blocking condition for minor and major releases**, but is skipped for patch releases to avoid delaying critical fixes.
 </Aside>
 
+### 6.6 Test Execution Environment
+
+Component and browser tests (Vitest browser mode, see ADR-0002) run inside a **containerized Playwright environment** rather than directly on contributor or CI host machines.
+
+#### Characteristics
+
+- A dedicated `Dockerfile.test`, based on the official Playwright container image, provides a reproducible browser environment with pinned browser versions
+- `docker-compose.test.yaml` orchestrates the test execution, isolating dependencies from the host system
+- The same containerized environment is used locally by contributors and in Continuous Integration, avoiding "works on my machine" discrepancies caused by differing local Playwright/browser installations
+
+#### Rationale
+
+- Ensures deterministic, reproducible accessibility and browser test results independent of the host operating system
+- Removes the need for contributors to install and maintain matching Playwright browser binaries locally
+- Aligns automated testing (Section 6.1–6.4) with a single, version-controlled execution environment
+
 ## 7. Release & Distribution Model
 
 ### Open Source Release Pipeline
@@ -192,6 +208,7 @@ LUNA Charts targets modern web environments.
 - Single-package distribution model
 - No plugin or extension system
 - Multi-layer testing strategy with release gating
+- Containerized, reproducible test execution environment for browser and accessibility tests
 - Open-source distribution via GitHub and npm
 - Modern browser and mobile-first runtime strategy
 
@@ -224,3 +241,18 @@ This document reflects a refined Technology Architecture based on iterative arch
 - Distribution model defined as a single-package open-source release via npm and GitHub
 - Testing strategy defined as a multi-layer quality gate system (unit, accessibility, linting, visual regression)
 - Runtime scope restricted to modern browsers and mobile-first environments for performance and accessibility alignment
+
+### 2026-07-17 – Containerized test execution documented
+
+**Reason**
+
+Component and browser tests are executed inside a Docker-based Playwright environment (`Dockerfile.test`, `docker-compose.test.yaml`), which was introduced during implementation but had not yet been reflected in this document.
+
+**Changes**
+
+- Added Section 6.6 "Test Execution Environment" describing the containerized Playwright setup used for local development and CI
+- Added "Containerized, reproducible test execution environment" to Section 9 "Key Architectural Decisions"
+
+**Impact**
+
+This clarifies an already-implemented part of the testing strategy (Section 6) and does not change any other architectural decision in this document.
