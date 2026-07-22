@@ -42,6 +42,8 @@
     "storybook": "storybook dev -p 6006 --no-open"
   },
   "devDependencies": {
+    "@oxc-parser/binding-linux-x64-gnu": "^0.141.0",
+    "@rolldown/binding-linux-x64-gnu": "^1.2.0",
     "@stencil/core": "^4.43.5",
     "@stencil/storybook-plugin": "^0.7.0",
     "@stencil/vitest": "^1.8.3",

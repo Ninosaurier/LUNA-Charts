@@ -1,5 +1,5 @@
 {
-  "timestamp": "2026-07-12T12:51:52",
+  "timestamp": "2026-07-22T21:49:28",
   "compiler": {
     "name": "@stencil/core",
     "version": "4.43.5",
@@ -17,10 +17,10 @@
       "props": [
         {
           "name": "first",
-          "type": "string",
+          "type": "string | undefined",
           "complexType": {
             "original": "string",
-            "resolved": "string",
+            "resolved": "string | undefined",
             "references": {}
           },
           "mutable": false,
@@ -31,6 +31,9 @@
           "values": [
             {
               "type": "string"
+            },
+            {
+              "type": "undefined"
             }
           ],
           "optional": true,
@@ -40,10 +43,10 @@
         },
         {
           "name": "last",
-          "type": "string",
+          "type": "string | undefined",
           "complexType": {
             "original": "string",
-            "resolved": "string",
+            "resolved": "string | undefined",
             "references": {}
           },
           "mutable": false,
@@ -54,6 +57,9 @@
           "values": [
             {
               "type": "string"
+            },
+            {
+              "type": "undefined"
             }
           ],
           "optional": true,
@@ -63,10 +69,10 @@
         },
         {
           "name": "middle",
-          "type": "string",
+          "type": "string | undefined",
           "complexType": {
             "original": "string",
-            "resolved": "string",
+            "resolved": "string | undefined",
             "references": {}
           },
           "mutable": false,
@@ -77,6 +83,9 @@
           "values": [
             {
               "type": "string"
+            },
+            {
+              "type": "undefined"
             }
           ],
           "optional": true,
