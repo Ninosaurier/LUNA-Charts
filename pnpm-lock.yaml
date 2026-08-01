@@ -265,7 +265,7 @@ importers:
         specifier: 10.5.0
         version: 10.5.0(eslint@10.8.0(jiti@2.7.0))(storybook@10.5.5(@types/react@19.2.18)(prettier@3.9.6)(react@19.2.8))(typescript@5.9.3)
       playwright:
-        specifier: ^1.61.1
+        specifier: ^1.62.1
         version: 1.62.1
       storybook:
         specifier: ^10.5.0
