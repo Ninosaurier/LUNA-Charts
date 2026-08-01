@@ -64,7 +64,15 @@ luna-charts/
 ### Installation
 
 ```bash
-git clone <this-repository>
+git clone https://github.com/Ninosaurier/LUNA-Charts.git
+cd luna-charts
+pnpm install
+```
+
+or
+
+```bash
+git clone https://git.byting-pandas.ninja/Ninosaurier/LUNA-Charts.git
 cd luna-charts
 pnpm install
 ```
