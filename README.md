@@ -4,6 +4,14 @@ LUNA Charts is a reusable, developer-friendly charting library designed to make 
 
 > **Project status:** Groundwork phase. Core architecture and tooling are in place; production-ready chart components (starting with `BarChart`) are still in development. See the [Roadmap](./docs/src/content/docs/getting-started/roadmap.mdx) for details.
 
+## Preface & Repository Mirror Notice
+
+Please be aware of our repository structure:
+
+* **Official Repository:** [git.byting-pandas.ninja/Ninosaurier/LUNA-Charts](https://byting-pandas.ninja)
+
+**Important:** All development, including issue tracking and contribution management, takes place exclusively on our self-hosted server. Issues and pull requests cannot be created or processed on this GitHub mirror. Please visit the original link above to report bugs or request features.
+
 ## Why LUNA Charts
 
 Most charting libraries treat accessibility as an add-on. LUNA Charts builds it in from the start:
