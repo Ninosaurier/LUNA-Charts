@@ -4,6 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
+    "docs": "pnpm --filter docs run dev",
     "lint": "eslint .",
     "format": "prettier --write .",
     "changeset": "changeset",

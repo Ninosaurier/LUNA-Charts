@@ -1,8 +1,10 @@
 packages:
   - "packages/*"
+  - "docs/"
 
 allowBuilds:
-  esbuild: false
+  esbuild: true
+  sharp: true
 
 onlyBuiltDependencies:
   - playwright
