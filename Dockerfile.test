@@ -10,11 +10,9 @@ COPY . .
 
 RUN rm -rf node_modules packages/**/node_modules
 
-RUN rm -f pnpm-lock.yaml
-
 ENV PNPM_CONFIG_SUPPORTED_ARCHITECTURES="current,linux-x64-gnu"
 
-RUN pnpm install
+RUN pnpm install --frozen-lockfile
 
 WORKDIR /app/packages/luna-charts
 
