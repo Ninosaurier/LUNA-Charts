@@ -8,7 +8,7 @@ LUNA Charts is a reusable, developer-friendly charting library designed to make 
 
 Please be aware of our repository structure:
 
-* **Official Repository:** [git.byting-pandas.ninja/Ninosaurier/LUNA-Charts](https://byting-pandas.ninja)
+* **Official Repository:** [git.byting-pandas.ninja/Ninosaurier/LUNA-Charts](https://git.byting-pandas.ninja/Ninosaurier/LUNA-Charts)
 
 **Important:** All development, including issue tracking and contribution management, takes place exclusively on our self-hosted server. Issues and pull requests cannot be created or processed on this GitHub mirror. Please visit the original link above to report bugs or request features.
 
@@ -79,6 +79,18 @@ pnpm install
 | `pnpm test:component` | Run component/browser tests inside the containerized Playwright environment |
 | `pnpm test` | Run the full test suite (unit + component) |
 | `pnpm changeset` | Record a changeset for your change (required for any user-facing change) |
+| `pnpm run docs` | Start the documentation site locally (astroJS) |
+
+### Storybook
+
+Storybook currently needs to be started from within the library package directly:
+
+```bash
+cd packages/luna-charts
+pnpm run storybook
+```
+
+> **Note:** Running Storybook from the repository root isn't set up yet. This is a known gap — contributions to add a root-level `pnpm --filter` script are welcome.
 
 Component and browser tests run inside Docker (`docker-compose.test.yaml`) to guarantee a reproducible browser environment across all contributors and CI — you don't need Playwright browsers installed locally.
 
