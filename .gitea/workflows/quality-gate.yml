@@ -8,7 +8,7 @@ on:
 
 jobs:
   lint-and-format:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-docker-dind
     steps:
       - uses: actions/checkout@v4
 
@@ -28,7 +28,7 @@ jobs:
         run: pnpm format:check
 
   changeset-check:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-docker-dind
     steps:
       - uses: actions/checkout@v4
         with:
@@ -48,7 +48,7 @@ jobs:
         run: pnpm changeset status --since=origin/dev
 
   unit-tests:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-docker-dind
     steps:
       - uses: actions/checkout@v4
 
@@ -65,7 +65,7 @@ jobs:
         run: pnpm test:unit
 
   component-tests:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-docker-dind
     steps:
       - uses: actions/checkout@v4
 
