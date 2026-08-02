@@ -2,13 +2,7 @@ name: CI
 
 on:
   push:
-    # ========================================================
-    # 🟢 START: TRIGER BEI JEDEM BRANCH-PUSH AKTIVIERT
-    # ========================================================
     branches: ['*']
-    # ========================================================
-    # 🔴 ENDE: ÄNDERUNG
-    # ========================================================
   pull_request:
     branches: [dev, main]
 
@@ -75,9 +69,6 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      # ========================================================
-      # 🟢 ZUVOR HINZUGEFÜGT FÜR PNPM & NODE.JS SETUP
-      # ========================================================
       - uses: actions/setup-node@v4
         with:
           node-version: "22"
