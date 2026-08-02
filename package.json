@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "docs": "pnpm --filter docs run dev",
-    "lint": "eslint .",
+    "lint": "pnpm --filter luna-charts run lint",
     "format": "prettier --write .",
     "format:check": "prettier --check .",
     "changeset": "changeset",
@@ -32,7 +32,10 @@
   "type": "module",
   "devDependencies": {
     "@changesets/cli": "^2.31.0",
+    "@eslint/js": "^10.0.1",
     "eslint": "^10.6.0",
+    "eslint-config-prettier": "^10.1.8",
+    "eslint-plugin-storybook": "10.5.0",
     "prettier": "^3.9.4"
   }
 }
