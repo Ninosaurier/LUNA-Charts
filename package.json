@@ -7,7 +7,7 @@
     "docs": "pnpm --filter docs run dev",
     "lint": "pnpm --filter luna-charts run lint",
     "format": "prettier --write .",
-    "format:check": "prettier --check .",
+    "format:check": "pnpm --filter luna-charts run format:check",
     "changeset": "changeset",
     "version": "changeset version",
     "release": "changeset publish",

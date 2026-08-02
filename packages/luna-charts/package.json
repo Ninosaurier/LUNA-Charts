@@ -33,6 +33,8 @@
   ],
   "scripts": {
     "lint": "eslint .",
+    "format:check": "prettier --check .",
+    "format": "prettier --write .",
     "build": "stencil build",
     "start": "stencil build --dev --watch --serve",
     "test": "stencil-test --prod",
