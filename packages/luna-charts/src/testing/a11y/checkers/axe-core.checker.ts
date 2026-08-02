@@ -9,12 +9,12 @@ export const axeCoreChecker: A11yChecker = {
 
     return {
       checkerName: 'axe-core',
-      violations: results.violations.map((violations) => ({
+      violations: results.violations.map(violations => ({
         id: violations.id,
         impact: violations.impact ?? null,
         description: violations.help,
         helpUrl: violations.helpUrl,
-        nodes: violations.nodes.map((node) => node.target.join(' ')),
+        nodes: violations.nodes.map(node => node.target.join(' ')),
       })),
     };
   },

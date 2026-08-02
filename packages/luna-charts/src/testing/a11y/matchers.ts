@@ -3,7 +3,7 @@ import type { A11yCheckResult } from './checkers/types';
 
 expect.extend({
   toHaveNoA11yViolations(results: A11yCheckResult[]) {
-    const failing = results.filter((results) => results.violations.length > 0);
+    const failing = results.filter(results => results.violations.length > 0);
 
     if (failing.length === 0) {
       return {
@@ -14,11 +14,9 @@ expect.extend({
 
     const message = failing
       .map(
-        (results) =>
+        results =>
           `[${results.checkerName}] ${results.violations.length} violation(s):\n` +
-          results.violations
-            .map((validation) => `  - ${validation.id} (${validation.impact}): ${validation.description}\n    affected: ${validation.nodes.join(', ')}`)
-            .join('\n')
+          results.violations.map(validation => `  - ${validation.id} (${validation.impact}): ${validation.description}\n    affected: ${validation.nodes.join(', ')}`).join('\n'),
       )
       .join('\n\n');
 
