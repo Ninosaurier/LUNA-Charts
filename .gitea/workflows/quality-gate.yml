@@ -10,12 +10,13 @@ on:
 jobs:
   lint-and-format:
     runs-on: ubuntu-docker-dind
+    container:
+      image: git.byting-pandas.ninja/ci/node22-docker:latest
+      credentials:
+        username: ${{ secrets.REGISTRY_USER }}
+        password: ${{ secrets.REGISTRY_TOKEN }}
     steps:
       - uses: actions/checkout@v4
-
-      - uses: actions/setup-node@v4
-        with:
-          node-version: "22"
 
       - run: corepack enable
       - run: corepack prepare pnpm@11.11.0 --activate
@@ -30,14 +31,15 @@ jobs:
 
   changeset-check:
     runs-on: ubuntu-docker-dind
+    container:
+      image: git.byting-pandas.ninja/ci/node22-docker:latest
+      credentials:
+        username: ${{ secrets.REGISTRY_USER }}
+        password: ${{ secrets.REGISTRY_TOKEN }}
     steps:
       - uses: actions/checkout@v4
         with:
           fetch-depth: 0
-
-      - uses: actions/setup-node@v4
-        with:
-          node-version: "22"
 
       - run: corepack enable
       - run: corepack prepare pnpm@11.11.0 --activate
@@ -50,12 +52,13 @@ jobs:
 
   unit-tests:
     runs-on: ubuntu-docker-dind
+    container:
+      image: git.byting-pandas.ninja/ci/node22-docker:latest
+      credentials:
+        username: ${{ secrets.REGISTRY_USER }}
+        password: ${{ secrets.REGISTRY_TOKEN }}
     steps:
       - uses: actions/checkout@v4
-
-      - uses: actions/setup-node@v4
-        with:
-          node-version: "22"
 
       - run: corepack enable
       - run: corepack prepare pnpm@11.11.0 --activate
@@ -67,18 +70,21 @@ jobs:
 
   component-tests:
     runs-on: ubuntu-docker-dind
+    container:
+      image: git.byting-pandas.ninja/ci/luna-charts-test:v1.62.1
+      credentials:
+        username: ${{ secrets.REGISTRY_USER }}
+        password: ${{ secrets.REGISTRY_TOKEN }}
+
     steps:
       - uses: actions/checkout@v4
 
-      - uses: actions/setup-node@v4
-        with:
-          node-version: "22"
-
       - run: corepack enable
+
       - run: corepack prepare pnpm@11.11.0 --activate
 
       - run: pnpm install --frozen-lockfile
-      # ========================================================
 
-      - name: Run component tests (Docker)
-        run: pnpm test:component
+      - name: Run component tests (Playwright)
+        working-directory: packages/luna-charts
+        run: pnpm test:browser
