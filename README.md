@@ -50,7 +50,9 @@ luna-charts/
 │
 ├── .changeset/               # Release/versioning configuration
 │
-└── .github/                  # Community health files (Code of Conduct, etc.)
+├── .github/                  # Community health files (Code of Conduct, etc.)
+│
+└── .gitea/                   # CI workflows (Gitea Actions) and CI runner image
 ```
 
 ## Getting Started
@@ -98,7 +100,7 @@ pnpm run storybook
 
 > **Note:** Running Storybook from the repository root isn't set up yet. This is a known gap — contributions to add a root-level `pnpm --filter` script are welcome.
 
-Component and browser tests run inside Docker (`docker-compose.test.yaml`) to guarantee a reproducible browser environment across all contributors and CI — you don't need Playwright browsers installed locally.
+Component and browser tests run inside Docker (`docker-compose.test.yaml`), based on the same `Dockerfile.test` used to build the image CI tests against, to guarantee a reproducible browser environment — you don't need Playwright browsers installed locally. Locally this image is built on demand; in CI a prebuilt version of the same image is pulled directly (see [ADR-0002](./docs/src/content/docs/architecture/adr/000200-technology-stack.mdx) and the [Technology Architecture](./docs/src/content/docs/architecture/adm/technology-architecture.mdx#66-test-execution-environment) doc for details).
 
 ## Documentation
 

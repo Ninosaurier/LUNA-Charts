@@ -150,19 +150,39 @@ LUNA Charts follows a multi-layer quality assurance model.
 
 ### 6.6 Test Execution Environment
 
-Component and browser tests (Vitest browser mode, see ADR-0002) run inside a **containerized Playwright environment** rather than directly on contributor or CI host machines.
+Component and browser tests (Vitest browser mode, see ADR-0002) run inside
+a **containerized Playwright environment** rather than directly on
+contributor or CI host machines.
 
 #### Characteristics
 
-- A dedicated `Dockerfile.test`, based on the official Playwright container image, provides a reproducible browser environment with pinned browser versions
-- `docker-compose.test.yaml` orchestrates the test execution, isolating dependencies from the host system
-- The same containerized environment is used locally by contributors and in Continuous Integration, avoiding "works on my machine" discrepancies caused by differing local Playwright/browser installations
+- A dedicated `Dockerfile.test`, based on the official Playwright container
+  image, provides a reproducible browser environment with pinned browser
+  versions
+- Locally, `docker-compose.test.yaml` builds this image from source and
+  orchestrates test execution, isolating dependencies from the host system
+- In Continuous Integration, the same `Dockerfile.test` is built and
+  pushed to the project's container registry out-of-band (tagged by
+  Playwright version, e.g. `luna-charts-test:v1.62.1`); CI jobs pull this
+  prebuilt image directly rather than rebuilding it on every run, then
+  check out the current commit and install dependencies inside the running
+  container before executing tests
+- `Dockerfile.test` remains the single source of truth for the test
+  environment definition in both cases — only *when* the image is built
+  (on demand locally, ahead of time for CI) differs
 
 #### Rationale
 
-- Ensures deterministic, reproducible accessibility and browser test results independent of the host operating system
-- Removes the need for contributors to install and maintain matching Playwright browser binaries locally
-- Aligns automated testing (Section 6.1–6.4) with a single, version-controlled execution environment
+- Ensures deterministic, reproducible accessibility and browser test
+  results independent of the host operating system
+- Removes the need for contributors to install and maintain matching
+  Playwright browser binaries locally
+- Avoids rebuilding the Playwright/browser image on every CI run, which
+  would otherwise require Docker-in-Docker access inside the CI runner —
+  significant infrastructure complexity for a single-service image build
+- Aligns automated testing (Section 6.1–6.4) with a single,
+  version-controlled execution environment definition, even though the
+  build trigger differs between local development and CI
 
 ## 7. Release & Distribution Model
 
@@ -256,3 +276,31 @@ Component and browser tests are executed inside a Docker-based Playwright enviro
 **Impact**
 
 This clarifies an already-implemented part of the testing strategy (Section 6) and does not change any other architectural decision in this document.
+
+### 2026-08-04 – CI uses a prebuilt test image instead of rebuilding per run
+
+**Reason**
+
+The initial implementation of Section 6.6 assumed CI would build
+`Dockerfile.test` fresh on every run, identical to local execution. In
+practice, this required Docker-in-Docker access inside the CI runner
+purely to build a single-service image — disproportionate operational
+complexity (privileged sidecar container, custom pod networking,
+runner-level configuration) for the orchestration value actually needed,
+since `docker-compose.test.yaml` defines only one service with no
+inter-service dependencies.
+
+**Changes**
+
+- Section 6.6 updated to describe the actual CI flow: `Dockerfile.test` is
+  built and pushed to the registry out-of-band (not on every CI run), and
+  CI jobs pull the prebuilt image, then check out the current commit and
+  install dependencies at runtime
+- Clarified that `Dockerfile.test` remains the single source of truth for
+  the test environment definition; only the build trigger differs between
+  local and CI usage
+
+**Impact**
+
+No other architectural decision in this document is affected. Local
+component testing (`pnpm test:component`) is unchanged.

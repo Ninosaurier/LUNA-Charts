@@ -236,3 +236,89 @@ During implementation, Jest was replaced with Vitest as the unit testing tool. S
 **Impact**
 
 Playwright remains part of the technology stack, but its architectural role changes from an independent browser test runner to the browser engine used by Vitest. No other decisions in this ADR are affected.
+
+### 2026-08-03 – Continuous Integration: GitHub Actions replaced with Gitea Actions
+
+**Reason**
+
+During implementation, the project moved to a self-hosted Gitea instance
+with Gitea Actions (`act_runner`) instead of GitHub Actions. The ADR's
+"Considered Alternatives" and "Decision" tables still listed GitHub
+Actions, which no longer matched the actual CI/CD tooling in use.
+
+**Changes**
+
+- "Considered Alternatives" table: `Continuous Integration` row updated —
+  considered alternatives changed to *GitHub Actions, GitLab CI, Azure
+  Pipelines, Gitea Actions*; selected technology changed to **Gitea
+  Actions**
+- "Decision" table: **GitHub Actions** entry replaced with **Gitea
+  Actions**
+- "Rationale" section: `GitHub Actions` subsection replaced with `Gitea
+  Actions`, noting that workflows run on a self-hosted `act_runner`
+  (Docker-in-Docker mode) against the project's own Gitea instance
+
+**Impact**
+
+Only the Continuous Integration technology choice is affected. Workflow
+syntax remains GitHub-Actions-compatible (Gitea Actions is designed to be
+largely compatible with the GitHub Actions workflow format), so no other
+architectural decisions in this ADR are impacted.
+
+### 2026-08-04 – Component test CI execution: prebuilt image instead of Docker-in-Docker
+
+**Reason**
+
+Component tests run inside a container built from `Dockerfile.test`
+(based on the official Playwright image). Running this build step inside
+every CI job would require Docker-in-Docker (DinD) access on the
+self-hosted Gitea Actions runner — a privileged sidecar container, custom
+pod networking, and runner-level configuration — solely to build a
+single-service image with no inter-service orchestration need.
+
+**Considered Alternatives**
+
+| Alternative | Description |
+| ----------- | ----------- |
+| Build `Dockerfile.test` fresh on every CI run (DinD) | Mirrors the local `docker compose up --build` flow exactly inside a DinD-enabled CI job. |
+| Replicate `Dockerfile.test`'s steps directly as CI workflow steps, using the public Playwright image | Avoids Docker entirely in CI, but duplicates the test environment definition in two places (`Dockerfile.test` and the workflow YAML), risking drift between local and CI environments. |
+| **Build and push `Dockerfile.test` out-of-band, pull the prebuilt image in CI (selected)** | `Dockerfile.test` remains the only definition of the test environment; the resulting image is built and pushed to the registry separately (tagged by Playwright version), and CI jobs simply pull it and run tests — no Docker access needed at test time. |
+
+Building fresh on every run was rejected due to the disproportionate DinD
+infrastructure complexity for a single-service build. Replicating the
+steps in the workflow file was rejected because it reintroduces a second,
+manually-synchronized source of truth for the test environment.
+
+**Decision**
+
+`Dockerfile.test` is built and pushed to the project's container registry
+out-of-band (not as part of the CI pipeline), tagged by Playwright
+version (e.g. `luna-charts-test:v1.62.1`). The `component-tests` CI job
+pulls this prebuilt image directly, checks out the current commit, and
+runs the test command — no Docker access is required inside the CI job
+container.
+
+**Consequences**
+
+*Positive*
+
+- `Dockerfile.test` remains the single source of truth for the test
+  environment definition
+- No Docker-in-Docker, privileged containers, or custom pod networking
+  required in the CI job itself
+- Faster, simpler `component-tests` job
+
+*Negative*
+
+- The test image must be rebuilt and pushed manually (or via a separate,
+  intentionally-triggered process) whenever `Dockerfile.test` changes;
+  forgetting this step means CI runs against a stale image
+- This is considered an acceptable trade-off given how infrequently
+  `Dockerfile.test` changes, versus the ongoing operational cost of
+  maintaining DinD access in the runner
+
+**Impact**
+
+Local component testing (`pnpm test:component` via Docker Compose) is
+unaffected — it continues to build `Dockerfile.test` fresh via
+`docker-compose.test.yaml`. Only the CI-side image sourcing changes.
