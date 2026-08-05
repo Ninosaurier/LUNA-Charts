@@ -1,0 +1,142 @@
+---
+title: "ADR-000500: Accessibility as a Cross-Cutting Concern"
+description: "Decision to treat accessibility as a cross-cutting concern across all architectural layers of LUNA Charts."
+---
+
+* **Status:** Accepted
+* **Date:** 2026-07-12
+* **Decision Makers:** LUNA Charts Maintainers
+
+---
+
+## Context
+
+Accessibility is the primary quality attribute of LUNA Charts.
+
+The project's objective is not only to render charts but also to support developers in creating accessible data visualizations that align with the Web Content Accessibility Guidelines (WCAG).
+
+During the architectural design process, accessibility was initially considered as a separate subsystem responsible for validating and enforcing accessibility requirements.
+
+Further analysis revealed that accessibility affects nearly every architectural layer of the system.
+
+Rendering, component APIs, configuration, validation, interaction, keyboard navigation, documentation, and testing all contribute to the accessibility of the final chart.
+
+As a result, accessibility cannot be implemented as an isolated engine without introducing architectural inconsistencies.
+
+---
+
+## Decision Drivers
+
+The following factors influenced this decision:
+
+* Accessibility by Design
+* WCAG Compliance
+* Separation of Concerns
+* Maintainability
+* Consistency
+* Developer Experience
+* Long-Term Evolution
+* Testability
+
+---
+
+## Considered Alternatives
+
+| Alternative                    | Description                                                                                                |
+| -------------------------------- | -------------------------------------------------------------------------------------------------------------- |
+| Dedicated Accessibility Engine | A centralized subsystem responsible for accessibility validation and enforcement.                          |
+| Accessibility Utilities        | A collection of reusable accessibility helper functions.                                                   |
+| **Cross-Cutting Concern**      | Accessibility is integrated into every architectural layer where accessibility-related decisions are made. |
+
+A dedicated accessibility engine was rejected because accessibility cannot be guaranteed after a chart has already been designed or rendered.
+
+Accessibility decisions must be made continuously throughout the rendering process and component lifecycle.
+
+Accessibility utilities remain part of the implementation but do not represent the architectural model.
+
+---
+
+## Decision
+
+Accessibility is treated as a **cross-cutting concern** throughout the entire architecture of LUNA Charts.
+
+Accessibility responsibilities are distributed across multiple architectural modules rather than centralized in a single subsystem.
+
+Examples include:
+
+* Public component APIs
+* TypeScript type definitions
+* Validation
+* Rendering
+* SVG generation
+* Keyboard interaction
+* Focus management
+* Documentation
+* Automated testing
+
+Each architectural component is responsible for implementing the accessibility requirements relevant to its own responsibility.
+
+---
+
+## Rationale
+
+Accessibility is not a feature that can be added after rendering has completed.
+
+Instead, accessibility emerges from many architectural decisions working together.
+
+Examples include:
+
+* selecting SVG instead of Canvas,
+* designing semantic component APIs,
+* exposing accessible keyboard interaction,
+* generating meaningful DOM structures,
+* providing strongly typed configuration,
+* validating accessibility-related configuration,
+* documenting accessibility behavior,
+* verifying accessibility through automated testing.
+
+Treating accessibility as a cross-cutting concern ensures that accessibility remains an architectural responsibility rather than an isolated implementation detail.
+
+This approach also aligns with established software architecture principles, where quality attributes such as security, logging, and observability are commonly treated as cross-cutting concerns.
+
+---
+
+## Consequences
+
+### Positive
+
+* Accessibility is considered throughout the entire development process.
+* Architectural responsibilities remain clearly separated.
+* Accessibility becomes part of every feature rather than an optional extension.
+* Better support for WCAG-compliant chart implementations.
+* Simplified long-term maintenance.
+* Consistent accessibility behavior across all chart types.
+* Accessibility can be validated at multiple architectural levels.
+
+### Negative
+
+* Accessibility responsibilities are distributed across multiple modules.
+* Contributors must understand accessibility requirements beyond their immediate implementation.
+* Architectural reviews must continuously consider accessibility implications.
+
+These trade-offs are acceptable because accessibility represents the primary quality objective of LUNA Charts.
+
+---
+
+## Related TOGAF Phases
+
+* Architecture Vision (Phase A)
+* Business Architecture (Phase B)
+* Information Systems Architecture (Phase C)
+* Technology Architecture (Phase D)
+* Implementation Governance (Phase G)
+
+---
+
+## References
+
+* LUNA Charts Architecture Wiki
+* ADR-000300: Web Components as Public API
+* ADR-000400: SVG as Rendering Technology
+* Web Content Accessibility Guidelines (WCAG)
+* WAI-ARIA Authoring Practices Guide

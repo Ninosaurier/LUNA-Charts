@@ -1,0 +1,206 @@
+---
+title: 3. Information Systems Architecture
+description: Internal application design of LUNA Charts and how the system is structured to process and render data.
+sidebar:
+  order: 4
+---
+
+import { Aside } from '@astrojs/starlight/components';
+
+## 1. Overview
+
+This Application Architecture defines how LUNA Charts is structured at the application level. It describes the internal processing model, developer interaction boundaries, system layers, and architectural style used to ensure accessible, consistent, and predictable chart rendering.
+
+LUNA Charts is designed as a declarative, component-based charting library with a controlled internal processing pipeline and strict input boundaries.
+
+## 2. Architectural Style
+
+LUNA Charts follows a:
+
+- Declarative API model
+- Component-based developer interface
+- Black-box processing pipeline
+- Opinionated and non-extensible architecture
+
+### Key Characteristics
+
+- Single entry point for developers via chart components
+- Strict separation between input and internal processing
+- Deterministic rendering behavior
+- No plugin or extension system
+- Accessibility and validation are enforced internally
+
+## 3. Developer Interaction Model
+
+Developers interact with LUNA Charts exclusively through a declarative component API.
+
+### Public API
+
+- `<BarChart />`
+- `<LineChart />`
+- `<PieChart />`
+- (and other chart-specific components)
+
+Each component has its own strongly typed data model.
+
+### Responsibilities of the Developer
+
+Developers are responsible for:
+
+- Providing correctly structured data per chart type
+- Using typed configuration models provided by the library
+- Preparing and transforming data before passing it into the component
+
+### Restrictions
+
+Developers cannot:
+
+- Modify internal rendering logic
+- Override accessibility processing
+- Inject plugins or extensions
+- Interfere with internal pipeline stages
+
+## 4. System Boundary Model
+
+LUNA Charts exposes a strict system boundary:
+
+### Allowed Inputs
+
+- Typed chart components
+- Structured data per chart type
+- Configuration properties (themes, labels, styling overrides)
+
+### Internal System Ownership
+
+After input is provided, the system fully controls:
+
+- Data validation
+- Configuration resolution
+- Accessibility enforcement (system-wide cross-cutting concern)
+- Rendering process
+- Fallback behavior
+
+## 5. Internal Processing Pipeline
+
+LUNA Charts processes all input through a deterministic pipeline:
+
+![Internal Processing Pipeline](https://wiki.byting-pandas.ninja/luna-charts/information-systems-architecture-diagrams/luna_charts_internal_processing_pipeline.svg)
+
+### 5.1 Interaction Layer (Entry Point)
+
+Receives component input, accepts data and configuration, and normalizes incoming parameters.
+
+### 5.2 Resilience & Validation Layer
+
+Validates input data integrity, detects missing or invalid values, triggers fallback behavior if necessary, and emits warnings for developer feedback.
+
+### 5.3 Configuration Resolution Layer
+
+Merges user configuration with default values, resolves themes, labels, and styling parameters, and applies library-provided defaults when needed.
+
+### 5.4 Accessibility Enforcement Layer
+
+Applies accessibility rules and guidance mechanisms intended to support WCAG-compliant chart implementations, generates ARIA attributes, validates known accessibility constraints, and provides runtime warnings and developer feedback.
+
+<Aside type="tip">
+  Accessibility enforcement is a cross-cutting concern applied across all layers — see [Section 4](#4-system-boundary-model).
+</Aside>
+
+### 5.5 Rendering Layer
+
+Transforms processed data into visual representations, generates SVG or Canvas output, and produces the final chart visualization.
+
+## 6. Chart Type Model
+
+LUNA Charts uses explicit chart-type components:
+
+- `<BarChart />`
+- `<LineChart />`
+- `<PieChart />`
+
+### Characteristics
+
+- Each chart type has a dedicated internal rendering strategy
+- Chart type selection is static and defined at component level
+- No runtime switching of chart types
+- Each chart type defines its own data structure
+
+## 7. Cross-Cutting Concerns
+
+### Accessibility (System-wide Concern)
+
+Accessibility is implemented through a combination of type-safe APIs, validation mechanisms, default configurations, runtime warnings, and internal quality assurance processes.
+
+It includes:
+
+- WCAG compliance rules
+- ARIA generation
+- Accessibility validation
+- Runtime and build-time checks
+
+### Resilience & Fallback Behavior
+
+The system ensures stability through:
+
+- Default values for missing configurations
+- Fallback labels for missing data
+- Safe rendering under incomplete input
+- Warning generation for developer feedback
+
+## 8. Configuration Model
+
+LUNA Charts provides a strongly typed configuration system.
+
+Developers can configure:
+
+- Themes (colors, contrast, styling)
+- Labels and text overrides
+- Chart-specific display options
+- Accessibility hints (optional)
+
+Configuration is merged with system defaults during the processing pipeline.
+
+## 9. Technology-Agnostic Design
+
+This Application Architecture does not assume a specific frontend framework but is compatible with modern web ecosystems such as:
+
+- React
+- Vue
+- Angular
+- Web Components
+
+The API is component-based but conceptually framework-agnostic.
+
+## 10. Key Architectural Decisions
+
+- Component-based declarative API is used instead of pure DSL or JSON input
+- System uses a single controlled entry point for all interactions
+- Internal pipeline is fully deterministic and not externally modifiable
+- Accessibility is enforced as a core system responsibility
+- No plugin or extension mechanisms are provided
+- Chart types are explicitly defined and not dynamically extensible
+
+## 11. Trade-offs
+
+### Advantages
+
+- Strong accessibility guarantees
+- High consistency across all charts
+- Excellent developer experience
+- Predictable behavior
+- Reduced implementation complexity
+
+### Limitations
+
+- Limited extensibility for custom chart types
+- Reduced low-level control over rendering
+- Strict API constraints for developers
+- No plugin ecosystem support
+
+## 12. Evolution Note
+
+No structural changes were introduced in this document during this iteration. This architecture remains fully aligned with:
+
+- Architecture Vision (Phase A)
+- Business Architecture (Phase B)
+- Information System Architecture (Phase C)

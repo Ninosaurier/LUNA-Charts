@@ -1,0 +1,42 @@
+{
+  "name": "LUNA-Charts",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "docs": "pnpm --filter docs run dev",
+    "lint": "pnpm --filter luna-charts run lint",
+    "format": "prettier --write .",
+    "format:check": "pnpm --filter luna-charts run format:check",
+    "changeset": "changeset",
+    "version": "changeset version",
+    "release": "changeset publish",
+    "test:unit": "pnpm --filter luna-charts test:unit",
+    "test:component": "docker compose -f docker-compose.test.yaml up --build --abort-on-container-exit --exit-code-from test",
+    "test": "pnpm test:unit && pnpm test:component"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devEngines": {
+    "runtime": {
+      "name": "node",
+      "version": ">=22.0.0"
+    },
+    "packageManager": {
+      "name": "pnpm",
+      "version": "11.11.0",
+      "onFail": "download"
+    }
+  },
+  "type": "module",
+  "devDependencies": {
+    "@changesets/cli": "^2.31.0",
+    "@eslint/js": "^10.0.1",
+    "eslint": "^10.6.0",
+    "eslint-config-prettier": "^10.1.8",
+    "eslint-plugin-storybook": "10.5.0",
+    "prettier": "^3.9.4",
+    "typescript-eslint": "^8.65.0"
+  }
+}

@@ -1,0 +1,33 @@
+---
+title: Welcome to LUNA dogumentation &#128062;
+description: LUNA Charts is a reusable, developer-friendly charting library designed to make accessible, WCAG-oriented data visualization the default rather than an afterthought.
+template: splash # Remove or comment out this line to display the site sidebar on this page.
+hero:
+  tagline: Architecture, ADRs and classes. Everything you should now!
+  image:
+    file: ../../assets/luna_charts_logo_doc.png
+  actions:
+    - text: Start here
+      link: /getting-started/
+      icon: right-arrow
+    - text: Our Git-Repo
+      link: https://git.byting-pandas.ninja/Ninosaurier/LUNA-Charts
+      icon: external
+      variant: minimal
+---
+
+import { Card, CardGrid } from '@astrojs/starlight/components';
+
+## The Topics
+
+<CardGrid stagger>
+	<Card title="Getting started" icon="star">
+		Start reading [getting-started](./getting-started/) and learn how LUNA-Charts is organized.
+	</Card>
+	<Card title="LUNA is using the Architecture Development Method (ADM)" icon="document">
+		Read how LUNA is using the ADM [document](./architecture/adm/).
+	</Card>
+	<Card title="Architecture Decision Records (ADR)" icon="setting">
+		Explore our [ADRs](./architecture/adr/) to understand the reasoning behind our technical decisions.
+	</Card>
+</CardGrid>

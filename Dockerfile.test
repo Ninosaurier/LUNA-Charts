@@ -1,0 +1,21 @@
+FROM mcr.microsoft.com/playwright:v1.62.1-noble
+
+RUN corepack enable && corepack prepare pnpm@10 --activate
+
+ENV CI=true
+
+WORKDIR /app
+
+COPY . .
+
+RUN rm -rf node_modules packages/**/node_modules
+
+ENV PNPM_CONFIG_SUPPORTED_ARCHITECTURES="current,linux-x64-gnu"
+
+RUN pnpm install --frozen-lockfile
+
+WORKDIR /app/packages/luna-charts
+
+RUN pnpm add -D @rolldown/binding-linux-x64-gnu
+
+CMD ["pnpm", "test:browser"]

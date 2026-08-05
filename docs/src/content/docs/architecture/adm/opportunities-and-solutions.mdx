@@ -1,0 +1,227 @@
+---
+title: 5. Opportunities & Solutions
+description: Work packages that translate the LUNA Charts architecture into an implementation roadmap.
+sidebar:
+  order: 6
+---
+
+import { Aside } from '@astrojs/starlight/components';
+
+## 1. Overview
+
+This phase translates the target architecture into implementable solution increments. It identifies the major work packages required to realize LUNA Charts and defines their dependencies, priorities, and expected outcomes.
+
+As LUNA Charts is a greenfield project, the focus is not on migration from an existing solution but on establishing a structured implementation path from architecture to a production-ready charting library.
+
+The goal of this phase is to identify what must be built, in which order it should be built, and which implementation areas can later evolve independently.
+
+## 2. Solution Strategy
+
+LUNA Charts is implemented incrementally.
+
+The implementation begins with a foundational groundwork package that establishes the architectural contracts and reusable building blocks required by all future chart types.
+
+A BarChart is then implemented as the first production-ready chart and serves as a reference implementation for validating architectural decisions.
+
+Once the architecture has been validated through the BarChart implementation, **Documentation & Developer Experience is completed to form the first usable Minimum Viable Product (MVP)**.¹
+
+After this milestone has been reached, the remaining work packages can proceed in parallel.¹
+
+## 3. Work Packages
+
+### WP1 – Groundwork
+
+**Objective**
+Establish all reusable architectural foundations required for chart implementation.
+
+**Scope**
+- Type System
+- Public API Contracts
+- Rendering Foundation
+- Configuration Model
+- Validation Framework
+
+**Expected Outcome**
+The groundwork package is considered complete when:
+- Public APIs are defined
+- Chart-related data types are available
+- Rendering utilities exist
+- Configuration handling is established
+- Validation and warning mechanisms are implemented
+- A chart implementation can be built on top of the provided foundations
+
+**Architectural Role**
+This work package provides the reusable building blocks used by all future chart types.
+
+### WP2 – BarChart Reference Implementation
+
+**Objective**
+Implement the first production-ready chart type and validate the architecture.
+
+**Scope**
+- BarChart component
+- Rendering integration
+- Accessibility validation
+- Configuration integration
+- Validation integration
+
+**Expected Outcome**
+The BarChart serves as a reference implementation demonstrating that:
+- The public API is usable
+- The rendering architecture is viable
+- Accessibility concepts are effective
+- Reusable foundations support real-world chart implementations
+
+**Architectural Role**
+This work package acts as the architectural proof-of-concept for the entire solution.
+
+### WP3 – Documentation & Developer Experience
+
+**Objective**
+Enable developers to successfully adopt and use LUNA Charts.
+
+**Scope**
+- Getting Started Guides
+- Tutorials
+- API Documentation
+- Accessibility Guidance
+- Usage Examples
+
+**Expected Outcome**
+Developers can understand, integrate, and use LUNA Charts without requiring internal architectural knowledge.
+
+### WP4 – Quality & Release Infrastructure
+
+**Objective**
+Ensure product quality and reliable software delivery.
+
+**Scope**
+- Unit Testing
+- Accessibility Testing
+- Linting
+- Visual Regression Testing
+- GitHub Release Pipeline
+- npm Publishing
+
+**Expected Outcome**
+All releases follow a repeatable and quality-controlled process.
+
+### WP5 – Additional Chart Types
+
+**Objective**
+Extend the library with additional chart implementations.
+
+**Scope**
+Examples include:
+- LineChart
+- PieChart
+- ScatterChart
+
+Additional chart types may be introduced based on project priorities and community demand.
+
+**Expected Outcome**
+The chart ecosystem expands while reusing the foundations established in earlier work packages.
+
+## 4. Work Package Dependencies
+
+The implementation follows a staged approach.
+
+### Phase 1
+
+```
+WP1 Groundwork
+        ↓
+WP2 BarChart Reference Implementation
+        ↓
+WP3 Documentation & Developer Experience¹
+        ↓
+Internal Product Review (MVP)¹
+```
+
+The first implementation phase focuses on validating the architecture and delivering the first usable product increment.
+
+Although Documentation & Developer Experience is modeled as an independent work package, it is functionally coupled to the BarChart Reference Implementation. Together they form the project's first Minimum Viable Product (MVP), enabling meaningful stakeholder evaluation.
+
+### Phase 2
+
+After successful completion of the BarChart reference implementation, additional work packages can proceed independently.
+
+```
+                MVP¹
+                 │
+        ┌────────┴────────┐
+        ▼                 ▼
+WP4 Quality &      WP5 Additional
+Release             Chart Types
+Infrastructure
+```
+
+Although Documentation & Developer Experience is modeled as an independent work package, it is functionally coupled to the BarChart Reference Implementation.¹ Together they form the project's first Minimum Viable Product (MVP), enabling meaningful stakeholder evaluation.
+
+## 5. Accessibility Strategy
+
+Accessibility is not implemented as a dedicated work package.
+
+Instead, accessibility requirements are integrated into all work packages and act as a cross-cutting quality requirement throughout the solution.
+
+Examples include:
+- Accessibility-related type definitions
+- Validation rules and developer warnings
+- Accessible default values and fallbacks
+- Accessible SVG output generation
+- Accessibility-focused documentation
+- Automated accessibility testing
+
+This approach aligns with the architectural principle of Accessibility by Design established in the Architecture Vision.
+
+## 6. Solution Risks
+
+Potential risks include:
+- Architectural assumptions may prove invalid during the BarChart reference implementation
+- Accessibility requirements may reveal additional constraints during implementation
+- Future chart types may require capabilities not anticipated during groundwork design
+- Open-source maintenance capacity may influence implementation speed
+
+These risks are mitigated through the staged implementation approach and early architectural validation.
+
+## 7. Key Outcome of this Phase
+
+- The implementation strategy for LUNA Charts
+- The major work packages required for delivery
+- Dependencies between implementation activities
+- The role of the BarChart as a reference implementation
+- The definition of the first usable MVP consisting of the BarChart implementation and developer documentation¹
+- The integration of accessibility as a cross-cutting concern
+- A phased roadmap for incremental solution realization
+
+## 8. Change Log
+
+<Aside type="note">
+  ¹ Updated during Phase F (Migration Planning). See Evolution Note below for details.
+</Aside>
+
+### Work Package Dependencies and MVP Definition
+
+**Reason**
+
+During Migration Planning (Phase F), it became clear that the BarChart Reference Implementation alone does not provide sufficient business value for stakeholder evaluation. A usable product increment also requires developer documentation and onboarding material.
+
+This insight refined the implementation sequence without changing the overall work package structure.
+
+**Changes**
+
+- Clarified that **WP3 – Documentation & Developer Experience** is functionally coupled to **WP2 – BarChart Reference Implementation**.
+- Defined the project's first **Minimum Viable Product (MVP)** as the combination of:
+  - WP2 – BarChart Reference Implementation
+  - WP3 – Documentation & Developer Experience
+- Updated the work package dependency model so that parallel development begins only after the MVP has been completed and reviewed.
+- Refined the solution strategy to distinguish between:
+  - Architectural validation (Groundwork + BarChart)
+  - MVP completion (Documentation & Developer Experience)
+  - Subsequent parallel solution evolution
+
+**Impact**
+
+The overall work package structure remains unchanged.
+
+Only the implementation sequence has been refined to better align the technical implementation with the project's business objectives. This ensures that the first stakeholder evaluation is based on a usable product increment rather than a purely technical implementation.
