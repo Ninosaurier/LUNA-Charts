@@ -88,6 +88,9 @@ pnpm install
 | `pnpm test` | Run the full test suite (unit + component) |
 | `pnpm changeset` | Record a changeset for your change (required for any user-facing change) |
 | `pnpm run docs` | Start the documentation site locally (astroJS) |
+| `pnpm run lint` | Run the linter to check for code style and quality issues |
+| `pnpm run format` | Run the formatter to automatically fix code style issues |
+| `pnpm run test:browser` | Run browser tests (only works inside the `packages/luna-charts` directory) |
 
 ### Storybook
 
