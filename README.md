@@ -93,17 +93,6 @@ pnpm install
 | `pnpm run test:browser` | Run browser tests (only works inside the `packages/luna-charts` directory) |
 | `pnpm run storybook` | Start the storybook documentation |
 
-### Storybook
-
-Storybook currently needs to be started from within the library package directly:
-
-```bash
-cd packages/luna-charts
-pnpm run storybook
-```
-
-> **Note:** Running Storybook from the repository root isn't set up yet. This is a known gap — contributions to add a root-level `pnpm --filter` script are welcome.
-
 Component and browser tests run inside Docker (`docker-compose.test.yaml`), based on the same `Dockerfile.test` used to build the image CI tests against, to guarantee a reproducible browser environment — you don't need Playwright browsers installed locally. Locally this image is built on demand; in CI a prebuilt version of the same image is pulled directly (see [ADR-0002](./docs/src/content/docs/architecture/adr/000200-technology-stack.mdx) and the [Technology Architecture](./docs/src/content/docs/architecture/adm/technology-architecture.mdx#66-test-execution-environment) doc for details).
 
 ## Documentation
