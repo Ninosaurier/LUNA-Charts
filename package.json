@@ -11,6 +11,7 @@
     "changeset": "changeset",
     "version": "changeset version",
     "release": "changeset publish",
+    "storybook": "pnpm --filter luna-charts run storybook",
     "test:unit": "pnpm --filter luna-charts test:unit",
     "test:component": "docker compose -f docker-compose.test.yaml up --build --abort-on-container-exit --exit-code-from test",
     "test": "pnpm test:unit && pnpm test:component"
