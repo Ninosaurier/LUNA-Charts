@@ -91,6 +91,7 @@ pnpm install
 | `pnpm run lint` | Run the linter to check for code style and quality issues |
 | `pnpm run format` | Run the formatter to automatically fix code style issues |
 | `pnpm run test:browser` | Run browser tests (only works inside the `packages/luna-charts` directory) |
+| `pnpm run storybook` | Start the storybook documentation |
 
 ### Storybook
 
