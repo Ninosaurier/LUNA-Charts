@@ -13,14 +13,10 @@ fetchRetries: 10
 supportedArchitectures:
   os:
     - current
-    - win32
-    - darwin
-    - linux
   cpu:
     - current
-    - x64
-    - arm64
   libc:
     - current
-    - glibc
-    - musl
+
+minimumReleaseAgeExclude:
+  - astro@7.2.9

@@ -65,6 +65,11 @@ luna-charts/
 
 ### Installation
 
+Download the [Node Version manager](https://github.com/nvm-sh/nvm/blob/master/README.md). If the installation was successful, install Node.js version 24:
+`nvm install 24`
+
+Afterwards, clone LUNA-Charts from our repository or from GitHub. The GitHub repository is updated every 30 minutes.
+
 ```bash
 git clone https://github.com/Ninosaurier/LUNA-Charts.git
 cd luna-charts
