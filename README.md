@@ -59,16 +59,12 @@ luna-charts/
 
 ### Prerequisites
 
-* Node.js `>= 22.0.0`
-* pnpm `11.11.0` (see `devEngines` in `package.json`; pnpm will be downloaded automatically via Corepack if missing)
+* [Node Version manager](https://github.com/nvm-sh/nvm/blob/master/README.md) `0.40.7`
+* Node.js `>= 24.0.0`. Use `nvm install 24` for it
+* pnpm `12.0.0`
 * Docker (required for running component/browser tests locally, see below)
 
 ### Installation
-
-Download the [Node Version manager](https://github.com/nvm-sh/nvm/blob/master/README.md). If the installation was successful, install Node.js version 24:
-`nvm install 24`
-
-Afterwards, clone LUNA-Charts from our repository or from GitHub. The GitHub repository is updated every 30 minutes.
 
 ```bash
 git clone https://github.com/Ninosaurier/LUNA-Charts.git
