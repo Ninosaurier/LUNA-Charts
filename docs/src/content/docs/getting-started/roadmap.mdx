@@ -11,77 +11,86 @@ Instead of implementing features immediately, the project establishes a solid ar
 
 ---
 
-## Current Status
+## Completed Milestones ✅
 
-**Current Phase:** Groundwork
-
-The project is currently preparing the technical and organizational foundation for future development.
+<details>
+  <summary>**Completed:** Groundwork (v0.1.0)</summary>
+  The project is preparing the technical and organizational foundation for future development.
 
 Completed work includes:
 
-- Repository structure
-- Development workflow
-- Architecture documentation (TOGAF ADM)
-- Architecture Decision Records (ADRs)
-- Project governance
-- Documentation infrastructure
+- **Repository structure:** Standardized layout for code, configurations, and assets. 
+- **Development workflow: Definition of branching strategies, commit rules, and review processes. 
+- **Architecture documentation (TOGAF ADM):** Architecture framework set up according to the TOGAF standard.
+- **Architecture Decision Records (ADRs 1-5):** System established for transparent documentation of architectural decisions.
+- **Project governance:** Defined roles, responsibilities, and decision-making processes.
+- **Documentation infrastructure:** "Docs-as-Code" setup integrated into the repository.
 
 At this stage, no production-ready chart components are available.
 
----
-
-## Upcoming Milestones
-
-### Foundation
-
-- Create the initial StencilJS library
-- Establish Storybook for component development
-- Configure testing infrastructure
-- Configure CI/CD pipeline
+</details>
 
 ---
 
-### First Proof of Concept
+## Current Status ⏳
 
-Deliver the first functional chart implementation to validate the technical architecture.
+### Foundation v0.2.0
 
+This milestone focuses on setting up the technical core of the component library. The goal is to build an automated, 
+testable, and documented environment for efficient StencilJS component development.
+
+- **Create the initial StencilJS library:** Initialize the codebase and core configurations for the web component engine.
+- **Establish Storybook for component development:** Set up Storybook as the development environment and isolated playground for component creation.
+- **Configure testing infrastructure:** Configure unit, integration, or visual regression testing frameworks.
+- **Configure CI/CD pipeline:** Automate linting, testing, and initial build checks on every repository push or pull request.
+
+---
+
+## Upcoming Milestones 🚀
+
+### First Proof of Concept v0.3.0
+
+This milestone focuses on validating the core technical and accessibility assumptions of the library through a first 
+working implementation. The goal is to prove that the chosen architecture (SVG rendering, Web Components, accessibility-first 
+approach) actually works in practice before committing to a broader component set.
 Goals include:
 
-- SVG rendering
-- Accessibility validation
-- Framework integration
-- Community feedback
+- **SVG rendering:** Implement a first chart component using SVG-based rendering.
+- **Accessibility validation:** Verify WCAG compliance with automated (axe-core) and manual (screen reader) testing.
+- **Framework integration:** Confirm the component works correctly when consumed from at 
+least one external framework (e.g. React or Vue).
+- **Community feedback:** Share the proof of concept for early feedback before scaling to further components.
 
 ---
 
-### Minimum Viable Product (MVP)
+### Minimum Viable Product (MVP) v1.0.0
 
-Provide the first publicly usable version of LUNA Charts.
-
+This milestone marks the first public-ready release. The goal is a stable, documented, 
+and accessible set of chart components that can be safely adopted by external users.
 The MVP focuses on delivering value rather than completeness.
 
 Expected outcomes include:
 
-- Initial chart collection
-- Stable public API
-- Documentation
-- Example applications
-- Accessibility support
+- **Initial chart collection:** Ship a first stable set of chart types built on the validated architecture.
+- **Stable public API:** Freeze the public component API surface and document breaking-change policy.
+- **Documentation:** Complete user-facing documentation (usage guides, API reference, accessibility notes).
+- **Example applications:** Provide working examples for common framework integrations.
+- **Accessibility support:** Ensure all shipped components meet the project's WCAG target across the full component set.
 
 ---
 
 ### Community Growth
 
-After the MVP, the project will gradually expand.
-
+With a stable MVP in place, this milestone shifts focus toward expanding the library's reach, 
+capabilities, and contributor base.
 Future work may include:
 
-- Additional chart types
-- Advanced customization
-- Performance improvements
-- Extended framework support
-- Community contributions
-- Governance evolution
+- **Additional chart types:** Expand the component library beyond the initial MVP set.
+- **Advanced customization:** Add theming, styling, and configuration options requested by users.
+- **Performance improvements:** Optimize rendering and bundle size based on real-world usage.
+- **Extended framework support:** Broaden compatibility with additional frameworks and build tools.
+- **Community contributions:** Establish a smooth path for external contributors (good-first-issue labeling, contributor docs).
+- **Governance evolution:** Revisit and evolve project governance as the contributor base grows.
 
 ---
 
