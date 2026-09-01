@@ -1,0 +1,102 @@
+---
+title: "ADR-0007000: No Plugin or Extension System"
+description: "LUNA Charts does not provide a consumer-facing plugin or extension mechanism."
+---
+
+* **Status:** Accepted
+* **Date:** 2026-08-31
+* **Decision Makers:** LUNA Charts Maintainers
+
+---
+
+## Context
+
+LUNA Charts is designed as an opinionated charting library with a controlled internal processing pipeline. Accessibility, validation, configuration resolution, and rendering are library-owned responsibilities.
+
+An extension mechanism could allow consumers to modify internal behavior or add functionality without changing the core library. However, unrestricted extensibility could also introduce inconsistent behavior, weaken accessibility guarantees, and increase architectural and maintenance complexity.
+
+The Information Systems Architecture therefore defines LUNA Charts as a closed system with a strict input boundary and no external plugin or extension mechanism.
+
+---
+
+## Decision Drivers
+
+* Accessibility
+* Maintainability
+* Predictable Behavior
+* Simplicity
+* Quality Control
+* Security
+* Developer Experience
+
+---
+
+## Considered Alternatives
+
+| Alternative | Description |
+| ----------- | ----------- |
+| No plugin or extension system | Consumers use only the public API provided by LUNA Charts. |
+| Consumer plugin system | Consumers can register plugins that modify or extend library behavior. |
+| Extension hooks | Consumers can inject custom logic into selected processing stages. |
+| Fully extensible architecture | Internal layers and chart types can be extended directly by consumers. |
+
+The no-plugin approach was selected because the library's accessibility and rendering behavior must remain centrally controlled. Plugin systems and extension hooks would increase the number of execution paths that must be validated and supported.
+
+---
+
+## Decision
+
+LUNA Charts **does not provide a consumer-facing plugin or extension system**.
+
+Consumers interact with the library exclusively through its defined public API. Internal processing stages cannot be replaced, intercepted, or extended by consumers.
+
+New chart types, accessibility behavior, rendering capabilities, and other architectural functionality are implemented and maintained within the LUNA Charts project itself.
+
+---
+
+## Rationale
+
+LUNA Charts is intentionally opinionated. Its value depends not only on providing chart visualizations but also on providing predictable and accessible implementations.
+
+Allowing consumers to modify internal behavior would make it harder to guarantee consistent accessibility and quality. A closed architecture keeps the processing pipeline deterministic and allows maintainers to evolve the implementation under a single quality and accessibility model.
+
+This decision also avoids the additional API surface, compatibility requirements, documentation burden, and support obligations associated with a plugin ecosystem.
+
+---
+
+## Consequences
+
+### Positive
+
+* Centralized control over accessibility behavior.
+* Predictable and deterministic processing.
+* Smaller public API surface.
+* Lower maintenance and compatibility burden.
+* Easier quality assurance and testing.
+* No plugin ecosystem needs to be designed or maintained.
+* Reduced risk that consumer extensions bypass architectural safeguards.
+
+### Negative
+
+* Consumers cannot add custom processing stages.
+* Consumers cannot introduce custom chart types through plugins.
+* Unusual use cases may require changes to LUNA Charts itself.
+* The architecture places more responsibility on the maintainers to evolve the library.
+
+---
+
+## Related TOGAF Phases
+
+* Architecture Vision (Phase A)
+* Business Architecture (Phase B)
+* Information Systems Architecture (Phase C)
+* Technology Architecture (Phase D)
+
+---
+
+## References
+
+* [Business Architecture](../adm/business-architecture/)
+* [Information Systems Architecture](../adm/information-systems-architecture/)
+* [Technology Architecture](../adm/technology-architecture/)
+* [ADR-000500 – Accessibility as a Cross-Cutting Concern](./000500-accessibility-as-a-cross-cutting-concern/)

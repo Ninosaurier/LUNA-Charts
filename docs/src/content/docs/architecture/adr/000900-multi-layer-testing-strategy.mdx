@@ -1,0 +1,116 @@
+---
+title: "ADR-000900: Multi-Layer Testing Strategy"
+description: "LUNA Charts uses multiple complementary quality assurance layers with automated release gates."
+---
+
+* **Status:** Accepted
+* **Date:** 2026-08-31
+* **Decision Makers:** LUNA Charts Maintainers
+
+---
+
+## Context
+
+LUNA Charts is an accessibility-focused charting library whose output must be correct, stable, and usable across supported environments.
+
+No single testing technique can adequately validate the library. Functional correctness, accessibility constraints, DOM and SVG structure, visual stability, code quality, and real-world usability require different forms of verification.
+
+The Technology Architecture therefore defines a multi-layer quality assurance model covering functional tests, accessibility tests, linting, visual regression testing, and usability testing. Automated checks are combined with release gating so that defined quality requirements are evaluated before releases.
+
+---
+
+## Decision Drivers
+
+* Accessibility
+* Reliability
+* Visual Stability
+* Maintainability
+* Developer Experience
+* Reproducibility
+* Release Quality
+* Automation
+
+---
+
+## Considered Alternatives
+
+| Alternative | Description |
+| ----------- | ----------- |
+| Multi-layer testing strategy | Multiple complementary test and quality layers are combined into release gates. |
+| Unit tests only | Functional behavior is validated primarily through unit tests. |
+| End-to-end tests only | Browser-based tests are used as the primary validation mechanism. |
+| Manual testing only | Quality is validated through manual verification before releases. |
+
+The multi-layer approach was selected because each alternative alone leaves important quality risks uncovered. Unit tests do not sufficiently validate browser behavior or accessibility, while browser tests alone are less efficient for isolated logic. Manual testing remains valuable for usability but cannot provide sufficient automated regression coverage.
+
+---
+
+## Decision
+
+LUNA Charts uses a **multi-layer testing and quality assurance strategy**.
+
+The strategy includes:
+
+1. **Functional testing** for core logic and processing behavior.
+2. **Accessibility testing** for machine-verifiable accessibility requirements and ARIA structure.
+3. **Code quality checks** including linting and formatting-related quality controls.
+4. **Visual regression testing** to detect unintended visual and structural changes.
+5. **Usability testing** for relevant minor and major releases and significant user-facing changes.
+6. **Release gates** that prevent releases when required automated quality checks fail.
+
+Browser-based tests use a reproducible test execution environment so that local and CI execution can use a controlled environment.
+
+---
+
+## Rationale
+
+LUNA Charts has accessibility and visual output as central quality attributes. These cannot be reliably validated through unit tests alone.
+
+A layered strategy assigns each quality concern to an appropriate verification mechanism:
+
+* Unit tests provide fast feedback for logic.
+* Accessibility tests validate machine-verifiable accessibility constraints.
+* Linting protects code and architectural consistency.
+* Visual regression tests protect rendered output and relevant DOM structure.
+* Usability testing evaluates aspects that cannot be reliably automated.
+* Release gates ensure required automated checks are completed before distribution.
+
+The approach balances fast developer feedback with stronger release confidence.
+
+---
+
+## Consequences
+
+### Positive
+
+* Higher confidence in functional correctness.
+* Accessibility becomes part of the quality process rather than a final manual check.
+* Visual regressions can be detected automatically.
+* Release quality is enforced consistently.
+* Different test types can remain focused on the problems they are best suited to detect.
+* Reproducible browser test execution reduces environment-related differences between developers and CI.
+
+### Negative
+
+* More tooling and infrastructure must be maintained.
+* Test execution can require more time and resources than unit tests alone.
+* Visual regression tests require maintenance when intentional visual changes occur.
+* Usability testing introduces manual effort.
+* Release gates can delay releases when infrastructure or tests fail.
+
+---
+
+## Related TOGAF Phases
+
+* Architecture Vision (Phase A)
+* Technology Architecture (Phase D)
+* Opportunities and Solutions (Phase E)
+* Implementation Governance (Phase G)
+
+---
+
+## References
+
+* [Technology Architecture](../adm/technology-architecture/)
+* [Testing and Quality Strategy](../adm/technology-architecture/#6-testing--quality-strategy)
+* [ADR-000500 – Accessibility as a Cross-Cutting Concern](./000500-accessibility-as-a-cross-cutting-concern/)

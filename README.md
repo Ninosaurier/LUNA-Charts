@@ -2,7 +2,7 @@
 
 LUNA Charts is a reusable, developer-friendly charting library designed to make accessible, WCAG-oriented data visualization the default rather than an afterthought.
 
-> **Project status:** Groundwork phase. Core architecture and tooling are in place; production-ready chart components (starting with `BarChart`) are still in development. See the [Roadmap](./docs/src/content/docs/getting-started/roadmap.mdx) for details.
+> **Project status:** Working on First Proof of Concept v0.3.0 phase. This milestone focuses on validating the core technical and accessibility assumptions of the library through a first working implementation. The goal is to prove that the chosen architecture (SVG rendering, Web Components, accessibility-first approach) actually works in practice before committing to a broader component set. See the [Roadmap](./docs/src/content/docs/getting-started/roadmap.mdx) for details.
 
 ## Preface & Repository Mirror Notice
 
@@ -17,7 +17,7 @@ Please be aware of our repository structure:
 Most charting libraries treat accessibility as an add-on. LUNA Charts builds it in from the start:
 
 * **Accessible by default** — components are designed and tested against WCAG guidance from day one, not patched in afterward
-* **Framework-agnostic** — built as standard Web Components (Stencil), usable in React, Vue, Angular, Svelte, or plain HTML
+* **Framework-agnostic** — built as standard Web Components (Stencil), usable in React, Vue or Angular.
 * **SVG-based rendering** — inspectable, stylable, and screen-reader-friendly output instead of an opaque canvas
 
 ## Tech Stack
@@ -59,8 +59,9 @@ luna-charts/
 
 ### Prerequisites
 
-* Node.js `>= 22.0.0`
-* pnpm `11.11.0` (see `devEngines` in `package.json`; pnpm will be downloaded automatically via Corepack if missing)
+* [Node Version manager](https://github.com/nvm-sh/nvm/blob/master/README.md) `0.40.7`
+* Node.js `>= 24.0.0`. Use `nvm install 24` for it
+* pnpm `12.0.0`
 * Docker (required for running component/browser tests locally, see below)
 
 ### Installation
