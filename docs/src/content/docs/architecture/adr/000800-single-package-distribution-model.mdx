@@ -1,0 +1,101 @@
+---
+title: Single-Package Distribution Model
+description: "LUNA Charts is distributed as one unified package rather than separate packages per chart type or internal module."
+---
+
+* **Status:** Accepted
+* **Date:** 2026-08-31
+* **Decision Makers:** LUNA Charts Maintainers
+
+---
+
+## Context
+
+LUNA Charts is developed as a monorepo and contains multiple internal modules and chart types. The repository structure must remain flexible for implementation while the public distribution model should remain simple for consumers.
+
+The architecture distinguishes between internal implementation boundaries and the public package boundary. Chart types such as BarChart, LineChart, and PieChart are not intended to become independent npm packages.
+
+LUNA Charts is intended to be consumed as one coherent, accessibility-focused library.
+
+---
+
+## Decision Drivers
+
+* Developer Experience
+* Simplicity
+* Accessibility
+* Maintainability
+* Consistent API Behavior
+* Framework Agnosticism
+* Release Management
+* Reduced Package Fragmentation
+
+---
+
+## Considered Alternatives
+
+| Alternative | Description |
+| ----------- | ----------- |
+| Single package | All public chart functionality is distributed through one LUNA Charts package. |
+| Package per chart type | Each chart type is published as an independent npm package. |
+| Package per internal module | Internal modules such as core and charts are independently published. |
+| Monorepo with multiple public packages | The repository remains a monorepo while several independently versioned packages are published. |
+
+The single-package model was selected because the library is intended to provide one coherent developer experience and one consistent accessibility model. Publishing chart types or internal modules separately would increase package, versioning, dependency, and compatibility complexity.
+
+---
+
+## Decision
+
+LUNA Charts is distributed as **one unified public npm package**.
+
+Chart types, core functionality, accessibility mechanisms, and other implementation modules remain internal parts of the distribution and are not published as separate public packages.
+
+Framework-specific integrations generated from the Stencil-based implementation are considered part of the overall LUNA Charts distribution model rather than independent chart packages.
+
+---
+
+## Rationale
+
+A single package gives consumers one installation target and one coherent version of the library.
+
+It also supports the project's accessibility-first architecture. Accessibility enforcement, validation, rendering, and chart functionality can evolve together without requiring consumers to coordinate compatible versions of several packages.
+
+The monorepo therefore provides internal organizational and architectural separation without exposing unnecessary package fragmentation to consumers.
+
+---
+
+## Consequences
+
+### Positive
+
+* Simple installation and onboarding.
+* One public version and release lifecycle.
+* Consistent accessibility and API behavior across chart types.
+* No dependency coordination between separate chart packages.
+* Easier documentation and support.
+* Internal modules can evolve without becoming public package contracts.
+
+### Negative
+
+* Consumers cannot install only an individual chart package.
+* The public package may contain functionality that a particular consumer does not use.
+* A change in one part of the library may require a release of the unified package.
+* Package-level boundaries cannot be used to independently version individual chart types.
+
+---
+
+## Related TOGAF Phases
+
+* Architecture Vision (Phase A)
+* Business Architecture (Phase B)
+* Information Systems Architecture (Phase C)
+* Technology Architecture (Phase D)
+
+---
+
+## References
+
+* [Repository Structure](./000100-repository-structure/)
+* [Technology Architecture](../adm/technology-architecture/)
+* [Information Systems Architecture](../adm/information-systems-architecture/)
