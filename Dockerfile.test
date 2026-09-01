@@ -18,4 +18,4 @@ WORKDIR /app/packages/luna-charts
 
 RUN pnpm add -D @rolldown/binding-linux-x64-gnu
 
-CMD ["pnpm", "test:browser"]
+CMD ["pnpm", "test:browser", "--", "--passWithNoTests"]

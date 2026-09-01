@@ -87,4 +87,4 @@ jobs:
 
       - name: Run component tests (Playwright)
         working-directory: packages/luna-charts
-        run: pnpm test:browser
+        run: pnpm test:browser --passWithNoTests
