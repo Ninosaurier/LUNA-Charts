@@ -2,7 +2,7 @@
 
 LUNA Charts is a reusable, developer-friendly charting library designed to make accessible, WCAG-oriented data visualization the default rather than an afterthought.
 
-> **Project status:** Foundation phase. This milestone focuses on setting up the technical core of the component library. The goal is to build an automated, testable, and documented environment for efficient StencilJS component development. (starting with `BarChart`) are still in development. See the [Roadmap](./docs/src/content/docs/getting-started/roadmap.mdx) for details.
+> **Project status:** Working on First Proof of Concept v0.3.0 phase. This milestone focuses on validating the core technical and accessibility assumptions of the library through a first working implementation. The goal is to prove that the chosen architecture (SVG rendering, Web Components, accessibility-first approach) actually works in practice before committing to a broader component set. See the [Roadmap](./docs/src/content/docs/getting-started/roadmap.mdx) for details.
 
 ## Preface & Repository Mirror Notice
 
