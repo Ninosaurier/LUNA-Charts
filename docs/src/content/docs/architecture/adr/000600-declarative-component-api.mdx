@@ -1,0 +1,111 @@
+---
+title: Declarative Component API
+description: "LUNA Charts exposes chart functionality through a strongly typed, component-based declarative API."
+---
+
+* **Status:** Accepted
+* **Date:** 2026-08-31
+* **Decision Makers:** LUNA Charts Maintainers
+
+---
+
+## Context
+
+LUNA Charts must provide a developer-facing API that is easy to understand, strongly typed, framework-agnostic, and capable of enforcing accessibility and validation rules consistently.
+
+Several API models were considered, including a pure domain-specific language (DSL), JSON-based configuration, and a component-based API. The architecture also requires a controlled system boundary so that developers provide chart data and configuration without directly interfering with internal processing.
+
+The Information Systems Architecture defines chart-specific components such as `<BarChart />`, `<LineChart />`, and `<PieChart />`, each with its own strongly typed data model. A single controlled entry point is used for developer interaction, while validation, configuration resolution, accessibility enforcement, and rendering remain under the ownership of the library.
+
+---
+
+## Decision Drivers
+
+* Developer Experience
+* Type Safety
+* Framework Agnosticism
+* Accessibility
+* Maintainability
+* Predictable Behavior
+* Clear System Boundaries
+* Simplicity
+
+---
+
+## Considered Alternatives
+
+| Alternative | Description |
+| ----------- | ----------- |
+| Component-based declarative API | Developers configure charts through strongly typed chart components and their properties. |
+| JSON-based API | Developers provide chart definitions as JSON objects that are interpreted by the library. |
+| Pure DSL | A dedicated textual or configuration language is used to describe charts. |
+| Imperative API | Developers directly invoke rendering and processing operations. |
+
+The component-based declarative API was selected because it provides a natural developer experience, strong TypeScript integration, and a clear boundary between public inputs and internal processing. JSON and pure DSL approaches would require an additional abstraction layer and provide less natural integration with component-based frontend ecosystems. An imperative API would expose more implementation details and weaken the controlled processing model.
+
+---
+
+## Decision
+
+LUNA Charts uses a **component-based declarative API** as its primary developer interaction model.
+
+Developers interact with chart-specific components such as:
+
+* `<BarChart />`
+* `<LineChart />`
+* `<PieChart />`
+
+Each chart component exposes a strongly typed data and configuration model.
+
+The public API is the controlled entry point into the library. Developers provide structured data and configuration, while the internal processing pipeline remains under the control of LUNA Charts.
+
+---
+
+## Rationale
+
+A component-based declarative API aligns the developer experience with modern web component and framework ecosystems while allowing TypeScript to express valid data and configuration structures.
+
+The model also supports LUNA Charts' architectural goals:
+
+* Developers describe the desired chart rather than controlling rendering steps.
+* Type-safe contracts make invalid inputs more explicit.
+* Internal validation and accessibility enforcement remain centrally controlled.
+* The same conceptual API can be consumed through framework-specific integrations.
+* The API remains predictable and maintainable as additional chart types are introduced.
+
+---
+
+## Consequences
+
+### Positive
+
+* Clear and approachable developer API.
+* Strong TypeScript integration and type safety.
+* Declarative usage reduces exposure to internal implementation details.
+* Consistent integration model across supported frontend ecosystems.
+* Internal accessibility and validation rules remain centrally enforceable.
+* New chart types can follow the same API pattern.
+
+### Negative
+
+* Developers have less low-level control over internal processing.
+* Custom behavior outside the defined API requires changes by the LUNA Charts maintainers.
+* Strong API constraints can make unusual use cases harder to support.
+* Each chart type requires a dedicated typed model.
+
+---
+
+## Related TOGAF Phases
+
+* Architecture Vision (Phase A)
+* Business Architecture (Phase B)
+* Information Systems Architecture (Phase C)
+* Technology Architecture (Phase D)
+
+---
+
+## References
+
+* [Information Systems Architecture](../adm/information-systems-architecture/)
+* [Technology Architecture](../adm/technology-architecture/)
+* [ADR-000300 – Web Components as Public API](./000300-web-components-as-public-api/)
