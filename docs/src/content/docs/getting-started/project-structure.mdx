@@ -5,7 +5,8 @@ sidebar:
   order: 1
 ---
 
-LUNA Charts follows a modular repository structure that separates the chart library from its documentation while keeping all project artifacts within a single repository.
+LUNA Charts follows a modular repository structure that separates the chart library from its documentation while keeping 
+all project artifacts within a single repository.
 
 ```text
 luna-charts/
@@ -51,31 +52,38 @@ It serves as the **Single Point of Truth (SPOT)** for:
 - Project governance
 - User documentation
 
-The documentation is rendered using **Starlight**, but the Markdown content remains the authoritative source.
+The documentation is rendered using **Astro and Starlight**, but the Markdown content remains the authoritative source.
 
 ---
 
 ## examples/
 
-Example applications demonstrating how to integrate LUNA Charts with supported frontend frameworks will be added here in future iterations.
+Example applications demonstrating how to integrate LUNA Charts with supported frontend frameworks 
+will be added here in future iterations.
 
 Examples may include:
 
-- Vanilla JavaScript
 - React
 - Angular
 - Vue
 
+Right now, we are working on version 0.3.0, implementing a first proof of concept. 
+The first Minimum Viable Product will be launched with version 1.0.0.
+
 ---
+
+## .gitea/
+
+- Gitea Actions
+- Issue templates
+- Pull request templates
+- Community workflows
 
 ## .github/
 
 Contains project automation such as:
 
-- GitHub Actions
-- Issue templates
-- Pull request templates
-- Community workflows
+- Code of Conduct
 
 ---
 
@@ -83,6 +91,7 @@ Contains project automation such as:
 
 LUNA Charts is maintained as a **pnpm workspace**.
 
-This structure allows multiple packages and supporting projects to evolve together while sharing a consistent toolchain and development workflow.
+This structure allows multiple packages and supporting projects to evolve together while sharing a consistent 
+toolchain and development workflow.
 
 As the project grows, additional packages or tooling may be introduced without changing the overall repository organization.
