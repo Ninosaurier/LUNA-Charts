@@ -9,9 +9,12 @@ import { Aside } from '@astrojs/starlight/components';
 
 ## 1. Overview
 
-This Application Architecture defines how LUNA Charts is structured at the application level. It describes the internal processing model, developer interaction boundaries, system layers, and architectural style used to ensure accessible, consistent, and predictable chart rendering.
+This Application Architecture defines how LUNA Charts is structured at the application level. 
+It describes the internal processing model, developer interaction boundaries, system layers, and architectural 
+style used to ensure accessible, consistent, and predictable chart rendering.
 
-LUNA Charts is designed as a declarative, component-based charting library with a controlled internal processing pipeline and strict input boundaries.
+LUNA Charts is designed as a declarative, component-based charting library with a controlled internal processing pipeline 
+and strict input boundaries.
 
 ## 2. Architectural Style
 
@@ -62,7 +65,7 @@ Developers cannot:
 
 ## 4. System Boundary Model
 
-LUNA Charts exposes a strict system boundary:
+LUNA Charts exposes a strict system boundary.
 
 ### Allowed Inputs
 
@@ -92,15 +95,18 @@ Receives component input, accepts data and configuration, and normalizes incomin
 
 ### 5.2 Resilience & Validation Layer
 
-Validates input data integrity, detects missing or invalid values, triggers fallback behavior if necessary, and emits warnings for developer feedback.
+Validates input data integrity, detects missing or invalid values, triggers fallback behavior if necessary, 
+and emits warnings for developer feedback.
 
 ### 5.3 Configuration Resolution Layer
 
-Merges user configuration with default values, resolves themes, labels, and styling parameters, and applies library-provided defaults when needed.
+Merges user configuration with default values, resolves themes, labels, and styling parameters, and applies 
+library-provided defaults when needed.
 
 ### 5.4 Accessibility Enforcement Layer
 
-Applies accessibility rules and guidance mechanisms intended to support WCAG-compliant chart implementations, generates ARIA attributes, validates known accessibility constraints, and provides runtime warnings and developer feedback.
+Applies accessibility rules and guidance mechanisms intended to support WCAG-compliant chart implementations, 
+generates ARIA attributes, validates known accessibility constraints, and provides runtime warnings and developer feedback.
 
 <Aside type="tip">
   Accessibility enforcement is a cross-cutting concern applied across all layers — see [Section 4](#4-system-boundary-model).
@@ -108,7 +114,8 @@ Applies accessibility rules and guidance mechanisms intended to support WCAG-com
 
 ### 5.5 Rendering Layer
 
-Transforms processed data into visual representations, generates SVG or Canvas output, and produces the final chart visualization.
+Transforms processed data into visual representations, generates SVG or Canvas output, and produces 
+the final chart visualization.
 
 ## 6. Chart Type Model
 
@@ -162,7 +169,8 @@ Configuration is merged with system defaults during the processing pipeline.
 
 ## 9. Technology-Agnostic Design
 
-This Application Architecture does not assume a specific frontend framework but is compatible with modern web ecosystems such as:
+This Application Architecture does not assume a specific frontend framework but is compatible with 
+modern web ecosystems such as:
 
 - React
 - Vue

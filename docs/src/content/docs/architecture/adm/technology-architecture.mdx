@@ -9,9 +9,12 @@ import { Aside } from '@astrojs/starlight/components';
 
 ## 1. Overview
 
-This Technology Architecture defines the underlying technology decisions for LUNA Charts. It describes the runtime environment, rendering technology, programming language, distribution model, testing strategy, and release pipeline.
+This Technology Architecture defines the underlying technology decisions for LUNA Charts. 
+It describes the runtime environment, rendering technology, programming language, distribution model, 
+testing strategy, and release pipeline.
 
-LUNA Charts is designed as a modern, accessibility-first charting library optimized for web environments, focusing on performance, consistency, and WCAG-oriented rendering behavior.
+LUNA Charts is designed as a modern, accessibility-first charting library optimized for web environments, 
+focusing on performance, consistency, and WCAG-oriented rendering behavior.
 
 ## 2. Rendering Technology
 
@@ -145,7 +148,9 @@ LUNA Charts follows a multi-layer quality assurance model.
 - **Not required for patch releases** (bug fixes, internal refactors with no user-facing change)
 
 <Aside type="caution" title="Release Gate Policy">
-  Automated testing (unit, accessibility, linting, visual regression) is a **blocking condition for every release**. Usability testing is a **blocking condition for minor and major releases**, but is skipped for patch releases to avoid delaying critical fixes.
+  Automated testing (unit, accessibility, linting, visual regression) is a **blocking condition for every release**. 
+  Usability testing is a **blocking condition for minor and major releases**, but is skipped for patch releases to 
+  avoid delaying critical fixes.
 </Aside>
 
 ### 6.6 Test Execution Environment
@@ -229,7 +234,7 @@ LUNA Charts targets modern web environments.
 - No plugin or extension system
 - Multi-layer testing strategy with release gating
 - Containerized, reproducible test execution environment for browser and accessibility tests
-- Open-source distribution via GitHub and npm
+- Open-source distribution via Gitea and npm
 - Modern browser and mobile-first runtime strategy
 
 ## 10. Trade-offs
@@ -253,10 +258,12 @@ LUNA Charts targets modern web environments.
 
 ## 11. Change Log
 
-This document reflects a refined Technology Architecture based on iterative architectural decisions across Phase A (Vision), Phase B (Business Architecture), and Phase C (Application Architecture). Key clarifications introduced in this phase:
+This document reflects a refined Technology Architecture based on iterative architectural decisions across Phase A (Vision), 
+Phase B (Business Architecture), and Phase C (Application Architecture). Key clarifications introduced in this phase:
 
 - SVG confirmed as the only rendering technology due to accessibility requirements
-- Accessibility is treated as a cross-cutting concern supported by type safety, runtime validation, and internal quality assurance (not a standalone engine)
+- Accessibility is treated as a cross-cutting concern supported by type safety, runtime validation, and internal 
+quality assurance (not a standalone engine)
 - Framework neutrality enforced through adapter-based architecture
 - Distribution model defined as a single-package open-source release via npm and GitHub
 - Testing strategy defined as a multi-layer quality gate system (unit, accessibility, linting, visual regression)
@@ -266,16 +273,20 @@ This document reflects a refined Technology Architecture based on iterative arch
 
 **Reason**
 
-Component and browser tests are executed inside a Docker-based Playwright environment (`Dockerfile.test`, `docker-compose.test.yaml`), which was introduced during implementation but had not yet been reflected in this document.
+Component and browser tests are executed inside a Docker-based Playwright 
+environment (`Dockerfile.test`, `docker-compose.test.yaml`), which was introduced during implementation but had not yet been 
+reflected in this document.
 
 **Changes**
 
-- Added Section 6.6 "Test Execution Environment" describing the containerized Playwright setup used for local development and CI
+- Added Section 6.6 "Test Execution Environment" describing the containerized Playwright setup used for local 
+development and CI
 - Added "Containerized, reproducible test execution environment" to Section 9 "Key Architectural Decisions"
 
 **Impact**
 
-This clarifies an already-implemented part of the testing strategy (Section 6) and does not change any other architectural decision in this document.
+This clarifies an already-implemented part of the testing strategy (Section 6) and does not change any 
+other architectural decision in this document.
 
 ### 2026-08-04 – CI uses a prebuilt test image instead of rebuilding per run
 
