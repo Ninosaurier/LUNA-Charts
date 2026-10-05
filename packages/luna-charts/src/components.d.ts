@@ -5,64 +5,46 @@
  */
 import { HTMLStencilElement, JSXBase } from '@stencil/core/internal';
 export namespace Components {
-  interface MyComponent {
+  interface BarChart {
     /**
-     * The first name
+     * @default 'Hello World'
      */
-    first?: string;
-    /**
-     * The last name
-     */
-    last?: string;
-    /**
-     * The middle name
-     */
-    middle?: string;
+    title: string;
   }
 }
 declare global {
-  interface HTMLMyComponentElement extends Components.MyComponent, HTMLStencilElement {}
-  var HTMLMyComponentElement: {
-    prototype: HTMLMyComponentElement;
-    new (): HTMLMyComponentElement;
+  interface HTMLBarChartElement extends Components.BarChart, HTMLStencilElement {}
+  var HTMLBarChartElement: {
+    prototype: HTMLBarChartElement;
+    new (): HTMLBarChartElement;
   };
   interface HTMLElementTagNameMap {
-    'my-component': HTMLMyComponentElement;
+    'bar-chart': HTMLBarChartElement;
   }
 }
 declare namespace LocalJSX {
-  interface MyComponent {
+  interface BarChart {
     /**
-     * The first name
+     * @default 'Hello World'
      */
-    first?: string;
-    /**
-     * The last name
-     */
-    last?: string;
-    /**
-     * The middle name
-     */
-    middle?: string;
+    title?: string;
   }
 
-  interface MyComponentAttributes {
-    first: string;
-    middle: string;
-    last: string;
+  interface BarChartAttributes {
+    title: string;
   }
 
   interface IntrinsicElements {
-    'my-component': Omit<MyComponent, keyof MyComponentAttributes> & { [K in keyof MyComponent & keyof MyComponentAttributes]?: MyComponent[K] } & {
-      [K in keyof MyComponent & keyof MyComponentAttributes as `attr:${K}`]?: MyComponentAttributes[K];
-    } & { [K in keyof MyComponent & keyof MyComponentAttributes as `prop:${K}`]?: MyComponent[K] };
+    'bar-chart': Omit<BarChart, keyof BarChartAttributes> & { [K in keyof BarChart & keyof BarChartAttributes]?: BarChart[K] } & {
+      [K in keyof BarChart & keyof BarChartAttributes as `attr:${K}`]?: BarChartAttributes[K];
+    } & { [K in keyof BarChart & keyof BarChartAttributes as `prop:${K}`]?: BarChart[K] };
   }
 }
 export { LocalJSX as JSX };
 declare module '@stencil/core' {
   export namespace JSX {
     interface IntrinsicElements {
-      'my-component': LocalJSX.IntrinsicElements['my-component'] & JSXBase.HTMLAttributes<HTMLMyComponentElement>;
+      'bar-chart': LocalJSX.IntrinsicElements['bar-chart'] & JSXBase.HTMLAttributes<HTMLBarChartElement>;
     }
   }
 }
