@@ -6,6 +6,7 @@
   "scripts": {
     "docs": "pnpm --filter docs run dev",
     "lint": "pnpm --filter luna-charts run lint",
+    "stencil:dev": "pnpm --filter luna-charts exec stencil build --watch",
     "format": "prettier --write .",
     "format:check": "pnpm --filter luna-charts run format:check",
     "changeset": "changeset",
