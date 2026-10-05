@@ -6,8 +6,7 @@ import { Component, Host, Prop, h } from '@stencil/core';
   shadow: true,
 })
 export class BarChart {
-
-  @Prop() title: string = "Hello World";
+  @Prop() title: string = 'Hello World';
 
   render() {
     return (

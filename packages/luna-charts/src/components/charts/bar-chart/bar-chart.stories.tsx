@@ -16,7 +16,7 @@ type Story = StoryObj<BarChart>;
 
 export const Primary: Story = {
   args: {},
-  render: () => <bar-chart title='test' />,
+  render: () => <bar-chart title="test" />,
 };
 
 export const Secondary: Story = {

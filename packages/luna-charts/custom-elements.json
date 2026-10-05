@@ -1,5 +1,5 @@
 {
-  "timestamp": "2026-09-17T15:31:03",
+  "timestamp": "2026-10-05T16:30:03",
   "compiler": {
     "name": "@stencil/core",
     "version": "4.44.2",
@@ -30,10 +30,10 @@
           "docsTags": [
             {
               "name": "default",
-              "text": "\"Hello World\""
+              "text": "'Hello World'"
             }
           ],
-          "default": "\"Hello World\"",
+          "default": "'Hello World'",
           "values": [
             {
               "type": "string"
@@ -62,5 +62,11 @@
       "dependencyGraph": {}
     }
   ],
-  "typeLibrary": {}
+  "typeLibrary": {
+    "src/types/index.ts::ChartInfo": {
+      "declaration": "export interface ChartInfo {\n  title: string;\n  description: string;  \n  sourceUrl: string;   \n}",
+      "docstring": "",
+      "path": "src/types/index.ts"
+    }
+  }
 }
